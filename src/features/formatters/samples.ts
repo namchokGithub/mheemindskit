@@ -1,29 +1,18 @@
-export const SAMPLE_JSON = `{
-  "id": "usr_1029",
-  "name": "Ada Lovelace",
-  "active": true,
-  "roles": ["admin", "editor"],
-  "profile": {
-    "age": 36,
-    "location": "London",
-    "website": null
-  },
-  "tags": [1, 2, 3]
-}`
+import exampleJson from '@/assets/example/_example-json.json?raw'
+import exampleXml from '@/assets/example/_example-xml.json'
 
-export const SAMPLE_JSON_MINIFIED = `{"id":"usr_1029","name":"Ada Lovelace","active":true,"tags":[1,2,3]}`
+const JSON_SAMPLES: string[] = (JSON.parse(exampleJson) as unknown[]).map((item) =>
+  JSON.stringify(item, null, 2),
+)
 
-export const SAMPLE_XML = `<?xml version="1.0" encoding="UTF-8"?>
-<catalog>
-  <book id="bk101">
-    <author>Gambardella, Matthew</author>
-    <title>XML Developer's Guide</title>
-    <price>44.95</price>
-    <description>An in-depth look at creating applications with XML.</description>
-  </book>
-  <book id="bk102">
-    <author>Ralls, Kim</author>
-    <title>Midnight Rain</title>
-    <price>5.95</price>
-  </book>
-</catalog>`
+export function getRandomSampleJson(): string {
+  const index = Math.floor(Math.random() * JSON_SAMPLES.length)
+  return JSON_SAMPLES[index]
+}
+
+const XML_SAMPLES: string[] = exampleXml
+
+export function getRandomSampleXml(): string {
+  const index = Math.floor(Math.random() * XML_SAMPLES.length)
+  return XML_SAMPLES[index]
+}

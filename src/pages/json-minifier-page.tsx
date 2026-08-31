@@ -2,7 +2,7 @@ import { Shrink } from 'lucide-react'
 
 import { FormatterPage } from '@/components/tool/formatter-page'
 import { minifyJson } from '@/features/formatters/json'
-import { SAMPLE_JSON } from '@/features/formatters/samples'
+import { getRandomSampleJson } from '@/features/formatters/samples'
 
 export function JsonMinifierPage() {
   return (
@@ -12,7 +12,7 @@ export function JsonMinifierPage() {
       actionLabel="Minify"
       actionIcon={Shrink}
       successLabel="Minified successfully"
-      sample={SAMPLE_JSON}
+      sample={getRandomSampleJson}
       showIndent={false}
       inputPlaceholder="Paste JSON here…"
       process={(input) => minifyJson(input)}

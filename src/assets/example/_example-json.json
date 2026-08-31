@@ -1,0 +1,72 @@
+[
+  {
+    "user_id": 1001,
+    "username": "dev_stack",
+    "is_active": true,
+    "roles": ["admin", "editor"],
+    "profile": { "first_name": "Alex", "last_name": "Dev", "version": 1.0 }
+  },
+  {
+    "status": "success",
+    "code": 200,
+    "data": {
+      "order_id": "ORD-2026-8971",
+      "customer": {
+        "id": 402,
+        "name": "Siti Ch",
+        "email": "siti@example.com"
+      },
+      "items": [{ "sku": "ITEM-A", "qty": 2, "price": 45.5 }],
+      "payment_settled": true
+    }
+  },
+  {
+    "timestamp": "2026-08-31T22:47:00Z",
+    "event": "user_login",
+    "metadata": {
+      "client_ip": "192.168.1.100",
+      "device": { "browser": "Chrome", "os": "macOS", "is_mobile": false },
+      "session": {
+        "id": "sess_8f9a2b1c4d",
+        "expires_in": 3600,
+        "permissions": ["read", "write", "execute"]
+      }
+    },
+    "payload": { "user_id": 8821, "tenant_id": "t_9912", "status": "ACTIVE" }
+  },
+  {
+    "server_response": {
+      "id": "req_99204a11",
+      "status": "completed",
+      "execution_time_ms": 42.5,
+      "cached": false,
+      "components": [
+        { "name": "auth-service", "health": "UP", "latency_ms": 12 },
+        {
+          "name": "database-cluster",
+          "health": "UP",
+          "latency_ms": 28.5,
+          "node": "primary-db-01"
+        }
+      ],
+      "analytics": {
+        "page_views": 1250,
+        "unique_visitors": 430,
+        "conversion_rate": 0.0344
+      },
+      "errors": null,
+      "system_notes": "All services are running smoothly under optimal CPU loads."
+    }
+  },
+  {
+    "project": "MindsKit",
+    "release": "2026.8.0",
+    "published_at": "2026-08-31T22:47:00Z",
+    "changes": [
+      { "type": "feature", "description": "Add XML formatter samples" },
+      { "type": "fix", "description": "Improve validation messages" }
+    ],
+    "contributors": 3,
+    "is_stable": true
+  }
+]

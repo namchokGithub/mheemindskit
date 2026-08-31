@@ -16,7 +16,7 @@ export interface FormatterPageConfig {
   actionLabel: string
   actionIcon: LucideIcon
   successLabel: string
-  sample: string
+  sample: () => string
   showIndent: boolean
   inputPlaceholder: string
   process: (input: string, indent: IndentOption) => FormatResult
@@ -45,8 +45,9 @@ export function FormatterPage(config: FormatterPageConfig) {
   }
 
   const handleSample = () => {
-    setInput(config.sample)
-    run(config.sample, indent)
+    const sample = config.sample()
+    setInput(sample)
+    run(sample, indent)
   }
 
   const handleClear = () => {

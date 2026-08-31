@@ -6,7 +6,7 @@ import { ToolPageHeader } from '@/components/tool/tool-page-header'
 import { ToolStatus } from '@/components/tool/tool-status'
 import { Button } from '@/components/ui/button'
 import { validateJson } from '@/features/formatters/json'
-import { SAMPLE_JSON } from '@/features/formatters/samples'
+import { getRandomSampleJson } from '@/features/formatters/samples'
 import type { ValidateResult } from '@/types/format'
 
 export function JsonValidatorPage() {
@@ -19,8 +19,9 @@ export function JsonValidatorPage() {
   }
 
   const handleSample = () => {
-    setInput(SAMPLE_JSON)
-    setResult(validateJson(SAMPLE_JSON))
+    const sample = getRandomSampleJson()
+    setInput(sample)
+    setResult(validateJson(sample))
   }
 
   const handleClear = () => {

@@ -2,7 +2,7 @@ import { Braces } from 'lucide-react'
 
 import { FormatterPage } from '@/components/tool/formatter-page'
 import { formatJson } from '@/features/formatters/json'
-import { SAMPLE_JSON } from '@/features/formatters/samples'
+import { getRandomSampleJson } from '@/features/formatters/samples'
 
 export function JsonFormatterPage() {
   return (
@@ -12,7 +12,7 @@ export function JsonFormatterPage() {
       actionLabel="Format"
       actionIcon={Braces}
       successLabel="Formatted successfully"
-      sample={SAMPLE_JSON}
+      sample={getRandomSampleJson}
       showIndent
       inputPlaceholder="Paste JSON here…"
       process={formatJson}
