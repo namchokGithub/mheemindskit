@@ -58,34 +58,7 @@ export function FormatterPage(config: FormatterPageConfig) {
     <div className="flex h-full min-h-0 flex-col gap-4">
       <ToolPageHeader title={config.title} description={config.description} />
 
-      <div className="flex shrink-0 flex-wrap items-center gap-2">
-        <Button type="button" onClick={() => run(input, indent)} disabled={!input.trim()}>
-          <ActionIcon />
-          {config.actionLabel}
-        </Button>
-        {config.showIndent && <IndentSelect value={indent} onChange={handleIndentChange} />}
-        <Button type="button" variant="outline" size="sm" onClick={handleSample}>
-          <FileText />
-          Sample
-        </Button>
-        <Button type="button" variant="outline" size="sm" onClick={handleClear} disabled={!input}>
-          <Eraser />
-          Clear
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          aria-pressed={wrap}
-          onClick={() => setWrap((w) => !w)}
-          className={cn(wrap && 'bg-accent text-accent-foreground')}
-        >
-          <WrapText />
-          Wrap
-        </Button>
-      </div>
-
-      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-[1fr_auto_1fr] lg:items-stretch">
         <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-2">
           <span className="text-sm font-medium text-muted-foreground">Input</span>
           <CodeEditor
@@ -94,8 +67,51 @@ export function FormatterPage(config: FormatterPageConfig) {
             placeholder={config.inputPlaceholder}
             wrap={wrap}
             ariaLabel="Input"
+            errorLine={result && !result.ok ? result.line : undefined}
           />
         </div>
+
+        <div className="order-first flex flex-wrap items-center gap-2 lg:order-none lg:w-40 lg:shrink-0 lg:flex-col lg:justify-center lg:gap-2.5 lg:border-x lg:border-border lg:px-4">
+          <Button
+            type="button"
+            className="lg:w-full"
+            onClick={() => run(input, indent)}
+            disabled={!input.trim()}
+          >
+            <ActionIcon />
+            {config.actionLabel}
+          </Button>
+          {config.showIndent && (
+            <IndentSelect value={indent} onChange={handleIndentChange} className="lg:w-full" />
+          )}
+          <Button type="button" variant="outline" size="sm" className="lg:w-full" onClick={handleSample}>
+            <FileText />
+            Sample
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="lg:w-full"
+            onClick={handleClear}
+            disabled={!input}
+          >
+            <Eraser />
+            Clear
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            aria-pressed={wrap}
+            onClick={() => setWrap((w) => !w)}
+            className={cn('lg:w-full', wrap && 'bg-accent text-accent-foreground')}
+          >
+            <WrapText />
+            Wrap
+          </Button>
+        </div>
+
         <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-2">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-muted-foreground">Output</span>

@@ -1,3 +1,12 @@
+import { json } from '@codemirror/lang-json'
+import { xml } from '@codemirror/lang-xml'
+import { Decoration } from '@codemirror/view'
+import { EditorView } from '@codemirror/view'
+import { vscodeDark, vscodeLight } from '@uiw/codemirror-theme-vscode'
+import CodeMirror from '@uiw/react-codemirror'
+import { useMemo } from 'react'
+
+import { useTheme } from '@/hooks/use-theme'
 import { cn } from '@/lib/utils'
 
 interface CodeEditorProps {
@@ -7,28 +16,77 @@ interface CodeEditorProps {
   readOnly?: boolean
   wrap: boolean
   ariaLabel: string
+  language?: 'json' | 'xml'
+  errorLine?: number
 }
 
-export function CodeEditor({ value, onChange, placeholder, readOnly, wrap, ariaLabel }: CodeEditorProps) {
+const fontTheme = EditorView.theme({
+  '&': { fontSize: '13px' },
+  '.cm-content': { fontFamily: 'var(--font-mono)' },
+  '.cm-gutters': { fontFamily: 'var(--font-mono)' },
+})
+
+const errorLineMark = Decoration.line({ class: 'cm-error-line' })
+
+function lineStartOffset(text: string, lineNumber: number): number {
+  const lines = text.split('\n')
+  const targetIndex = Math.min(Math.max(lineNumber - 1, 0), lines.length - 1)
+  let offset = 0
+  for (let i = 0; i < targetIndex; i++) {
+    offset += lines[i].length + 1
+  }
+  return offset
+}
+
+function errorLineExtension(text: string, lineNumber: number) {
+  return EditorView.decorations.of(Decoration.set([errorLineMark.range(lineStartOffset(text, lineNumber))]))
+}
+
+export function CodeEditor({
+  value,
+  onChange,
+  placeholder,
+  readOnly,
+  wrap,
+  ariaLabel,
+  language = 'json',
+  errorLine,
+}: CodeEditorProps) {
+  const { theme } = useTheme()
+
+  const extensions = useMemo(() => {
+    const base = [fontTheme, language === 'xml' ? xml() : json()]
+    const withWrap = wrap ? [...base, EditorView.lineWrapping] : base
+    return errorLine ? [...withWrap, errorLineExtension(value, errorLine)] : withWrap
+  }, [language, wrap, errorLine, value])
+
   return (
-    <textarea
-      value={value}
-      onChange={onChange ? (event) => onChange(event.target.value) : undefined}
-      readOnly={readOnly}
-      placeholder={placeholder}
-      spellCheck={false}
-      autoCapitalize="off"
-      autoCorrect="off"
+    <div
       aria-label={ariaLabel}
       className={cn(
-        'h-full min-h-[260px] w-full resize-none rounded-lg border border-input bg-transparent p-3.5',
-        'font-mono text-[13px] leading-relaxed text-foreground',
-        'placeholder:text-muted-foreground',
-        'transition-colors focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
-        'overflow-auto',
-        wrap ? 'whitespace-pre-wrap break-words' : 'whitespace-pre',
+        'h-full min-h-[260px] w-full overflow-hidden rounded-lg border border-input',
+        'transition-colors focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/50',
         readOnly && 'bg-muted/30',
       )}
-    />
+    >
+      <CodeMirror
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        readOnly={readOnly}
+        editable={!readOnly}
+        theme={theme === 'dark' ? vscodeDark : vscodeLight}
+        extensions={extensions}
+        height="100%"
+        style={{ height: '100%' }}
+        basicSetup={{
+          lineNumbers: true,
+          foldGutter: true,
+          highlightActiveLine: !readOnly,
+          highlightActiveLineGutter: !readOnly,
+          autocompletion: false,
+        }}
+      />
+    </div>
   )
 }

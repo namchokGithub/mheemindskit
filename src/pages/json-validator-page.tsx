@@ -58,6 +58,7 @@ export function JsonValidatorPage() {
           placeholder="Paste JSON to validate…"
           wrap
           ariaLabel="Input"
+          errorLine={result && !result.valid ? result.line : undefined}
         />
       </div>
 

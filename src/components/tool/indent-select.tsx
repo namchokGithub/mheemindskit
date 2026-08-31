@@ -1,4 +1,5 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { cn } from '@/lib/utils'
 import type { IndentOption } from '@/types/format'
 
 const INDENT_LABELS: Record<IndentOption, string> = {
@@ -10,13 +11,15 @@ const INDENT_LABELS: Record<IndentOption, string> = {
 export function IndentSelect({
   value,
   onChange,
+  className,
 }: {
   value: IndentOption
   onChange: (value: IndentOption) => void
+  className?: string
 }) {
   return (
     <Select value={value} onValueChange={(next) => onChange(next as IndentOption)}>
-      <SelectTrigger size="sm" className="w-[130px]" aria-label="Indentation">
+      <SelectTrigger size="sm" className={cn('w-[130px]', className)} aria-label="Indentation">
         <SelectValue />
       </SelectTrigger>
       <SelectContent>

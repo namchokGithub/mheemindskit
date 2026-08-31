@@ -137,3 +137,7 @@
     @apply font-sans;
   }
 }
+
+.cm-error-line {
+  background-color: color-mix(in oklch, var(--destructive) 16%, transparent);
+}
