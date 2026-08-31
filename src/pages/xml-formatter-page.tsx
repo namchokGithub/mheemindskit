@@ -9,11 +9,12 @@ import { ToolStatus } from "@/components/tool/tool-status";
 import { Button } from "@/components/ui/button";
 import { formatXml, minifyXml } from "@/features/formatters/xml";
 import { getRandomSampleXml } from "@/features/formatters/samples";
+import { usePersistedInput } from "@/hooks/use-persisted-input";
 import { cn } from "@/lib/utils";
 import type { FormatResult, IndentOption } from "@/types/format";
 
 export function XmlFormatterPage() {
-  const [input, setInput] = useState("");
+  const [input, setInput] = usePersistedInput("xml-formatter");
   const [indent, setIndent] = useState<IndentOption>("2");
   const [wrap, setWrap] = useState(false);
   const [result, setResult] = useState<FormatResult | null>(null);

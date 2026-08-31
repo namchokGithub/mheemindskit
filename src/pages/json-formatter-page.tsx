@@ -15,6 +15,7 @@ export function JsonFormatterPage() {
       sample={getRandomSampleJson}
       showIndent
       inputPlaceholder="Paste JSON here…"
+      storageKey="json-formatter"
       process={formatJson}
     />
   )

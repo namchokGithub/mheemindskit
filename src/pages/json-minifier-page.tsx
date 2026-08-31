@@ -15,6 +15,7 @@ export function JsonMinifierPage() {
       sample={getRandomSampleJson}
       showIndent={false}
       inputPlaceholder="Paste JSON here…"
+      storageKey="json-minifier"
       process={(input) => minifyJson(input)}
     />
   )

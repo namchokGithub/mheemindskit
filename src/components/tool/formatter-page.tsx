@@ -7,6 +7,7 @@ import { IndentSelect } from '@/components/tool/indent-select'
 import { ToolPageHeader } from '@/components/tool/tool-page-header'
 import { ToolStatus } from '@/components/tool/tool-status'
 import { Button } from '@/components/ui/button'
+import { usePersistedInput } from '@/hooks/use-persisted-input'
 import { cn } from '@/lib/utils'
 import type { FormatResult, IndentOption } from '@/types/format'
 
@@ -19,11 +20,12 @@ export interface FormatterPageConfig {
   sample: () => string
   showIndent: boolean
   inputPlaceholder: string
+  storageKey: string
   process: (input: string, indent: IndentOption) => FormatResult
 }
 
 export function FormatterPage(config: FormatterPageConfig) {
-  const [input, setInput] = useState('')
+  const [input, setInput] = usePersistedInput(config.storageKey)
   const [indent, setIndent] = useState<IndentOption>('2')
   const [wrap, setWrap] = useState(false)
   const [result, setResult] = useState<FormatResult | null>(null)

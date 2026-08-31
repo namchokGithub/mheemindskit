@@ -7,10 +7,11 @@ import { ToolStatus } from '@/components/tool/tool-status'
 import { Button } from '@/components/ui/button'
 import { validateJson } from '@/features/formatters/json'
 import { getRandomSampleJson } from '@/features/formatters/samples'
+import { usePersistedInput } from '@/hooks/use-persisted-input'
 import type { ValidateResult } from '@/types/format'
 
 export function JsonValidatorPage() {
-  const [input, setInput] = useState('')
+  const [input, setInput] = usePersistedInput('json-validator')
   const [result, setResult] = useState<ValidateResult | null>(null)
 
   const handleInputChange = (next: string) => {

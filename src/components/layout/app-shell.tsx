@@ -51,6 +51,9 @@ export function AppShell() {
           className="flex items-center gap-2 text-base font-semibold">
           <img src={mindskitLogo} alt="" className="size-9 object-contain" />
           MindsKit
+          <span className="rounded-md bg-muted px-1.5 py-0.5 text-xs font-medium text-muted-foreground">
+            v0.1.0
+          </span>
         </Link>
 
         <div className="ml-auto flex items-center gap-2">
@@ -59,8 +62,24 @@ export function AppShell() {
       </header>
 
       <div className="flex flex-1 overflow-hidden">
-        <aside className="hidden w-60 shrink-0 overflow-y-auto border-r border-border p-4 lg:block">
+        <aside className="hidden w-60 shrink-0 flex-col overflow-y-auto border-r border-border p-4 lg:flex">
           <SidebarNav />
+          <a
+            href="https://github.com/namchokGithub"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-auto flex items-center gap-3 rounded-md border border-border p-2 transition-colors hover:bg-accent"
+          >
+            <img
+              src="https://github.com/namchokGithub.png?size=80"
+              alt="namchokGithub"
+              className="size-9 rounded-full"
+            />
+            <span className="min-w-0">
+              <span className="block text-sm font-medium">namchokGithub</span>
+              <span className="block text-xs text-muted-foreground">GitHub Profile</span>
+            </span>
+          </a>
         </aside>
         <main className="flex min-w-0 flex-1 flex-col overflow-y-auto overflow-x-hidden p-4 sm:p-6">
           <Outlet />
