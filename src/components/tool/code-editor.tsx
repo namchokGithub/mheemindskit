@@ -21,13 +21,13 @@ export function CodeEditor({ value, onChange, placeholder, readOnly, wrap, ariaL
       autoCorrect="off"
       aria-label={ariaLabel}
       className={cn(
-        'h-full min-h-[320px] w-full resize-none rounded-md border border-input bg-transparent p-3',
+        'h-full min-h-[260px] w-full resize-none rounded-lg border border-input bg-transparent p-3.5',
         'font-mono text-[13px] leading-relaxed text-foreground',
         'placeholder:text-muted-foreground',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'transition-colors focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
         'overflow-auto',
         wrap ? 'whitespace-pre-wrap break-words' : 'whitespace-pre',
-        readOnly && 'bg-muted/40',
+        readOnly && 'bg-muted/30',
       )}
     />
   )

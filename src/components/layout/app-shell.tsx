@@ -48,11 +48,11 @@ export function AppShell() {
         </div>
       </header>
 
-      <div className="mx-auto flex w-full max-w-[1400px] flex-1">
-        <aside className="hidden w-60 shrink-0 border-r border-border p-4 lg:block">
+      <div className="flex flex-1 overflow-hidden">
+        <aside className="hidden w-60 shrink-0 overflow-y-auto border-r border-border p-4 lg:block">
           <SidebarNav />
         </aside>
-        <main className="min-w-0 flex-1 overflow-x-hidden p-4 sm:p-6">
+        <main className="flex min-w-0 flex-1 flex-col overflow-y-auto overflow-x-hidden p-4 sm:p-6">
           <Outlet />
         </main>
       </div>

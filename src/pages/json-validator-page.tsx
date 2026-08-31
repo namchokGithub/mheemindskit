@@ -29,13 +29,13 @@ export function JsonValidatorPage() {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="flex h-full min-h-0 flex-col gap-4">
       <ToolPageHeader
         title="JSON Validator"
         description="Check whether JSON is well-formed without modifying it."
       />
 
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex shrink-0 flex-wrap items-center gap-2">
         <Button type="button" onClick={() => setResult(validateJson(input))} disabled={!input.trim()}>
           <CheckCircle2 />
           Validate
@@ -50,7 +50,7 @@ export function JsonValidatorPage() {
         </Button>
       </div>
 
-      <div className="flex min-w-0 flex-col gap-2">
+      <div className="flex min-h-0 flex-1 flex-col gap-2">
         <span className="text-sm font-medium text-muted-foreground">Input</span>
         <CodeEditor
           value={input}
@@ -61,13 +61,15 @@ export function JsonValidatorPage() {
         />
       </div>
 
-      <ToolStatus
-        state={result === null ? 'idle' : result.valid ? 'valid' : 'invalid'}
-        message={result?.message}
-        line={result?.line}
-        column={result?.column}
-        validLabel="Valid JSON"
-      />
+      <div className="shrink-0">
+        <ToolStatus
+          state={result === null ? 'idle' : result.valid ? 'valid' : 'invalid'}
+          message={result?.message}
+          line={result?.line}
+          column={result?.column}
+          validLabel="Valid JSON"
+        />
+      </div>
     </div>
   )
 }

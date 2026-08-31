@@ -51,13 +51,13 @@ export function XmlFormatterPage() {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="flex h-full min-h-0 flex-col gap-4">
       <ToolPageHeader
         title="XML Formatter"
         description="Paste XML, beautify or minify it, and catch malformed markup."
       />
 
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex shrink-0 flex-wrap items-center gap-2">
         <Button type="button" onClick={handleFormat} disabled={!input.trim()}>
           <FileCode2 />
           Format
@@ -88,8 +88,8 @@ export function XmlFormatterPage() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="flex min-w-0 flex-col gap-2">
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-2">
           <span className="text-sm font-medium text-muted-foreground">Input</span>
           <CodeEditor
             value={input}
@@ -99,7 +99,7 @@ export function XmlFormatterPage() {
             ariaLabel="Input"
           />
         </div>
-        <div className="flex min-w-0 flex-col gap-2">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-2">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-muted-foreground">Output</span>
             <CopyButton value={result?.ok ? result.output : ''} />
@@ -114,13 +114,15 @@ export function XmlFormatterPage() {
         </div>
       </div>
 
-      <ToolStatus
-        state={result === null ? 'idle' : result.ok ? 'valid' : 'invalid'}
-        message={result && !result.ok ? result.message : undefined}
-        line={result && !result.ok ? result.line : undefined}
-        column={result && !result.ok ? result.column : undefined}
-        validLabel={mode === 'format' ? 'Formatted successfully' : 'Minified successfully'}
-      />
+      <div className="shrink-0">
+        <ToolStatus
+          state={result === null ? 'idle' : result.ok ? 'valid' : 'invalid'}
+          message={result && !result.ok ? result.message : undefined}
+          line={result && !result.ok ? result.line : undefined}
+          column={result && !result.ok ? result.column : undefined}
+          validLabel={mode === 'format' ? 'Formatted successfully' : 'Minified successfully'}
+        />
+      </div>
     </div>
   )
 }

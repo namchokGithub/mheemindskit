@@ -21,7 +21,7 @@ export function ToolStatus({ state, message, line, column, validLabel = 'Looks g
     <div
       role={isValid ? 'status' : 'alert'}
       className={cn(
-        'flex items-start gap-2 rounded-md border px-3 py-2 text-sm',
+        'flex animate-in items-start gap-2 rounded-lg border px-3.5 py-2.5 text-sm fade-in slide-in-from-top-1 duration-200',
         isValid
           ? 'border-success/30 bg-success/10 text-success'
           : 'border-destructive/30 bg-destructive/10 text-destructive',
