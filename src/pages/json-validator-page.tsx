@@ -8,10 +8,12 @@ import { Button } from '@/components/ui/button'
 import { validateJson } from '@/features/formatters/json'
 import { getRandomSampleJson } from '@/features/formatters/samples'
 import { usePersistedInput } from '@/hooks/use-persisted-input'
+import { useSaveLocally } from '@/hooks/use-save-locally'
 import type { ValidateResult } from '@/types/format'
 
 export function JsonValidatorPage() {
-  const [input, setInput] = usePersistedInput('json-validator')
+  const { enabled: saveLocally } = useSaveLocally()
+  const [input, setInput] = usePersistedInput('json-validator', saveLocally)
   const [result, setResult] = useState<ValidateResult | null>(null)
 
   const handleInputChange = (next: string) => {

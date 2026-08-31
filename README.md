@@ -1,60 +1,85 @@
 # MindsKit
 
-Simple tools for everyday development.
+> Small, privacy-first developer tools for working with JSON and XML — right in your browser.
 
-MindsKit is a lightweight, browser-only developer toolbox. Paste your data, run a tool, get a result — nothing you paste is ever sent to a server.
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
 
-## Current Phase
+**[Open the repository](https://github.com/namchokGithub/mheemindskit)** · **[Run it locally](#getting-started)** · **[Live site — coming soon](#live-site)**
 
-**Phase 1 — Formatters**
+## What is MindsKit?
 
-## Available Tools
+MindsKit is a lightweight, browser-only toolbox for everyday development tasks. Paste structured data, use the tool you need, and copy the result — without sending your content to a server.
 
-- **JSON Formatter** — beautify JSON with 2-space, 4-space, or tab indentation
-- **JSON Minifier** — collapse JSON to a single compact line
-- **JSON Validator** — check JSON validity with line/column error reporting, without modifying your input
-- **XML Formatter** — beautify, minify, and validate XML
+It is designed to be quick, focused, and pleasant to use for small formatting and validation jobs.
 
-More categories (Text Tools, Encode/Decode, Generators, Converters) are planned for later phases.
+## What can it do?
 
-## Privacy
+### JSON tools
 
-All formatting runs entirely in your browser using native `JSON` and `DOMParser`/`XMLSerializer` APIs. Pasted content is never sent to any server or third-party API.
+- **Formatter** — prettify JSON with 2-space, 4-space, or tab indentation.
+- **Minifier** — compact JSON into a single line.
+- **Validator** — check JSON validity and show line/column error details without changing the input.
 
-## Tech Stack
+### XML tools
 
-- Vite
-- React + TypeScript (strict)
-- Tailwind CSS v4
-- shadcn/ui (Radix)
-- lucide-react
-- React Router
-- sonner
+- **Formatter** — format, minify, and validate XML.
 
-## Installation
+More tools for text, encoding, generators, and conversions are planned.
+
+## Privacy first
+
+All processing happens locally in the browser. MindsKit uses native browser APIs (`JSON`, `DOMParser`, and `XMLSerializer`) and does not send pasted content to a server or third-party API.
+
+## Tech stack
+
+- [Vite](https://vite.dev/)
+- [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS v4](https://tailwindcss.com/)
+- [shadcn/ui](https://ui.shadcn.com/) and [Radix UI](https://www.radix-ui.com/)
+- [React Router](https://reactrouter.com/)
+- [Lucide](https://lucide.dev/) icons
+- [Sonner](https://sonner.emilkowal.ski/) notifications
+
+## Getting started
+
+### Prerequisites
+
+- Node.js 20 or newer
+- [pnpm](https://pnpm.io/)
+
+### Install and run
 
 ```bash
+git clone https://github.com/namchokGithub/mheemindskit.git
+cd mheemindskit
 pnpm install
-```
-
-## Local Development
-
-```bash
 pnpm dev
 ```
 
-## Build
+The development server opens automatically at [http://localhost:5173](http://localhost:5173).
+
+### Production build
 
 ```bash
 pnpm build
 ```
 
-Output is written to `dist/`.
+The production files are generated in `dist/`.
 
-## Deployment (Cloudflare Pages)
+## Live site
 
-This is a static, client-side-only app.
+The public MindsKit website is coming soon. Once it is deployed, this section will contain a direct link so anyone can start using the tools immediately.
+
+## Deployment
+
+MindsKit is a static, client-side app and can be deployed to services such as Cloudflare Pages.
 
 - Build command: `pnpm build`
-- Build output directory: `dist`
-- `public/_redirects` (`/* /index.html 200`) is included so direct navigation to routes like `/formatters/json` works correctly on Cloudflare Pages.
+- Output directory: `dist`
+- SPA redirects: `public/_redirects` includes `/* /index.html 200` for direct route navigation.
+
+## License
+
+License terms will be added soon.

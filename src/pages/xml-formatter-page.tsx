@@ -10,11 +10,13 @@ import { Button } from "@/components/ui/button";
 import { formatXml, minifyXml } from "@/features/formatters/xml";
 import { getRandomSampleXml } from "@/features/formatters/samples";
 import { usePersistedInput } from "@/hooks/use-persisted-input";
+import { useSaveLocally } from "@/hooks/use-save-locally";
 import { cn } from "@/lib/utils";
 import type { FormatResult, IndentOption } from "@/types/format";
 
 export function XmlFormatterPage() {
-  const [input, setInput] = usePersistedInput("xml-formatter");
+  const { enabled: saveLocally } = useSaveLocally();
+  const [input, setInput] = usePersistedInput("xml-formatter", saveLocally);
   const [indent, setIndent] = useState<IndentOption>("2");
   const [wrap, setWrap] = useState(false);
   const [result, setResult] = useState<FormatResult | null>(null);

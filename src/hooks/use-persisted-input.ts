@@ -8,12 +8,16 @@ function readStoredValue(storageKey: string): string {
   }
 }
 
-export function usePersistedInput(key: string) {
+export function usePersistedInput(key: string, enabled: boolean) {
   const storageKey = `mindskit:input:${key}`
-  const [value, setValue] = useState(() => readStoredValue(storageKey))
+  const [value, setValue] = useState(() => (enabled ? readStoredValue(storageKey) : ''))
 
   useEffect(() => {
     try {
+      if (!enabled) {
+        localStorage.removeItem(storageKey)
+        return
+      }
       if (value) {
         localStorage.setItem(storageKey, value)
       } else {
@@ -22,7 +26,7 @@ export function usePersistedInput(key: string) {
     } catch {
       // localStorage unavailable (private mode, quota, etc.) — ignore
     }
-  }, [storageKey, value])
+  }, [storageKey, enabled, value])
 
   return [value, setValue] as const
 }

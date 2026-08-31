@@ -8,6 +8,7 @@ import { ToolPageHeader } from '@/components/tool/tool-page-header'
 import { ToolStatus } from '@/components/tool/tool-status'
 import { Button } from '@/components/ui/button'
 import { usePersistedInput } from '@/hooks/use-persisted-input'
+import { useSaveLocally } from '@/hooks/use-save-locally'
 import { cn } from '@/lib/utils'
 import type { FormatResult, IndentOption } from '@/types/format'
 
@@ -25,7 +26,8 @@ export interface FormatterPageConfig {
 }
 
 export function FormatterPage(config: FormatterPageConfig) {
-  const [input, setInput] = usePersistedInput(config.storageKey)
+  const { enabled: saveLocally } = useSaveLocally()
+  const [input, setInput] = usePersistedInput(config.storageKey, saveLocally)
   const [indent, setIndent] = useState<IndentOption>('2')
   const [wrap, setWrap] = useState(false)
   const [result, setResult] = useState<FormatResult | null>(null)
