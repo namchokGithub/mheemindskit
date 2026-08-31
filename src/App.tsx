@@ -2,7 +2,9 @@ import { Route, Routes } from 'react-router-dom'
 import { Toaster } from 'sonner'
 
 import { AppShell } from '@/components/layout/app-shell'
+import { tools } from '@/config/tools'
 import { useTheme } from '@/hooks/use-theme'
+import { ComingSoonPage } from '@/pages/coming-soon-page'
 import { HomePage } from '@/pages/home-page'
 import { JsonFormatterPage } from '@/pages/json-formatter-page'
 import { JsonMinifierPage } from '@/pages/json-minifier-page'
@@ -21,6 +23,11 @@ export default function App() {
           <Route path="/formatters/json-minify" element={<JsonMinifierPage />} />
           <Route path="/formatters/json-validator" element={<JsonValidatorPage />} />
           <Route path="/formatters/xml" element={<XmlFormatterPage />} />
+          {tools
+            .filter((tool) => tool.comingSoon)
+            .map((tool) => (
+              <Route key={tool.id} path={tool.path} element={<ComingSoonPage tool={tool} />} />
+            ))}
         </Route>
       </Routes>
       <Toaster theme={theme} position="bottom-right" richColors closeButton />

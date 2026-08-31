@@ -1,6 +1,7 @@
 import { ArrowRight, ShieldCheck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
+import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { categories, getToolsByCategory } from '@/config/tools'
 
@@ -26,12 +27,17 @@ export function HomePage() {
               <Link key={tool.id} to={tool.path}>
                 <Card className="h-full transition-colors hover:border-primary/50 hover:bg-accent/40">
                   <CardHeader>
-                    <CardTitle className="flex items-center justify-between text-base">
-                      <span className="flex items-center gap-2">
-                        <tool.icon className="size-4 text-primary" />
-                        {tool.name}
+                    <CardTitle className="flex items-center justify-between gap-2 text-base">
+                      <span className="flex min-w-0 items-center gap-2">
+                        <tool.icon className="size-4 shrink-0 text-primary" />
+                        <span className="truncate">{tool.name}</span>
+                        {tool.comingSoon && (
+                          <Badge variant="secondary" className="shrink-0 text-[10px]">
+                            Soon
+                          </Badge>
+                        )}
                       </span>
-                      <ArrowRight className="size-4 text-muted-foreground" />
+                      <ArrowRight className="size-4 shrink-0 text-muted-foreground" />
                     </CardTitle>
                   </CardHeader>
                   <CardContent>

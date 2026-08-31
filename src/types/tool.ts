@@ -1,6 +1,6 @@
 import type { LucideIcon } from 'lucide-react'
 
-export type ToolCategory = 'formatters'
+export type ToolCategory = 'formatters' | 'text-tools' | 'encode-decode' | 'generators' | 'converters'
 
 export interface ToolDefinition {
   id: string
@@ -9,6 +9,7 @@ export interface ToolDefinition {
   category: ToolCategory
   path: string
   icon: LucideIcon
+  comingSoon?: boolean
 }
 
 export interface CategoryDefinition {
