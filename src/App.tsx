@@ -9,6 +9,8 @@ import { HomePage } from '@/pages/home-page'
 import { JsonFormatterPage } from '@/pages/json-formatter-page'
 import { JsonMinifierPage } from '@/pages/json-minifier-page'
 import { JsonValidatorPage } from '@/pages/json-validator-page'
+import { LicensePage } from '@/pages/license-page'
+import { PrivacyPage } from '@/pages/privacy-page'
 import { XmlFormatterPage } from '@/pages/xml-formatter-page'
 
 export default function App() {
@@ -23,6 +25,8 @@ export default function App() {
           <Route path="/formatters/json-minify" element={<JsonMinifierPage />} />
           <Route path="/formatters/json-validator" element={<JsonValidatorPage />} />
           <Route path="/formatters/xml" element={<XmlFormatterPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/license" element={<LicensePage />} />
           {tools
             .filter((tool) => tool.comingSoon)
             .map((tool) => (
