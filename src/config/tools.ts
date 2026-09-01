@@ -4,7 +4,6 @@ import {
   Binary,
   Bold,
   Braces,
-  CaseSensitive,
   CheckCircle2,
   Clock,
   Code2,
@@ -19,6 +18,7 @@ import {
   Shrink,
   Shuffle,
   SplitSquareHorizontal,
+  Heading,
   Table2,
 } from 'lucide-react'
 
@@ -93,6 +93,14 @@ export const tools: ToolDefinition[] = [
     icon: Bold,
   },
   {
+    id: 'markdown',
+    name: 'Markdown',
+    description: 'Apply Markdown emphasis to text.',
+    category: 'text-tools',
+    path: '/text-tools/markdown',
+    icon: Heading,
+  },
+  {
     id: 'split-text',
     name: 'Split Text',
     description: 'Split text into parts by a delimiter.',
@@ -117,7 +125,6 @@ export const tools: ToolDefinition[] = [
     category: 'encode-decode',
     path: '/encode-decode/base64',
     icon: Binary,
-    comingSoon: true,
   },
   {
     id: 'url-encode-decode',
@@ -126,7 +133,6 @@ export const tools: ToolDefinition[] = [
     category: 'encode-decode',
     path: '/encode-decode/url',
     icon: Link2,
-    comingSoon: true,
   },
   {
     id: 'html-encode-decode',
@@ -135,7 +141,6 @@ export const tools: ToolDefinition[] = [
     category: 'encode-decode',
     path: '/encode-decode/html',
     icon: Code2,
-    comingSoon: true,
   },
   {
     id: 'jwt-decoder',
@@ -155,7 +160,6 @@ export const tools: ToolDefinition[] = [
     category: 'generators',
     path: '/generators/uuid',
     icon: Fingerprint,
-    comingSoon: true,
   },
   {
     id: 'qr-code',
@@ -182,7 +186,6 @@ export const tools: ToolDefinition[] = [
     category: 'generators',
     path: '/generators/random-string',
     icon: Shuffle,
-    comingSoon: true,
   },
 
   // Converters
@@ -211,16 +214,6 @@ export const tools: ToolDefinition[] = [
     category: 'converters',
     path: '/converters/unix-timestamp',
     icon: Clock,
-    comingSoon: true,
-  },
-  {
-    id: 'case-converter',
-    name: 'Case Converter',
-    description: 'Convert text between naming cases.',
-    category: 'converters',
-    path: '/converters/case-converter',
-    icon: CaseSensitive,
-    comingSoon: true,
   },
 ]
 

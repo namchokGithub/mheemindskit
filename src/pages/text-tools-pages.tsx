@@ -1,7 +1,8 @@
-import { AlignLeft, Bold, Combine, Eraser, SplitSquareHorizontal } from 'lucide-react'
+import { AlignLeft, Bold, Combine, Eraser, Heading, SplitSquareHorizontal } from 'lucide-react'
+import ReactMarkdown from 'react-markdown'
 
 import { TextTransformPage } from '@/components/tool/text-transform-page'
-import { decorateText, joinText, removeSpaces, splitText, textOperations } from '@/features/text-tools/text'
+import { decorateText, formatMarkdown, joinText, removeSpaces, splitText, textOperations } from '@/features/text-tools/text'
 
 export function RemoveSpacesPage() {
   return <TextTransformPage title="Remove Spaces" description="Remove whitespace or clean up extra spaces in your text." actionLabel="Remove Spaces" actionIcon={Eraser} storageKey="remove-spaces" inputPlaceholder="Paste text here…" sample={'  MindsKit   keeps   your\ntext tidy.  '} process={removeSpaces} operations={textOperations.removeSpaces} />
@@ -12,7 +13,11 @@ export function MakeOneLinePage() {
 }
 
 export function TextDecorationPage() {
-  return <TextTransformPage title="Text Decoration" description="Change the letter case or naming style of your text." actionLabel="Transform" actionIcon={Bold} storageKey="text-decoration" inputPlaceholder="Paste text here…" sample="make this text easier to read" process={decorateText} operations={textOperations.decoration} />
+  return <TextTransformPage title="Text Decoration" description="Change letter case or wrap text with a prefix and suffix." actionLabel="Transform" actionIcon={Bold} storageKey="text-decoration" inputPlaceholder="Paste text here…" sample="make this text easier to read" process={decorateText} operations={textOperations.decoration} affixes />
+}
+
+export function MarkdownPage() {
+  return <TextTransformPage title="Markdown" description="Apply Markdown emphasis and see the rendered result instantly." actionLabel="Apply" actionIcon={Heading} storageKey="markdown" inputPlaceholder="Paste text here…" sample="Make this stand out" process={formatMarkdown} operations={[{ label: 'Bold', value: 'bold' }, { label: 'Italic', value: 'italic' }]} language="markdown" outputPreview={(output) => <div className="markdown-preview"><ReactMarkdown>{output}</ReactMarkdown></div>} />
 }
 
 export function SplitTextPage() {

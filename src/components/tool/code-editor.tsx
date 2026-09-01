@@ -1,4 +1,5 @@
 import { json } from '@codemirror/lang-json'
+import { markdown } from '@codemirror/lang-markdown'
 import { xml } from '@codemirror/lang-xml'
 import { Decoration } from '@codemirror/view'
 import { EditorView } from '@codemirror/view'
@@ -16,7 +17,7 @@ interface CodeEditorProps {
   readOnly?: boolean
   wrap: boolean
   ariaLabel: string
-  language?: 'json' | 'xml' | 'text'
+  language?: 'json' | 'xml' | 'markdown' | 'text'
   errorLine?: number
 }
 
@@ -55,7 +56,7 @@ export function CodeEditor({
   const { theme } = useTheme()
 
   const extensions = useMemo(() => {
-    const languageExtension = language === 'xml' ? xml() : language === 'json' ? json() : []
+    const languageExtension = language === 'xml' ? xml() : language === 'markdown' ? markdown() : language === 'json' ? json() : []
     const base = [fontTheme, languageExtension]
     const withWrap = wrap ? [...base, EditorView.lineWrapping] : base
     return errorLine ? [...withWrap, errorLineExtension(value, errorLine)] : withWrap

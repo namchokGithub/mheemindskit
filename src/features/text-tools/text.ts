@@ -30,6 +30,7 @@ export const textOperations = {
     { label: 'PascalCase', value: 'pascal' },
     { label: 'snake_case', value: 'snake' },
     { label: 'kebab-case', value: 'kebab' },
+    { label: 'Add prefix & suffix', value: 'affix' },
   ] satisfies TextOperation[],
 }
 
@@ -39,7 +40,7 @@ export function removeSpaces(input: string, mode: string): string {
   return input.replace(/[\t ]+/g, ' ').trim()
 }
 
-export function decorateText(input: string, mode: string): string {
+export function decorateText(input: string, mode: string, prefix = '', suffix = ''): string {
   const sourceWords = words(input)
   switch (mode) {
     case 'upper': return input.toUpperCase()
@@ -49,8 +50,13 @@ export function decorateText(input: string, mode: string): string {
     case 'pascal': return sourceWords.map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join('')
     case 'snake': return sourceWords.map((word) => word.toLowerCase()).join('_')
     case 'kebab': return sourceWords.map((word) => word.toLowerCase()).join('-')
+    case 'affix': return `${prefix}${input}${suffix}`
     default: return input
   }
+}
+
+export function formatMarkdown(input: string, mode: string): string {
+  return mode === 'italic' ? `_${input}_` : `**${input}**`
 }
 
 export function splitText(input: string, delimiter: string): string {

@@ -1,5 +1,5 @@
 import { Eraser, FileText, WrapText, type LucideIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 
 import { CodeEditor } from '@/components/tool/code-editor'
 import { CopyButton } from '@/components/tool/copy-button'
@@ -19,9 +19,12 @@ type TextTransformPageConfig = {
   storageKey: string
   inputPlaceholder: string
   sample: string
-  process: (input: string, option: string) => string
+  process: (input: string, option: string, prefix?: string, suffix?: string) => string
   operations?: TextOperation[]
   delimiter?: { label: string; placeholder: string; defaultValue: string }
+  affixes?: boolean
+  language?: 'json' | 'xml' | 'markdown' | 'text'
+  outputPreview?: (output: string) => ReactNode
 }
 
 export function TextTransformPage(config: TextTransformPageConfig) {
@@ -30,11 +33,13 @@ export function TextTransformPage(config: TextTransformPageConfig) {
   const [output, setOutput] = useState('')
   const [wrap, setWrap] = useState(false)
   const [option, setOption] = useState(config.operations?.[0]?.value ?? config.delimiter?.defaultValue ?? '')
+  const [prefix, setPrefix] = useState('')
+  const [suffix, setSuffix] = useState('')
   const [hasRun, setHasRun] = useState(false)
   const ActionIcon = config.actionIcon
 
   const run = (nextInput = input, nextOption = option) => {
-    setOutput(config.process(nextInput, nextOption))
+    setOutput(config.process(nextInput, nextOption, prefix, suffix))
     setHasRun(true)
   }
 
@@ -46,6 +51,16 @@ export function TextTransformPage(config: TextTransformPageConfig) {
   const handleOptionChange = (next: string) => {
     setOption(next)
     if (hasRun) run(input, next)
+  }
+
+  const handlePrefixChange = (value: string) => {
+    setPrefix(value)
+    if (hasRun) setOutput(config.process(input, option, value, suffix))
+  }
+
+  const handleSuffixChange = (value: string) => {
+    setSuffix(value)
+    if (hasRun) setOutput(config.process(input, option, prefix, value))
   }
 
   const handleSample = () => {
@@ -74,7 +89,7 @@ export function TextTransformPage(config: TextTransformPageConfig) {
               </label>
             )}
           </div>
-          <CodeEditor value={input} onChange={handleInputChange} placeholder={config.inputPlaceholder} wrap={wrap} ariaLabel="Input" language="text" />
+          <CodeEditor value={input} onChange={handleInputChange} placeholder={config.inputPlaceholder} wrap={wrap} ariaLabel="Input" language={config.language ?? 'text'} />
         </div>
 
         <div className="order-first flex flex-wrap items-center gap-2 lg:order-none lg:w-56 lg:shrink-0 lg:flex-col lg:justify-center lg:gap-2.5 lg:border-x lg:border-border lg:px-4">
@@ -88,6 +103,12 @@ export function TextTransformPage(config: TextTransformPageConfig) {
               <SelectContent>{config.operations.map((operation) => <SelectItem key={operation.value} value={operation.value}>{operation.label}</SelectItem>)}</SelectContent>
             </Select>
           )}
+          {config.affixes && option === 'affix' && (
+            <div className="flex w-full flex-col gap-2">
+              <label className="space-y-1 text-xs text-muted-foreground">Prefix<input value={prefix} onChange={(event) => handlePrefixChange(event.target.value)} placeholder="Optional prefix" className="mt-1 h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm text-foreground outline-none focus:border-ring focus:ring-3 focus:ring-ring/50" /></label>
+              <label className="space-y-1 text-xs text-muted-foreground">Suffix<input value={suffix} onChange={(event) => handleSuffixChange(event.target.value)} placeholder="Optional suffix" className="mt-1 h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm text-foreground outline-none focus:border-ring focus:ring-3 focus:ring-ring/50" /></label>
+            </div>
+          )}
           <Button type="button" variant="outline" size="sm" className="lg:w-full" onClick={handleSample}><FileText />Sample</Button>
           <Button type="button" variant="outline" size="sm" className="lg:w-full" onClick={handleClear} disabled={!input}><Eraser />Clear</Button>
           <Button type="button" variant="outline" size="sm" aria-pressed={wrap} onClick={() => setWrap((value) => !value)} className={cn('lg:w-full', wrap && 'bg-accent text-accent-foreground')}><WrapText />Wrap</Button>
@@ -95,7 +116,13 @@ export function TextTransformPage(config: TextTransformPageConfig) {
 
         <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-2">
           <div className="flex items-center justify-between"><span className="text-sm font-medium text-muted-foreground">Output</span><CopyButton value={hasRun ? output : ''} /></div>
-          <CodeEditor value={hasRun ? output : ''} readOnly placeholder="Result will appear here." wrap={wrap} ariaLabel="Output" language="text" />
+          {config.outputPreview ? (
+            <div className="h-full min-h-[260px] w-full overflow-auto rounded-lg border border-input bg-muted/30 p-4">
+              {hasRun ? config.outputPreview(output) : <span className="text-sm text-muted-foreground">Result will appear here.</span>}
+            </div>
+          ) : (
+            <CodeEditor value={hasRun ? output : ''} readOnly placeholder="Result will appear here." wrap={wrap} ariaLabel="Output" language={config.language ?? 'text'} />
+          )}
         </div>
       </div>
     </div>
