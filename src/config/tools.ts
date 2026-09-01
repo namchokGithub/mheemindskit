@@ -15,7 +15,6 @@ import {
   Fingerprint,
   KeyRound,
   Link2,
-  Pilcrow,
   QrCode,
   Shrink,
   Shuffle,
@@ -76,16 +75,6 @@ export const tools: ToolDefinition[] = [
     category: 'text-tools',
     path: '/text-tools/remove-spaces',
     icon: Eraser,
-    comingSoon: true,
-  },
-  {
-    id: 'remove-line-breaks',
-    name: 'Remove Line Breaks',
-    description: 'Collapse line breaks out of multi-line text.',
-    category: 'text-tools',
-    path: '/text-tools/remove-line-breaks',
-    icon: Pilcrow,
-    comingSoon: true,
   },
   {
     id: 'make-one-line',
@@ -94,7 +83,6 @@ export const tools: ToolDefinition[] = [
     category: 'text-tools',
     path: '/text-tools/make-one-line',
     icon: AlignLeft,
-    comingSoon: true,
   },
   {
     id: 'text-decoration',
@@ -103,7 +91,6 @@ export const tools: ToolDefinition[] = [
     category: 'text-tools',
     path: '/text-tools/text-decoration',
     icon: Bold,
-    comingSoon: true,
   },
   {
     id: 'split-text',
@@ -112,7 +99,6 @@ export const tools: ToolDefinition[] = [
     category: 'text-tools',
     path: '/text-tools/split-text',
     icon: SplitSquareHorizontal,
-    comingSoon: true,
   },
   {
     id: 'join-text',
@@ -121,7 +107,6 @@ export const tools: ToolDefinition[] = [
     category: 'text-tools',
     path: '/text-tools/join-text',
     icon: Combine,
-    comingSoon: true,
   },
 
   // Encode / Decode

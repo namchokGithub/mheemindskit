@@ -16,7 +16,7 @@ interface CodeEditorProps {
   readOnly?: boolean
   wrap: boolean
   ariaLabel: string
-  language?: 'json' | 'xml'
+  language?: 'json' | 'xml' | 'text'
   errorLine?: number
 }
 
@@ -55,7 +55,8 @@ export function CodeEditor({
   const { theme } = useTheme()
 
   const extensions = useMemo(() => {
-    const base = [fontTheme, language === 'xml' ? xml() : json()]
+    const languageExtension = language === 'xml' ? xml() : language === 'json' ? json() : []
+    const base = [fontTheme, languageExtension]
     const withWrap = wrap ? [...base, EditorView.lineWrapping] : base
     return errorLine ? [...withWrap, errorLineExtension(value, errorLine)] : withWrap
   }, [language, wrap, errorLine, value])

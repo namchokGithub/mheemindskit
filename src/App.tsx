@@ -12,6 +12,7 @@ import { JsonValidatorPage } from '@/pages/json-validator-page'
 import { LicensePage } from '@/pages/license-page'
 import { PrivacyPage } from '@/pages/privacy-page'
 import { XmlFormatterPage } from '@/pages/xml-formatter-page'
+import { JoinTextPage, MakeOneLinePage, RemoveSpacesPage, SplitTextPage, TextDecorationPage } from '@/pages/text-tools-pages'
 
 export default function App() {
   const { theme } = useTheme()
@@ -25,6 +26,11 @@ export default function App() {
           <Route path="/formatters/json-minify" element={<JsonMinifierPage />} />
           <Route path="/formatters/json-validator" element={<JsonValidatorPage />} />
           <Route path="/formatters/xml" element={<XmlFormatterPage />} />
+          <Route path="/text-tools/remove-spaces" element={<RemoveSpacesPage />} />
+          <Route path="/text-tools/make-one-line" element={<MakeOneLinePage />} />
+          <Route path="/text-tools/text-decoration" element={<TextDecorationPage />} />
+          <Route path="/text-tools/split-text" element={<SplitTextPage />} />
+          <Route path="/text-tools/join-text" element={<JoinTextPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/license" element={<LicensePage />} />
           {tools
