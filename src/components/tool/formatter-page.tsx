@@ -63,33 +63,19 @@ export function FormatterPage(config: FormatterPageConfig) {
     <div className="flex h-full min-h-0 flex-col gap-4">
       <ToolPageHeader title={config.title} description={config.description} />
 
-      <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-[1fr_auto_1fr] lg:items-stretch">
-        <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-2">
-          <span className="text-sm font-medium text-muted-foreground">Input</span>
-          <CodeEditor
-            value={input}
-            onChange={handleInputChange}
-            placeholder={config.inputPlaceholder}
-            wrap={wrap}
-            ariaLabel="Input"
-            errorLine={result && !result.ok ? result.line : undefined}
-          />
-        </div>
-
-        <div className="order-first flex flex-wrap items-center gap-2 lg:order-none lg:w-40 lg:shrink-0 lg:flex-col lg:justify-center lg:gap-2.5 lg:border-x lg:border-border lg:px-4">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+        <div className="flex flex-wrap items-center gap-2 border-b border-border bg-secondary/50 px-3 py-2">
           <Button
             type="button"
-            className="lg:w-full"
+            size="sm"
             onClick={() => run(input, indent)}
             disabled={!input.trim()}
           >
             <ActionIcon />
             {config.actionLabel}
           </Button>
-          {config.showIndent && (
-            <IndentSelect value={indent} onChange={handleIndentChange} className="lg:w-full" />
-          )}
-          <Button type="button" variant="outline" size="sm" className="lg:w-full" onClick={handleSample}>
+          {config.showIndent && <IndentSelect value={indent} onChange={handleIndentChange} />}
+          <Button type="button" variant="outline" size="sm" onClick={handleSample}>
             <FileText />
             Sample
           </Button>
@@ -97,7 +83,6 @@ export function FormatterPage(config: FormatterPageConfig) {
             type="button"
             variant="outline"
             size="sm"
-            className="lg:w-full"
             onClick={handleClear}
             disabled={!input}
           >
@@ -110,25 +95,41 @@ export function FormatterPage(config: FormatterPageConfig) {
             size="sm"
             aria-pressed={wrap}
             onClick={() => setWrap((w) => !w)}
-            className={cn('lg:w-full', wrap && 'bg-accent text-accent-foreground')}
+            className={cn(wrap && 'bg-accent text-accent-foreground')}
           >
             <WrapText />
             Wrap
           </Button>
         </div>
 
-        <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-2">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-muted-foreground">Output</span>
-            <CopyButton value={result?.ok ? result.output : ''} />
+        <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-2">
+          <div className="flex min-h-0 min-w-0 flex-col border-b border-border lg:border-r lg:border-b-0">
+            <span className="px-3 py-1.5 text-sm font-medium text-muted-foreground">Input</span>
+            <CodeEditor
+              bare
+              value={input}
+              onChange={handleInputChange}
+              placeholder={config.inputPlaceholder}
+              wrap={wrap}
+              ariaLabel="Input"
+              errorLine={result && !result.ok ? result.line : undefined}
+            />
           </div>
-          <CodeEditor
-            value={result?.ok ? result.output : ''}
-            readOnly
-            placeholder="Result will appear here."
-            wrap={wrap}
-            ariaLabel="Output"
-          />
+
+          <div className="flex min-h-0 min-w-0 flex-col">
+            <div className="flex items-center justify-between px-3 py-1.5">
+              <span className="text-sm font-medium text-muted-foreground">Output</span>
+              <CopyButton value={result?.ok ? result.output : ''} />
+            </div>
+            <CodeEditor
+              bare
+              value={result?.ok ? result.output : ''}
+              readOnly
+              placeholder="Result will appear here."
+              wrap={wrap}
+              ariaLabel="Output"
+            />
+          </div>
         </div>
       </div>
 

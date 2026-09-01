@@ -34,7 +34,7 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
         const isOpen = openCategories.has(category.id)
         return (
           <Collapsible key={category.id} open={isOpen} onOpenChange={() => toggleCategory(category.id)}>
-            <CollapsibleTrigger className="flex w-full items-center gap-1 rounded-md px-2 py-1.5 text-xs font-semibold tracking-wide text-muted-foreground uppercase transition-colors hover:bg-accent/60 hover:text-foreground">
+            <CollapsibleTrigger className="flex w-full items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-semibold tracking-wide text-muted-foreground uppercase transition-colors hover:bg-accent/60 hover:text-foreground">
               <ChevronRight className={cn('size-3.5 shrink-0 transition-transform', isOpen && 'rotate-90')} />
               {category.name}
             </CollapsibleTrigger>
@@ -46,9 +46,9 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
                   onClick={onNavigate}
                   className={({ isActive }) =>
                     cn(
-                      'flex items-center gap-2 rounded-md py-1.5 pr-2 pl-6 text-sm font-medium transition-colors',
+                      'flex items-center gap-2 rounded-lg border border-transparent py-1.5 pr-2 pl-6 text-sm font-medium transition-colors',
                       isActive
-                        ? 'bg-accent text-accent-foreground'
+                        ? 'border-[color-mix(in_oklch,var(--primary)_20%,transparent)] bg-[color-mix(in_oklch,var(--primary)_8%,transparent)] text-primary-hover'
                         : 'text-muted-foreground hover:bg-accent/60 hover:text-foreground',
                     )
                   }

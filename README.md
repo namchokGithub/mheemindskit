@@ -1,36 +1,53 @@
 # MindsKit
 
-> Small, privacy-first developer tools for working with JSON and XML — right in your browser.
+> A privacy-first developer toolbox that runs entirely in your browser.
 
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
 
-**[Open the repository](https://github.com/namchokGithub/mheemindskit)** · **[Run it locally](#getting-started)** · **[Live site — coming soon](#live-site)**
+MindsKit is a focused collection of tools for formatting data, transforming text, encoding values, and generating identifiers. Paste your content, process it locally, and copy the result—nothing is uploaded to a server.
 
-## What is MindsKit?
+## Available tools
 
-MindsKit is a lightweight, browser-only toolbox for everyday development tasks. Paste structured data, use the tool you need, and copy the result — without sending your content to a server.
+### Formatters
 
-It is designed to be quick, focused, and pleasant to use for small formatting and validation jobs.
+- JSON Formatter, Minifier, and Validator
+- XML Formatter, Minifier, and Validator
 
-## What can it do?
+### Text tools
 
-### JSON tools
+- Remove Spaces
+- Make One Line, with a custom separator
+- Text Decoration: case transforms plus prefix and suffix wrapping
+- Markdown: bold and italic transforms with a rendered Markdown preview
+- Split Text and Join Text
 
-- **Formatter** — prettify JSON with 2-space, 4-space, or tab indentation.
-- **Minifier** — compact JSON into a single line.
-- **Validator** — check JSON validity and show line/column error details without changing the input.
+### Encode / Decode
 
-### XML tools
+- Base64 Encode / Decode
+- URL Encode / Decode
+- HTML Encode / Decode
 
-- **Formatter** — format, minify, and validate XML.
+### Generators
 
-More tools for text, encoding, generators, and conversions are planned.
+- UUID v4, generated in batches of 1, 5, 10, or a custom amount up to 200
+- Random String, with configurable count, length, character sets, uniqueness, prefix/suffix, and separators
 
-## Privacy first
+### Converters
 
-All processing happens locally in the browser. MindsKit uses native browser APIs (`JSON`, `DOMParser`, and `XMLSerializer`) and does not send pasted content to a server or third-party API.
+- Unix Timestamp ↔ ISO date/time
+
+## Themes
+
+Choose the system theme or one of six built-in themes. Light themes appear first in the picker:
+
+- Pearl Light, Mint Frost, Amber Dawn
+- Midnight Violet, Aurora Blue, Cyber Rose
+
+## Privacy
+
+All processing happens in the browser. Pasted text and generated values are not sent to a server or third-party API. Saving input locally is optional and off by default.
 
 ## Tech stack
 
@@ -39,8 +56,8 @@ All processing happens locally in the browser. MindsKit uses native browser APIs
 - [Tailwind CSS v4](https://tailwindcss.com/)
 - [shadcn/ui](https://ui.shadcn.com/) and [Radix UI](https://www.radix-ui.com/)
 - [React Router](https://reactrouter.com/)
-- [Lucide](https://lucide.dev/) icons
-- [Sonner](https://sonner.emilkowal.ski/) notifications
+- [CodeMirror](https://codemirror.net/) for JSON, XML, and Markdown editing
+- [react-markdown](https://github.com/remarkjs/react-markdown) for Markdown previews
 
 ## Getting started
 
@@ -58,28 +75,31 @@ pnpm install
 pnpm dev
 ```
 
-The development server opens automatically at [http://localhost:5173](http://localhost:5173).
+The development server opens at [http://localhost:5173](http://localhost:5173).
 
-### Production build
+### Quality checks
 
 ```bash
+pnpm lint
 pnpm build
 ```
 
-The production files are generated in `dist/`.
+### Deployment
 
-## Live site
-
-The public MindsKit website is coming soon. Once it is deployed, this section will contain a direct link so anyone can start using the tools immediately.
-
-## Deployment
-
-MindsKit is a static, client-side app and can be deployed to services such as Cloudflare Pages.
+MindsKit is a static single-page application. Deploy it to a static host such as Cloudflare Pages with:
 
 - Build command: `pnpm build`
 - Output directory: `dist`
-- SPA redirects: `public/_redirects` includes `/* /index.html 200` for direct route navigation.
+- SPA redirects: `public/_redirects`
+
+## Roadmap
+
+The following tools are listed in the app and still coming soon:
+
+- JWT Decoder
+- QR Code and Barcode generators
+- JSON → YAML and JSON → CSV converters
 
 ## License
 
-License terms will be added soon.
+[MIT](LICENSE)

@@ -9,10 +9,10 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="shrink-0 border-t border-border bg-background px-4 py-5 sm:px-6">
-      <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
+    <footer className="shrink-0 border-t border-border bg-background px-4 py-3 sm:px-6">
+      <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
         <div>
-          <p className="text-sm font-semibold text-foreground">MindsKit</p>
+          <p className="text-xs font-medium text-foreground">MindsKit</p>
           <p className="text-xs text-muted-foreground">
             Simple tools for everyday development.
           </p>

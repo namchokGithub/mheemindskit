@@ -1,33 +1,58 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 
-type Theme = 'light' | 'dark'
+import { getThemeMode, resolveTheme, themes, type ThemeMode, type ThemePreference } from '@/config/themes'
+
+const THEME_STORAGE_KEY = 'mindskit:theme'
 
 interface ThemeContextValue {
-  theme: Theme
-  toggleTheme: () => void
+  preference: ThemePreference
+  theme: ReturnType<typeof resolveTheme>
+  mode: ThemeMode
+  setPreference: (preference: ThemePreference) => void
 }
-
-const THEME_STORAGE_KEY = 'mindskit-theme'
 
 const ThemeContext = createContext<ThemeContextValue | null>(null)
 
-function getInitialTheme(): Theme {
+function getSystemPrefersDark(): boolean {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
+}
+
+function getInitialPreference(): ThemePreference {
   const stored = localStorage.getItem(THEME_STORAGE_KEY)
-  if (stored === 'light' || stored === 'dark') return stored
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  if (stored === 'system' || themes.some((t) => t.id === stored)) {
+    return stored as ThemePreference
+  }
+  return 'system'
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme)
+  const [preference, setPreferenceState] = useState<ThemePreference>(getInitialPreference)
+  const [systemPrefersDark, setSystemPrefersDark] = useState(getSystemPrefersDark)
 
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark')
-    localStorage.setItem(THEME_STORAGE_KEY, theme)
-  }, [theme])
+    const media = window.matchMedia('(prefers-color-scheme: dark)')
+    const listener = () => setSystemPrefersDark(media.matches)
+    media.addEventListener('change', listener)
+    return () => media.removeEventListener('change', listener)
+  }, [])
 
-  const toggleTheme = () => setTheme((current) => (current === 'dark' ? 'light' : 'dark'))
+  const theme = resolveTheme(preference, systemPrefersDark)
+  const mode = getThemeMode(theme)
 
-  return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+    document.documentElement.classList.toggle('dark', mode === 'dark')
+  }, [theme, mode])
+
+  useEffect(() => {
+    localStorage.setItem(THEME_STORAGE_KEY, preference)
+  }, [preference])
+
+  const setPreference = (next: ThemePreference) => setPreferenceState(next)
+
+  return (
+    <ThemeContext.Provider value={{ preference, theme, mode, setPreference }}>{children}</ThemeContext.Provider>
+  )
 }
 
 export function useTheme(): ThemeContextValue {

@@ -10,11 +10,18 @@
     <title>MindsKit</title>
     <script>
       try {
-        var stored = localStorage.getItem("mindskit-theme");
-        var dark = stored
-          ? stored === "dark"
-          : window.matchMedia("(prefers-color-scheme: dark)").matches;
-        if (dark) document.documentElement.classList.add("dark");
+        var CONCRETE = ["pearl-light", "midnight-violet", "aurora-blue", "cyber-rose", "mint-frost", "amber-dawn"];
+        var DARK = ["midnight-violet", "aurora-blue", "cyber-rose"];
+        var stored = localStorage.getItem("mindskit:theme");
+        var systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var theme =
+          stored && CONCRETE.indexOf(stored) !== -1
+            ? stored
+            : systemDark
+              ? "midnight-violet"
+              : "pearl-light";
+        document.documentElement.dataset.theme = theme;
+        if (DARK.indexOf(theme) !== -1) document.documentElement.classList.add("dark");
       } catch (e) {}
     </script>
   </head>

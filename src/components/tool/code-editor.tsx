@@ -19,6 +19,7 @@ interface CodeEditorProps {
   ariaLabel: string
   language?: 'json' | 'xml' | 'markdown' | 'text'
   errorLine?: number
+  bare?: boolean
 }
 
 const fontTheme = EditorView.theme({
@@ -52,8 +53,9 @@ export function CodeEditor({
   ariaLabel,
   language = 'json',
   errorLine,
+  bare = false,
 }: CodeEditorProps) {
-  const { theme } = useTheme()
+  const { mode } = useTheme()
 
   const extensions = useMemo(() => {
     const languageExtension = language === 'xml' ? xml() : language === 'markdown' ? markdown() : language === 'json' ? json() : []
@@ -66,9 +68,14 @@ export function CodeEditor({
     <div
       aria-label={ariaLabel}
       className={cn(
-        'h-full min-h-[260px] w-full overflow-hidden rounded-lg border border-input',
-        'transition-colors focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/50',
-        readOnly && 'bg-muted/30',
+        'h-full min-h-[260px] w-full overflow-hidden',
+        readOnly ? 'bg-muted/30' : 'bg-editor',
+        bare
+          ? 'transition-shadow'
+          : cn(
+              'rounded-[11px] border border-border shadow-sm transition-shadow',
+              'focus-within:shadow-[0_0_0_1px_rgba(139,92,246,0.5),0_0_0_4px_rgba(139,92,246,0.08)]',
+            ),
       )}
     >
       <CodeMirror
@@ -77,7 +84,7 @@ export function CodeEditor({
         placeholder={placeholder}
         readOnly={readOnly}
         editable={!readOnly}
-        theme={theme === 'dark' ? vscodeDark : vscodeLight}
+        theme={mode === 'dark' ? vscodeDark : vscodeLight}
         extensions={extensions}
         height="100%"
         style={{ height: '100%' }}

@@ -16,7 +16,7 @@ import { XmlFormatterPage } from '@/pages/xml-formatter-page'
 import { JoinTextPage, MakeOneLinePage, MarkdownPage, RemoveSpacesPage, SplitTextPage, TextDecorationPage } from '@/pages/text-tools-pages'
 
 export default function App() {
-  const { theme } = useTheme()
+  const { mode } = useTheme()
 
   return (
     <>
@@ -48,7 +48,7 @@ export default function App() {
             ))}
         </Route>
       </Routes>
-      <Toaster theme={theme} position="bottom-right" richColors closeButton />
+      <Toaster theme={mode} position="bottom-right" richColors closeButton />
     </>
   )
 }
