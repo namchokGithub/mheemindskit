@@ -149,7 +149,6 @@ export const tools: ToolDefinition[] = [
     category: 'encode-decode',
     path: '/encode-decode/jwt',
     icon: KeyRound,
-    comingSoon: true,
   },
 
   // Generators
