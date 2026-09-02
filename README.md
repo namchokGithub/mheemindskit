@@ -43,6 +43,11 @@ MindsKit is a focused collection of tools for formatting data, transforming text
 - Unix Timestamp ↔ ISO date/time, with browser-local timezone by default and searchable timezone selection
 - JSON → YAML, with copy and YAML-file download
 - JSON → CSV for arrays of objects, with copy and CSV-file download
+- JSON → Go Struct and JSON → TypeScript type generation
+- JSON ↔ XML conversion
+- Number Base Converter for binary, octal, decimal, and hexadecimal values
+- Color Converter for HEX, RGB, and HSL formats
+- Date Formatter for common date-time formats and time zones
 
 ## Themes
 
@@ -62,7 +67,7 @@ All processing happens in the browser. Pasted text and generated values are not 
 - [Tailwind CSS v4](https://tailwindcss.com/)
 - [shadcn/ui](https://ui.shadcn.com/) and [Radix UI](https://www.radix-ui.com/)
 - [React Router](https://reactrouter.com/)
-- [CodeMirror](https://codemirror.net/) for JSON, XML, and Markdown editing
+- [CodeMirror](https://codemirror.net/) for JSON, XML, Markdown, and TypeScript editing
 - [react-markdown](https://github.com/remarkjs/react-markdown) for Markdown previews
 - [qrcode](https://github.com/soldair/node-qrcode), [JsBarcode](https://github.com/lindell/JsBarcode), and [yaml](https://github.com/eemeli/yaml) for client-side generators and conversions
 
