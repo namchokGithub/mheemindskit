@@ -5,6 +5,7 @@ import { Link, Outlet } from "react-router-dom";
 import mindskitLogo from "@/assets/mindskit.png";
 import { Footer } from "@/components/layout/footer";
 import { SidebarNav } from "@/components/layout/sidebar-nav";
+import { QuickActions } from "@/components/layout/quick-actions";
 import { ThemeSelector } from "@/components/layout/theme-selector";
 import { Button } from "@/components/ui/button";
 import {
@@ -76,6 +77,7 @@ export function AppShell() {
       </div>
 
       <Footer />
+      <QuickActions />
     </div>
   );
 }

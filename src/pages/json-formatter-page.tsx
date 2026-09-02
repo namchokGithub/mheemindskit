@@ -1,6 +1,7 @@
 import { Braces } from 'lucide-react'
 
 import { FormatterPage } from '@/components/tool/formatter-page'
+import { JsonTreePreview } from '@/components/tool/json-tree-preview'
 import { formatJson } from '@/features/formatters/json'
 import { getRandomSampleJson } from '@/features/formatters/samples'
 
@@ -17,6 +18,7 @@ export function JsonFormatterPage() {
       inputPlaceholder="Paste JSON here…"
       storageKey="json-formatter"
       process={formatJson}
+      outputPreview={(output) => <JsonTreePreview value={output} />}
     />
   )
 }

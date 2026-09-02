@@ -12,7 +12,7 @@ export function ThemeSelector() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button type="button" variant="outline" size="icon" aria-label="Choose theme">
+        <Button type="button" variant="outline" size="icon" aria-label="Choose theme" className="theme-trigger">
           <Palette />
         </Button>
       </PopoverTrigger>
@@ -71,7 +71,7 @@ function ThemeCard({
       className={cn(
         'flex flex-col overflow-hidden rounded-lg border text-left transition-colors',
         selected
-          ? 'border-[color-mix(in_oklch,var(--primary)_40%,transparent)] ring-2 ring-[color-mix(in_oklch,var(--primary)_25%,transparent)]'
+          ? 'border-[color-mix(in_oklch,var(--primary)_40%,transparent)] shadow-[0_10px_22px_-14px_var(--primary)] ring-2 ring-[color-mix(in_oklch,var(--primary)_25%,transparent)]'
           : 'border-border hover:border-[color-mix(in_oklch,var(--primary)_25%,transparent)]',
       )}
     >

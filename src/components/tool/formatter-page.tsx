@@ -1,5 +1,5 @@
 import { Eraser, FileText, WrapText, type LucideIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 
 import { CodeEditor } from '@/components/tool/code-editor'
 import { CopyButton } from '@/components/tool/copy-button'
@@ -23,6 +23,7 @@ export interface FormatterPageConfig {
   inputPlaceholder: string
   storageKey: string
   process: (input: string, indent: IndentOption) => FormatResult
+  outputPreview?: (output: string) => ReactNode
 }
 
 export function FormatterPage(config: FormatterPageConfig) {
@@ -31,6 +32,7 @@ export function FormatterPage(config: FormatterPageConfig) {
   const [indent, setIndent] = useState<IndentOption>('2')
   const [wrap, setWrap] = useState(false)
   const [result, setResult] = useState<FormatResult | null>(null)
+  const [outputMode, setOutputMode] = useState<'tree' | 'text'>('text')
 
   const ActionIcon = config.actionIcon
 
@@ -117,18 +119,30 @@ export function FormatterPage(config: FormatterPageConfig) {
           </div>
 
           <div className="flex min-h-0 min-w-0 flex-col">
-            <div className="flex items-center justify-between px-3 py-1.5">
+            <div className="flex items-center justify-between gap-2 px-3 py-1.5">
               <span className="text-sm font-medium text-muted-foreground">Output</span>
-              <CopyButton value={result?.ok ? result.output : ''} />
+              <div className="flex items-center gap-2">
+                {config.outputPreview && (
+                  <div className="flex items-center rounded-lg border border-border bg-muted/50 p-0.5">
+                    <Button type="button" size="xs" variant={outputMode === 'text' ? 'secondary' : 'ghost'} aria-pressed={outputMode === 'text'} onClick={() => setOutputMode('text')}>Text</Button>
+                    <Button type="button" size="xs" variant={outputMode === 'tree' ? 'secondary' : 'ghost'} aria-pressed={outputMode === 'tree'} onClick={() => setOutputMode('tree')}>Tree</Button>
+                  </div>
+                )}
+                <CopyButton value={result?.ok ? result.output : ''} />
+              </div>
             </div>
-            <CodeEditor
-              bare
-              value={result?.ok ? result.output : ''}
-              readOnly
-              placeholder="Result will appear here."
-              wrap={wrap}
-              ariaLabel="Output"
-            />
+            {config.outputPreview && result?.ok && outputMode === 'tree' ? (
+              config.outputPreview(result.output)
+            ) : (
+              <CodeEditor
+                bare
+                value={result?.ok ? result.output : ''}
+                readOnly
+                placeholder="Result will appear here."
+                wrap={wrap}
+                ariaLabel="Output"
+              />
+            )}
           </div>
         </div>
       </div>

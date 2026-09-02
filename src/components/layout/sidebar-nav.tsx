@@ -48,7 +48,7 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
                     cn(
                       'flex items-center gap-2 rounded-lg border border-transparent py-1.5 pr-2 pl-6 text-sm font-medium transition-colors',
                       isActive
-                        ? 'border-[color-mix(in_oklch,var(--primary)_20%,transparent)] bg-[color-mix(in_oklch,var(--primary)_8%,transparent)] text-primary-hover'
+                        ? 'sidebar-tool-active border-[color-mix(in_oklch,var(--primary)_24%,transparent)] text-primary-hover'
                         : 'text-muted-foreground hover:bg-accent/60 hover:text-foreground',
                     )
                   }
@@ -56,7 +56,7 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
                   <tool.icon className="size-4 shrink-0" />
                   <span className="truncate">{tool.name}</span>
                   {tool.comingSoon && (
-                    <Badge variant="secondary" className="ml-auto shrink-0 px-1.5 py-0 text-[10px]">
+                    <Badge variant="secondary" className="badge-soon ml-auto shrink-0 px-1.5 py-0 text-[10px]">
                       Soon
                     </Badge>
                   )}

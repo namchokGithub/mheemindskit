@@ -17,6 +17,37 @@
 .markdown-preview blockquote { border-left: 3px solid var(--border); padding-left: 0.75rem; color: var(--muted-foreground); }
 .markdown-preview code { border-radius: 0.25rem; background: var(--muted); padding: 0.1rem 0.25rem; font-family: var(--font-mono); font-size: 0.875em; }
 
+.sidebar-tool-active {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 13%, transparent), color-mix(in srgb, var(--brand-secondary) 8%, transparent));
+  box-shadow: inset 3px 0 0 var(--primary), 0 8px 18px -16px var(--primary);
+}
+
+.badge-soon {
+  border-color: color-mix(in srgb, var(--primary) 18%, transparent);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 12%, var(--secondary)), color-mix(in srgb, var(--brand-secondary) 16%, var(--secondary)));
+  box-shadow: 0 5px 12px -10px var(--primary);
+}
+
+.theme-trigger {
+  border-color: color-mix(in srgb, var(--primary) 22%, var(--border));
+  background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 8%, var(--background)), color-mix(in srgb, var(--brand-secondary) 10%, var(--background)));
+  box-shadow: 0 8px 20px -15px var(--primary);
+}
+
+.tool-options-card {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--card) 94%, var(--primary)), color-mix(in srgb, var(--card) 96%, var(--brand-secondary)));
+  box-shadow: 0 14px 30px -28px var(--primary);
+}
+
+.json-tree-preview .jse-main {
+  min-height: 260px;
+  border: 0;
+}
+
+.json-tree-preview .jse-contents {
+  background: var(--editor);
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root,
