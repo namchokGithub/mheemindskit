@@ -1,4 +1,5 @@
 import { json } from "@codemirror/lang-json";
+import { javascript } from "@codemirror/lang-javascript";
 import { markdown } from "@codemirror/lang-markdown";
 import { xml } from "@codemirror/lang-xml";
 import { Decoration } from "@codemirror/view";
@@ -20,7 +21,7 @@ interface CodeEditorProps {
   readOnly?: boolean;
   wrap: boolean;
   ariaLabel: string;
-  language?: "json" | "xml" | "markdown" | "go" | "text";
+  language?: "json" | "xml" | "markdown" | "go" | "typescript" | "text";
   errorLine?: number;
   bare?: boolean;
 }
@@ -40,6 +41,7 @@ const importFileOptions = {
   xml: { accept: ".xml,.wsdl,.soap,.xsd,.txt,application/xml,text/xml,text/plain", extensions: ["xml", "wsdl", "soap", "xsd", "txt"] },
   markdown: { accept: ".md,.markdown,.txt,text/markdown,text/plain", extensions: ["md", "markdown", "txt"] },
   go: { accept: ".go,.txt,text/plain", extensions: ["go", "txt"] },
+  typescript: { accept: ".ts,.tsx,.txt,text/plain", extensions: ["ts", "tsx", "txt"] },
   text: { accept: ".txt,.csv,.log,.md,text/plain,text/csv", extensions: ["txt", "csv", "log", "md"] },
 };
 
@@ -94,8 +96,10 @@ export function CodeEditor({
         ? xml()
         : language === "markdown"
           ? markdown()
-          : language === "json"
+        : language === "json"
             ? json()
+            : language === "typescript"
+              ? javascript({ typescript: true })
             : [];
     const base = [fontTheme, languageExtension];
     const withLanguageHighlighting = language === "go" ? [...base, EditorView.decorations.of(goHighlightExtension(value))] : base;

@@ -12,6 +12,9 @@ import { JsonStringifyPage } from '@/pages/json-stringify-page'
 import { JsonSorterPage } from '@/pages/json-sorter-page'
 import { JsonComparePage } from '@/pages/json-compare-page'
 import { JsonToGoPage } from '@/pages/json-to-go-page'
+import { JsonToTypeScriptPage } from '@/pages/json-to-typescript-page'
+import { JsonXmlConverterPage } from '@/pages/json-xml-converter-page'
+import { ColorConverterPage, DateFormatterPage, NumberBaseConverterPage } from '@/pages/value-converters-pages'
 import { JsonValidatorPage } from '@/pages/json-validator-page'
 import { JwtDecoderPage } from '@/pages/jwt-decoder-page'
 import { BarcodePage, QrCodePage } from '@/pages/code-generators-pages'
@@ -63,6 +66,11 @@ export default function App() {
           <Route path="/converters/json-to-yaml" element={<JsonToYamlPage />} />
           <Route path="/converters/json-to-csv" element={<JsonToCsvPage />} />
           <Route path="/converters/json-to-go" element={<JsonToGoPage />} />
+          <Route path="/converters/json-to-typescript" element={<JsonToTypeScriptPage />} />
+          <Route path="/converters/json-xml" element={<JsonXmlConverterPage />} />
+          <Route path="/converters/number-base" element={<NumberBaseConverterPage />} />
+          <Route path="/converters/color" element={<ColorConverterPage />} />
+          <Route path="/converters/date-formatter" element={<DateFormatterPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/license" element={<LicensePage />} />
           {tools
