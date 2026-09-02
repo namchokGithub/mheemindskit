@@ -167,7 +167,6 @@ export const tools: ToolDefinition[] = [
     category: 'generators',
     path: '/generators/qr-code',
     icon: QrCode,
-    comingSoon: true,
   },
   {
     id: 'barcode',
@@ -176,7 +175,6 @@ export const tools: ToolDefinition[] = [
     category: 'generators',
     path: '/generators/barcode',
     icon: Barcode,
-    comingSoon: true,
   },
   {
     id: 'random-string',

@@ -1,0 +1,120 @@
+import JsBarcode from 'jsbarcode'
+import QRCode from 'qrcode'
+import { Barcode, Download, Eraser, FileText, QrCode } from 'lucide-react'
+import { useRef, useState } from 'react'
+
+import { ToolPageHeader } from '@/components/tool/tool-page-header'
+import { ToolStatus } from '@/components/tool/tool-status'
+import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { usePersistedInput } from '@/hooks/use-persisted-input'
+import { useSaveLocally } from '@/hooks/use-save-locally'
+
+const fieldClass = 'h-8 rounded-lg border border-input bg-transparent px-2.5 text-sm text-foreground outline-none focus:border-ring focus:ring-3 focus:ring-ring/50'
+
+function download(href: string, filename: string) {
+  const link = document.createElement('a')
+  link.href = href
+  link.download = filename
+  link.click()
+}
+
+export function QrCodePage() {
+  const { enabled } = useSaveLocally()
+  const [input, setInput] = usePersistedInput('qr-code', enabled)
+  const [imageUrl, setImageUrl] = useState('')
+  const [size, setSize] = useState('256')
+  const [level, setLevel] = useState<'L' | 'M' | 'Q' | 'H'>('M')
+  const [error, setError] = useState('')
+
+  const generate = async (value = input) => {
+    if (!value.trim()) {
+      setImageUrl('')
+      setError('Enter text or a URL to generate a QR code.')
+      return
+    }
+    try {
+      const image = await QRCode.toDataURL(value, {
+        width: Math.max(128, Math.min(1024, Number(size) || 256)),
+        margin: 2,
+        errorCorrectionLevel: level,
+      })
+      setImageUrl(image)
+      setError('')
+    } catch {
+      setImageUrl('')
+      setError('This content is too large to encode as a QR code.')
+    }
+  }
+
+  const useSample = () => {
+    const sample = 'https://mindskit.dev'
+    setInput(sample)
+    void generate(sample)
+  }
+
+  return (
+    <GeneratorLayout title="QR Code" description="Generate a QR code from text or a URL entirely in your browser." icon={<QrCode />} onGenerate={() => void generate()} onSample={useSample} onClear={() => { setInput(''); setImageUrl(''); setError('') }} generateLabel="Generate QR code" disabled={!input.trim()}>
+      <label className="space-y-1 text-xs text-muted-foreground"><span className="block">Text or URL</span><textarea value={input} onChange={(event) => setInput(event.target.value)} placeholder="https://example.com or any text…" className="block min-h-28 w-full resize-y rounded-lg border border-input bg-transparent p-2.5 text-sm text-foreground outline-none focus:border-ring focus:ring-3 focus:ring-ring/50" /></label>
+      <div className="grid gap-3 sm:grid-cols-2"><label className="space-y-1 text-xs text-muted-foreground"><span className="block">Size (128–1024 px)</span><input type="number" min="128" max="1024" value={size} onChange={(event) => setSize(event.target.value)} className={`${fieldClass} w-full`} /></label><label className="space-y-1 text-xs text-muted-foreground"><span className="block">Error correction</span><Select value={level} onValueChange={(value) => setLevel(value as typeof level)}><SelectTrigger className="w-full"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="L">Low (7%)</SelectItem><SelectItem value="M">Medium (15%)</SelectItem><SelectItem value="Q">Quartile (25%)</SelectItem><SelectItem value="H">High (30%)</SelectItem></SelectContent></Select></label></div>
+      <ToolStatus state={error ? 'invalid' : 'idle'} message={error} />
+      <div className="flex min-h-[280px] flex-1 items-center justify-center rounded-lg border border-dashed border-border bg-muted/30 p-6">{imageUrl ? <img src={imageUrl} alt="Generated QR code" className="max-h-72 max-w-full rounded bg-white p-2" /> : <span className="text-center text-sm text-muted-foreground">Your QR code will appear here.</span>}</div>
+      <Button type="button" variant="outline" onClick={() => download(imageUrl, 'mindskit-qr-code.png')} disabled={!imageUrl}><Download />Download PNG</Button>
+    </GeneratorLayout>
+  )
+}
+
+export function BarcodePage() {
+  const { enabled } = useSaveLocally()
+  const [input, setInput] = usePersistedInput('barcode', enabled)
+  const [format, setFormat] = useState('CODE128')
+  const [height, setHeight] = useState('100')
+  const [error, setError] = useState('')
+  const [hasBarcode, setHasBarcode] = useState(false)
+  const barcodeRef = useRef<SVGSVGElement>(null)
+
+  const generate = (value = input) => {
+    if (!value.trim()) {
+      barcodeRef.current?.replaceChildren()
+      setHasBarcode(false)
+      setError('Enter a value to generate a barcode.')
+      return
+    }
+    if (!barcodeRef.current) return
+    try {
+      JsBarcode(barcodeRef.current, value, { format, height: Math.max(40, Math.min(300, Number(height) || 100)), width: 2, margin: 12, displayValue: true, fontSize: 16, lineColor: '#111827', background: '#ffffff' })
+      setHasBarcode(true)
+      setError('')
+    } catch {
+      barcodeRef.current.replaceChildren()
+      setHasBarcode(false)
+      setError(`“${value}” is not valid for ${format}.`)
+    }
+  }
+
+  const useSample = () => {
+    const sample = format === 'EAN13' ? '5901234123457' : format === 'EAN8' ? '96385074' : format === 'UPC' ? '123456789012' : 'MindsKit-2026'
+    setInput(sample)
+    generate(sample)
+  }
+
+  const downloadSvg = () => {
+    if (!barcodeRef.current?.childNodes.length) return
+    const svg = new XMLSerializer().serializeToString(barcodeRef.current)
+    download(URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml;charset=utf-8' })), 'mindskit-barcode.svg')
+  }
+
+  return (
+    <GeneratorLayout title="Barcode" description="Generate a scannable barcode from a value entirely in your browser." icon={<Barcode />} onGenerate={() => generate()} onSample={useSample} onClear={() => { setInput(''); barcodeRef.current?.replaceChildren(); setHasBarcode(false); setError('') }} generateLabel="Generate barcode" disabled={!input.trim()}>
+      <label className="space-y-1 text-xs text-muted-foreground"><span className="block">Value</span><input value={input} onChange={(event) => setInput(event.target.value)} placeholder="Enter a product code or text…" className={`${fieldClass} w-full`} /></label>
+      <div className="grid gap-3 sm:grid-cols-2"><label className="space-y-1 text-xs text-muted-foreground"><span className="block">Format</span><Select value={format} onValueChange={setFormat}><SelectTrigger className="w-full"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="CODE128">Code 128 (text)</SelectItem><SelectItem value="CODE39">Code 39</SelectItem><SelectItem value="EAN13">EAN-13</SelectItem><SelectItem value="EAN8">EAN-8</SelectItem><SelectItem value="UPC">UPC-A</SelectItem></SelectContent></Select></label><label className="space-y-1 text-xs text-muted-foreground"><span className="block">Height (40–300 px)</span><input type="number" min="40" max="300" value={height} onChange={(event) => setHeight(event.target.value)} className={`${fieldClass} w-full`} /></label></div>
+      <ToolStatus state={error ? 'invalid' : 'idle'} message={error} />
+      <div className="flex min-h-[280px] flex-1 items-center justify-center overflow-auto rounded-lg border border-dashed border-border bg-muted/30 p-6"><svg ref={barcodeRef} role="img" aria-label="Generated barcode" className="max-w-full" /></div>
+      <Button type="button" variant="outline" onClick={downloadSvg} disabled={!hasBarcode}><Download />Download SVG</Button>
+    </GeneratorLayout>
+  )
+}
+
+function GeneratorLayout({ title, description, icon, onGenerate, onSample, onClear, generateLabel, disabled, children }: { title: string; description: string; icon: React.ReactNode; onGenerate: () => void; onSample: () => void; onClear: () => void; generateLabel: string; disabled: boolean; children: React.ReactNode }) {
+  return <div className="flex h-full min-h-0 flex-col gap-4"><ToolPageHeader title={title} description={description} /><div className="flex shrink-0 flex-wrap gap-2"><Button type="button" onClick={onGenerate} disabled={disabled}>{icon}{generateLabel}</Button><Button type="button" variant="outline" onClick={onSample}><FileText />Sample</Button><Button type="button" variant="outline" onClick={onClear} disabled={disabled}><Eraser />Clear</Button></div><div className="flex min-h-0 flex-1 flex-col gap-4 rounded-xl border border-border bg-card p-4 shadow-sm">{children}</div></div>
+}

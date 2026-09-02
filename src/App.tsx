@@ -10,6 +10,7 @@ import { JsonFormatterPage } from '@/pages/json-formatter-page'
 import { JsonMinifierPage } from '@/pages/json-minifier-page'
 import { JsonValidatorPage } from '@/pages/json-validator-page'
 import { JwtDecoderPage } from '@/pages/jwt-decoder-page'
+import { BarcodePage, QrCodePage } from '@/pages/code-generators-pages'
 import { LicensePage } from '@/pages/license-page'
 import { PrivacyPage } from '@/pages/privacy-page'
 import { Base64Page, HtmlEncodeDecodePage, RandomStringPage, UnixTimestampPage, UrlEncodeDecodePage, UuidPage } from '@/pages/quick-tools-pages'
@@ -39,6 +40,8 @@ export default function App() {
           <Route path="/encode-decode/html" element={<HtmlEncodeDecodePage />} />
           <Route path="/encode-decode/jwt" element={<JwtDecoderPage />} />
           <Route path="/generators/uuid" element={<UuidPage />} />
+          <Route path="/generators/qr-code" element={<QrCodePage />} />
+          <Route path="/generators/barcode" element={<BarcodePage />} />
           <Route path="/generators/random-string" element={<RandomStringPage />} />
           <Route path="/converters/unix-timestamp" element={<UnixTimestampPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
