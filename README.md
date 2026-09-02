@@ -14,6 +14,7 @@ MindsKit is a focused collection of tools for formatting data, transforming text
 
 - JSON Formatter, Minifier, and Validator
 - XML Formatter, Minifier, and Validator
+- UUID → SQL IN, for turning UUID lists into `WHERE id IN (...)` clauses
 
 ### Text tools
 

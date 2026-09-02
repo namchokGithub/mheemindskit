@@ -12,6 +12,7 @@ import { JsonValidatorPage } from '@/pages/json-validator-page'
 import { JwtDecoderPage } from '@/pages/jwt-decoder-page'
 import { BarcodePage, QrCodePage } from '@/pages/code-generators-pages'
 import { JsonToCsvPage, JsonToYamlPage } from '@/pages/json-converters-pages'
+import { SqlInClausePage } from '@/pages/sql-in-clause-page'
 import { LicensePage } from '@/pages/license-page'
 import { PrivacyPage } from '@/pages/privacy-page'
 import { Base64Page, HtmlEncodeDecodePage, RandomStringPage, UnixTimestampPage, UrlEncodeDecodePage, UuidPage } from '@/pages/quick-tools-pages'
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="/formatters/json-minify" element={<JsonMinifierPage />} />
           <Route path="/formatters/json-validator" element={<JsonValidatorPage />} />
           <Route path="/formatters/xml" element={<XmlFormatterPage />} />
+          <Route path="/formatters/sql-in" element={<SqlInClausePage />} />
           <Route path="/text-tools/remove-spaces" element={<RemoveSpacesPage />} />
           <Route path="/text-tools/make-one-line" element={<MakeOneLinePage />} />
           <Route path="/text-tools/text-decoration" element={<TextDecorationPage />} />

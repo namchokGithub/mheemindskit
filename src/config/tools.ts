@@ -13,6 +13,7 @@ import {
   FileCode2,
   Fingerprint,
   KeyRound,
+  ListFilter,
   Link2,
   QrCode,
   Shrink,
@@ -65,6 +66,14 @@ export const tools: ToolDefinition[] = [
     category: 'formatters',
     path: '/formatters/xml',
     icon: FileCode2,
+  },
+  {
+    id: 'sql-in-clause',
+    name: 'UUID → SQL IN',
+    description: 'Turn UUIDs into a SQL WHERE … IN clause.',
+    category: 'formatters',
+    path: '/formatters/sql-in',
+    icon: ListFilter,
   },
 
   // Text Tools
