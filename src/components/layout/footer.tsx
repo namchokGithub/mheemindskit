@@ -2,7 +2,7 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { Scale, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const GITHUB_PROFILE_URL = "https://github.com/namchokGithub";
+const GITHUB_PROFILE_URL = "https://github.com/namchokGithub/mheemindskit";
 const LINKEDIN_PROFILE_URL = "https://www.linkedin.com/in/namchok-singhachai/";
 
 export function Footer() {
@@ -32,7 +32,10 @@ export function Footer() {
             target="_blank"
             rel="noreferrer"
             className="flex items-center gap-1.5 transition-colors hover:text-foreground">
-            <FaLinkedin className="size-3.5 text-[#0A66C2]" aria-hidden="true" />
+            <FaLinkedin
+              className="size-3.5 text-[#0A66C2]"
+              aria-hidden="true"
+            />
             LinkedIn
           </a>
           <Link

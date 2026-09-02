@@ -1,65 +1,68 @@
-import { Eraser, FileText, WrapText, type LucideIcon } from 'lucide-react'
-import { useState, type ReactNode } from 'react'
+import { Eraser, FileText, WrapText, type LucideIcon } from "lucide-react";
+import { useState, type ReactNode } from "react";
 
-import { CodeEditor } from '@/components/tool/code-editor'
-import { CopyButton } from '@/components/tool/copy-button'
-import { IndentSelect } from '@/components/tool/indent-select'
-import { ToolPageHeader } from '@/components/tool/tool-page-header'
-import { ToolStatus } from '@/components/tool/tool-status'
-import { Button } from '@/components/ui/button'
-import { usePersistedInput } from '@/hooks/use-persisted-input'
-import { useSaveLocally } from '@/hooks/use-save-locally'
-import { cn } from '@/lib/utils'
-import type { FormatResult, IndentOption } from '@/types/format'
+import { CodeEditor } from "@/components/tool/code-editor";
+import { CopyButton } from "@/components/tool/copy-button";
+import { IndentSelect } from "@/components/tool/indent-select";
+import { ToolPageHeader } from "@/components/tool/tool-page-header";
+import { ToolStatus } from "@/components/tool/tool-status";
+import { TextStats } from "@/components/tool/text-stats";
+import { Button } from "@/components/ui/button";
+import { usePersistedInput } from "@/hooks/use-persisted-input";
+import { useLargeInputConfirmation } from "@/hooks/use-large-input-confirmation";
+import { useSaveLocally } from "@/hooks/use-save-locally";
+import { cn } from "@/lib/utils";
+import type { FormatResult, IndentOption } from "@/types/format";
 
 export interface FormatterPageConfig {
-  title: string
-  description: string
-  actionLabel: string
-  actionIcon: LucideIcon
-  successLabel: string
-  sample: () => string
-  showIndent: boolean
-  inputPlaceholder: string
-  storageKey: string
-  process: (input: string, indent: IndentOption) => FormatResult
-  outputPreview?: (output: string) => ReactNode
+  title: string;
+  description: string;
+  actionLabel: string;
+  actionIcon: LucideIcon;
+  successLabel: string;
+  sample: () => string;
+  showIndent: boolean;
+  inputPlaceholder: string;
+  storageKey: string;
+  process: (input: string, indent: IndentOption) => FormatResult;
+  outputPreview?: (output: string) => ReactNode;
 }
 
 export function FormatterPage(config: FormatterPageConfig) {
-  const { enabled: saveLocally } = useSaveLocally()
-  const [input, setInput] = usePersistedInput(config.storageKey, saveLocally)
-  const [indent, setIndent] = useState<IndentOption>('2')
-  const [wrap, setWrap] = useState(false)
-  const [result, setResult] = useState<FormatResult | null>(null)
-  const [outputMode, setOutputMode] = useState<'tree' | 'text'>('text')
+  const { enabled: saveLocally } = useSaveLocally();
+  const [input, setInput] = usePersistedInput(config.storageKey, saveLocally);
+  const [indent, setIndent] = useState<IndentOption>("2");
+  const [wrap, setWrap] = useState(false);
+  const [result, setResult] = useState<FormatResult | null>(null);
+  const [outputMode, setOutputMode] = useState<"tree" | "text">("text");
+  const { confirm, dialog } = useLargeInputConfirmation();
 
-  const ActionIcon = config.actionIcon
+  const ActionIcon = config.actionIcon;
 
   const run = (nextInput: string, nextIndent: IndentOption) => {
-    setResult(config.process(nextInput, nextIndent))
-  }
+    setResult(config.process(nextInput, nextIndent));
+  };
 
   const handleInputChange = (next: string) => {
-    setInput(next)
-    setResult(null)
-  }
+    setInput(next);
+    setResult(null);
+  };
 
   const handleIndentChange = (next: IndentOption) => {
-    setIndent(next)
-    if (result?.ok) run(input, next)
-  }
+    setIndent(next);
+    if (result?.ok) run(input, next);
+  };
 
   const handleSample = () => {
-    const sample = config.sample()
-    setInput(sample)
-    run(sample, indent)
-  }
+    const sample = config.sample();
+    setInput(sample);
+    run(sample, indent);
+  };
 
   const handleClear = () => {
-    setInput('')
-    setResult(null)
-  }
+    setInput("");
+    setResult(null);
+  };
 
   return (
     <div className="flex h-full min-h-0 flex-col gap-4">
@@ -70,14 +73,19 @@ export function FormatterPage(config: FormatterPageConfig) {
           <Button
             type="button"
             size="sm"
-            onClick={() => run(input, indent)}
-            disabled={!input.trim()}
-          >
+            onClick={() => confirm(input, () => run(input, indent))}
+            disabled={!input.trim()}>
             <ActionIcon />
             {config.actionLabel}
           </Button>
-          {config.showIndent && <IndentSelect value={indent} onChange={handleIndentChange} />}
-          <Button type="button" variant="outline" size="sm" onClick={handleSample}>
+          {config.showIndent && (
+            <IndentSelect value={indent} onChange={handleIndentChange} />
+          )}
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={handleSample}>
             <FileText />
             Sample
           </Button>
@@ -86,8 +94,7 @@ export function FormatterPage(config: FormatterPageConfig) {
             variant="outline"
             size="sm"
             onClick={handleClear}
-            disabled={!input}
-          >
+            disabled={!input}>
             <Eraser />
             Clear
           </Button>
@@ -97,8 +104,7 @@ export function FormatterPage(config: FormatterPageConfig) {
             size="sm"
             aria-pressed={wrap}
             onClick={() => setWrap((w) => !w)}
-            className={cn(wrap && 'bg-accent text-accent-foreground')}
-          >
+            className={cn(wrap && "bg-accent text-accent-foreground")}>
             <WrapText />
             Wrap
           </Button>
@@ -106,7 +112,12 @@ export function FormatterPage(config: FormatterPageConfig) {
 
         <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-2">
           <div className="flex min-h-0 min-w-0 flex-col border-b border-border lg:border-r lg:border-b-0">
-            <span className="px-3 py-1.5 text-sm font-medium text-muted-foreground">Input</span>
+            <div className="flex items-center justify-between gap-2 px-3 py-1.5">
+              <span className="text-sm font-medium text-muted-foreground">
+                Input
+              </span>
+              <TextStats value={input} />
+            </div>
             <CodeEditor
               bare
               value={input}
@@ -120,23 +131,39 @@ export function FormatterPage(config: FormatterPageConfig) {
 
           <div className="flex min-h-0 min-w-0 flex-col">
             <div className="flex items-center justify-between gap-2 px-3 py-1.5">
-              <span className="text-sm font-medium text-muted-foreground">Output</span>
+              <span className="text-sm font-medium text-muted-foreground">
+                Output
+              </span>
               <div className="flex items-center gap-2">
                 {config.outputPreview && (
                   <div className="flex items-center rounded-lg border border-border bg-muted/50 p-0.5">
-                    <Button type="button" size="xs" variant={outputMode === 'text' ? 'secondary' : 'ghost'} aria-pressed={outputMode === 'text'} onClick={() => setOutputMode('text')}>Text</Button>
-                    <Button type="button" size="xs" variant={outputMode === 'tree' ? 'secondary' : 'ghost'} aria-pressed={outputMode === 'tree'} onClick={() => setOutputMode('tree')}>Tree</Button>
+                    <Button
+                      type="button"
+                      size="xs"
+                      variant={outputMode === "text" ? "secondary" : "ghost"}
+                      aria-pressed={outputMode === "text"}
+                      onClick={() => setOutputMode("text")}>
+                      Text
+                    </Button>
+                    <Button
+                      type="button"
+                      size="xs"
+                      variant={outputMode === "tree" ? "secondary" : "ghost"}
+                      aria-pressed={outputMode === "tree"}
+                      onClick={() => setOutputMode("tree")}>
+                      Tree
+                    </Button>
                   </div>
                 )}
-                <CopyButton value={result?.ok ? result.output : ''} />
+                <CopyButton value={result?.ok ? result.output : ""} />
               </div>
             </div>
-            {config.outputPreview && result?.ok && outputMode === 'tree' ? (
+            {config.outputPreview && result?.ok && outputMode === "tree" ? (
               config.outputPreview(result.output)
             ) : (
               <CodeEditor
                 bare
-                value={result?.ok ? result.output : ''}
+                value={result?.ok ? result.output : ""}
                 readOnly
                 placeholder="Result will appear here."
                 wrap={wrap}
@@ -149,13 +176,14 @@ export function FormatterPage(config: FormatterPageConfig) {
 
       <div className="shrink-0">
         <ToolStatus
-          state={result === null ? 'idle' : result.ok ? 'valid' : 'invalid'}
+          state={result === null ? "idle" : result.ok ? "valid" : "invalid"}
           message={result && !result.ok ? result.message : undefined}
           line={result && !result.ok ? result.line : undefined}
           column={result && !result.ok ? result.column : undefined}
           validLabel={config.successLabel}
         />
       </div>
+      {dialog}
     </div>
-  )
+  );
 }

@@ -20,7 +20,7 @@ export function AppShell() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
-    <div className="relative flex min-h-screen flex-col bg-background">
+    <div className="relative flex h-dvh flex-col overflow-hidden bg-background">
       <div
         aria-hidden="true"
         className="app-gradient-bg pointer-events-none fixed inset-0 -z-10"
@@ -67,11 +67,11 @@ export function AppShell() {
         </div>
       </header>
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex min-h-0 flex-1 overflow-hidden">
         <aside className="hidden w-60 shrink-0 flex-col overflow-y-auto border-r border-sidebar-border bg-sidebar p-4 lg:flex">
           <SidebarNav />
         </aside>
-        <main className="flex min-w-0 flex-1 flex-col overflow-y-auto overflow-x-hidden p-4 sm:p-6">
+        <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto overflow-x-hidden p-4 sm:p-6">
           <Outlet />
         </main>
       </div>

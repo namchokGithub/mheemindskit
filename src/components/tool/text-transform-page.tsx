@@ -4,10 +4,12 @@ import { useState, type ReactNode } from 'react'
 import { CodeEditor } from '@/components/tool/code-editor'
 import { CopyButton } from '@/components/tool/copy-button'
 import { ToolPageHeader } from '@/components/tool/tool-page-header'
+import { TextStats } from '@/components/tool/text-stats'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { usePersistedInput } from '@/hooks/use-persisted-input'
+import { useLargeInputConfirmation } from '@/hooks/use-large-input-confirmation'
 import { useSaveLocally } from '@/hooks/use-save-locally'
 import { cn } from '@/lib/utils'
 import type { TextOperation } from '@/features/text-tools/text'
@@ -40,6 +42,7 @@ export function TextTransformPage(config: TextTransformPageConfig) {
   const [suffix, setSuffix] = useState('')
   const [timeZone, setTimeZone] = useState('browser')
   const [hasRun, setHasRun] = useState(false)
+  const { confirm, dialog } = useLargeInputConfirmation()
   const ActionIcon = config.actionIcon
 
   const run = (nextInput = input, nextOption = option) => {
@@ -90,7 +93,7 @@ export function TextTransformPage(config: TextTransformPageConfig) {
 
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm">
         <div className="flex flex-wrap items-center gap-2 border-b border-border bg-secondary/50 px-3 py-2">
-          <Button type="button" size="sm" onClick={() => run()} disabled={!input}>
+          <Button type="button" size="sm" onClick={() => confirm(input, () => run())} disabled={!input}>
             <ActionIcon />
             {config.actionLabel}
           </Button>
@@ -120,7 +123,7 @@ export function TextTransformPage(config: TextTransformPageConfig) {
 
         <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-2">
           <div className="flex min-h-0 min-w-0 flex-col border-b border-border lg:border-r lg:border-b-0">
-            <span className="px-3 py-1.5 text-sm font-medium text-muted-foreground">Input</span>
+            <div className="flex items-center justify-between gap-2 px-3 py-1.5"><span className="text-sm font-medium text-muted-foreground">Input</span><TextStats value={input} /></div>
             <CodeEditor bare value={input} onChange={handleInputChange} placeholder={config.inputPlaceholder} wrap={wrap} ariaLabel="Input" language={config.language ?? 'text'} />
           </div>
 
@@ -136,6 +139,7 @@ export function TextTransformPage(config: TextTransformPageConfig) {
           </div>
         </div>
       </div>
+      {dialog}
     </div>
   )
 }

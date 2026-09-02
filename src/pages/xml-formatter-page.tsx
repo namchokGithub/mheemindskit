@@ -6,10 +6,12 @@ import { CopyButton } from "@/components/tool/copy-button";
 import { IndentSelect } from "@/components/tool/indent-select";
 import { ToolPageHeader } from "@/components/tool/tool-page-header";
 import { ToolStatus } from "@/components/tool/tool-status";
+import { TextStats } from "@/components/tool/text-stats";
 import { Button } from "@/components/ui/button";
 import { formatXml, minifyXml } from "@/features/formatters/xml";
 import { getRandomSampleXml } from "@/features/formatters/samples";
 import { usePersistedInput } from "@/hooks/use-persisted-input";
+import { useLargeInputConfirmation } from "@/hooks/use-large-input-confirmation";
 import { useSaveLocally } from "@/hooks/use-save-locally";
 import { cn } from "@/lib/utils";
 import type { FormatResult, IndentOption } from "@/types/format";
@@ -21,6 +23,7 @@ export function XmlFormatterPage() {
   const [wrap, setWrap] = useState(false);
   const [result, setResult] = useState<FormatResult | null>(null);
   const [mode, setMode] = useState<"format" | "minify">("format");
+  const { confirm, dialog } = useLargeInputConfirmation();
 
   const handleInputChange = (next: string) => {
     setInput(next);
@@ -66,7 +69,7 @@ export function XmlFormatterPage() {
           <Button
             type="button"
             size="sm"
-            onClick={handleFormat}
+            onClick={() => confirm(input, handleFormat)}
             disabled={!input.trim()}>
             <FileCode2 />
             Format
@@ -75,7 +78,7 @@ export function XmlFormatterPage() {
             type="button"
             variant="secondary"
             size="sm"
-            onClick={handleMinify}
+            onClick={() => confirm(input, handleMinify)}
             disabled={!input.trim()}>
             <Shrink />
             Minify
@@ -112,9 +115,7 @@ export function XmlFormatterPage() {
 
         <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-2">
           <div className="flex min-h-0 min-w-0 flex-col border-b border-border lg:border-r lg:border-b-0">
-            <span className="px-3 py-1.5 text-sm font-medium text-muted-foreground">
-              Input
-            </span>
+            <div className="flex items-center justify-between gap-2 px-3 py-1.5"><span className="text-sm font-medium text-muted-foreground">Input</span><TextStats value={input} /></div>
             <CodeEditor
               bare
               value={input}
@@ -160,6 +161,7 @@ export function XmlFormatterPage() {
           }
         />
       </div>
+      {dialog}
     </div>
   );
 }

@@ -4,10 +4,12 @@ import { useState } from 'react'
 import { CodeEditor } from '@/components/tool/code-editor'
 import { ToolPageHeader } from '@/components/tool/tool-page-header'
 import { ToolStatus } from '@/components/tool/tool-status'
+import { TextStats } from '@/components/tool/text-stats'
 import { Button } from '@/components/ui/button'
 import { validateJson } from '@/features/formatters/json'
 import { getRandomSampleJson } from '@/features/formatters/samples'
 import { usePersistedInput } from '@/hooks/use-persisted-input'
+import { useLargeInputConfirmation } from '@/hooks/use-large-input-confirmation'
 import { useSaveLocally } from '@/hooks/use-save-locally'
 import type { ValidateResult } from '@/types/format'
 
@@ -15,6 +17,7 @@ export function JsonValidatorPage() {
   const { enabled: saveLocally } = useSaveLocally()
   const [input, setInput] = usePersistedInput('json-validator', saveLocally)
   const [result, setResult] = useState<ValidateResult | null>(null)
+  const { confirm, dialog } = useLargeInputConfirmation()
 
   const handleInputChange = (next: string) => {
     setInput(next)
@@ -40,7 +43,7 @@ export function JsonValidatorPage() {
       />
 
       <div className="flex shrink-0 flex-wrap items-center gap-2">
-        <Button type="button" onClick={() => setResult(validateJson(input))} disabled={!input.trim()}>
+        <Button type="button" onClick={() => confirm(input, () => setResult(validateJson(input)))} disabled={!input.trim()}>
           <CheckCircle2 />
           Validate
         </Button>
@@ -55,7 +58,7 @@ export function JsonValidatorPage() {
       </div>
 
       <div className="flex min-h-0 flex-1 flex-col gap-2">
-        <span className="text-sm font-medium text-muted-foreground">Input</span>
+        <div className="flex items-center justify-between gap-2"><span className="text-sm font-medium text-muted-foreground">Input</span><TextStats value={input} /></div>
         <CodeEditor
           value={input}
           onChange={handleInputChange}
@@ -75,6 +78,7 @@ export function JsonValidatorPage() {
           validLabel="Valid JSON"
         />
       </div>
+      {dialog}
     </div>
   )
 }
