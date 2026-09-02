@@ -17,6 +17,7 @@ import {
   Link2,
   QrCode,
   Shrink,
+  TextQuote,
   Shuffle,
   SplitSquareHorizontal,
   Heading,
@@ -58,6 +59,14 @@ export const tools: ToolDefinition[] = [
     category: 'formatters',
     path: '/formatters/json-validator',
     icon: CheckCircle2,
+  },
+  {
+    id: 'json-stringify',
+    name: 'JSON Stringify',
+    description: 'Stringify text or parse a JSON string back to text.',
+    category: 'formatters',
+    path: '/formatters/json-stringify',
+    icon: TextQuote,
   },
   {
     id: 'xml-formatter',

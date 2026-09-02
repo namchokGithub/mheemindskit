@@ -49,6 +49,19 @@ export function minifyJson(input: string): FormatResult {
   return { ok: true, output: JSON.stringify(parsed.value) }
 }
 
+export function stringifyJsonText(input: string): FormatResult {
+  return { ok: true, output: JSON.stringify(input) }
+}
+
+export function parseJsonString(input: string): FormatResult {
+  const parsed = safeParseJson(input)
+  if (!parsed.ok) return parsed
+  if (typeof parsed.value !== 'string') {
+    return { ok: false, message: 'Input must be a JSON string wrapped in double quotes.' }
+  }
+  return { ok: true, output: parsed.value }
+}
+
 export function validateJson(input: string): ValidateResult {
   const parsed = safeParseJson(input)
   if (!parsed.ok) {

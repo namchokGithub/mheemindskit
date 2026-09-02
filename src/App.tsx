@@ -8,6 +8,7 @@ import { ComingSoonPage } from '@/pages/coming-soon-page'
 import { HomePage } from '@/pages/home-page'
 import { JsonFormatterPage } from '@/pages/json-formatter-page'
 import { JsonMinifierPage } from '@/pages/json-minifier-page'
+import { JsonStringifyPage } from '@/pages/json-stringify-page'
 import { JsonValidatorPage } from '@/pages/json-validator-page'
 import { JwtDecoderPage } from '@/pages/jwt-decoder-page'
 import { BarcodePage, QrCodePage } from '@/pages/code-generators-pages'
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="/formatters/json" element={<JsonFormatterPage />} />
           <Route path="/formatters/json-minify" element={<JsonMinifierPage />} />
           <Route path="/formatters/json-validator" element={<JsonValidatorPage />} />
+          <Route path="/formatters/json-stringify" element={<JsonStringifyPage />} />
           <Route path="/formatters/xml" element={<XmlFormatterPage />} />
           <Route path="/formatters/sql-in" element={<SqlInClausePage />} />
           <Route path="/text-tools/remove-spaces" element={<RemoveSpacesPage />} />

@@ -14,6 +14,8 @@ import { useSaveLocally } from "@/hooks/use-save-locally";
 import { cn } from "@/lib/utils";
 import type { FormatResult, IndentOption } from "@/types/format";
 
+export type FormatterOutputMode = "code" | "form" | "text" | "tree";
+
 export interface FormatterPageConfig {
   title: string;
   description: string;
@@ -25,7 +27,8 @@ export interface FormatterPageConfig {
   inputPlaceholder: string;
   storageKey: string;
   process: (input: string, indent: IndentOption) => FormatResult;
-  outputPreview?: (output: string) => ReactNode;
+  outputModes?: FormatterOutputMode[];
+  outputPreview?: (output: string, mode: Exclude<FormatterOutputMode, "code" | "text">) => ReactNode;
 }
 
 export function FormatterPage(config: FormatterPageConfig) {
@@ -34,7 +37,8 @@ export function FormatterPage(config: FormatterPageConfig) {
   const [indent, setIndent] = useState<IndentOption>("2");
   const [wrap, setWrap] = useState(false);
   const [result, setResult] = useState<FormatResult | null>(null);
-  const [outputMode, setOutputMode] = useState<"tree" | "text">("text");
+  const outputModes = config.outputModes ?? (config.outputPreview ? ["text", "tree"] : ["text"]);
+  const [outputMode, setOutputMode] = useState<FormatterOutputMode>(outputModes[0]);
   const { confirm, dialog } = useLargeInputConfirmation();
 
   const ActionIcon = config.actionIcon;
@@ -135,31 +139,26 @@ export function FormatterPage(config: FormatterPageConfig) {
                 Output
               </span>
               <div className="flex items-center gap-2">
-                {config.outputPreview && (
+                {outputModes.length > 1 && (
                   <div className="flex items-center rounded-lg border border-border bg-muted/50 p-0.5">
-                    <Button
-                      type="button"
-                      size="xs"
-                      variant={outputMode === "text" ? "secondary" : "ghost"}
-                      aria-pressed={outputMode === "text"}
-                      onClick={() => setOutputMode("text")}>
-                      Text
-                    </Button>
-                    <Button
-                      type="button"
-                      size="xs"
-                      variant={outputMode === "tree" ? "secondary" : "ghost"}
-                      aria-pressed={outputMode === "tree"}
-                      onClick={() => setOutputMode("tree")}>
-                      Tree
-                    </Button>
+                    {outputModes.map((mode) => (
+                      <Button
+                        key={mode}
+                        type="button"
+                        size="xs"
+                        variant={outputMode === mode ? "secondary" : "ghost"}
+                        aria-pressed={outputMode === mode}
+                        onClick={() => setOutputMode(mode)}>
+                        {mode[0].toUpperCase() + mode.slice(1)}
+                      </Button>
+                    ))}
                   </div>
                 )}
                 <CopyButton value={result?.ok ? result.output : ""} />
               </div>
             </div>
-            {config.outputPreview && result?.ok && outputMode === "tree" ? (
-              config.outputPreview(result.output)
+            {config.outputPreview && result?.ok && (outputMode === "form" || outputMode === "tree") ? (
+              config.outputPreview(result.output, outputMode)
             ) : (
               <CodeEditor
                 bare
@@ -168,6 +167,7 @@ export function FormatterPage(config: FormatterPageConfig) {
                 placeholder="Result will appear here."
                 wrap={wrap}
                 ariaLabel="Output"
+                language={outputMode === "text" ? "text" : "json"}
               />
             )}
           </div>
