@@ -9,6 +9,9 @@ import { HomePage } from '@/pages/home-page'
 import { JsonFormatterPage } from '@/pages/json-formatter-page'
 import { JsonMinifierPage } from '@/pages/json-minifier-page'
 import { JsonStringifyPage } from '@/pages/json-stringify-page'
+import { JsonSorterPage } from '@/pages/json-sorter-page'
+import { JsonComparePage } from '@/pages/json-compare-page'
+import { JsonToGoPage } from '@/pages/json-to-go-page'
 import { JsonValidatorPage } from '@/pages/json-validator-page'
 import { JwtDecoderPage } from '@/pages/jwt-decoder-page'
 import { BarcodePage, QrCodePage } from '@/pages/code-generators-pages'
@@ -18,6 +21,7 @@ import { LicensePage } from '@/pages/license-page'
 import { PrivacyPage } from '@/pages/privacy-page'
 import { Base64Page, HtmlEncodeDecodePage, RandomStringPage, UnixTimestampPage, UrlEncodeDecodePage, UuidPage } from '@/pages/quick-tools-pages'
 import { XmlFormatterPage } from '@/pages/xml-formatter-page'
+import { XmlValidatorPage, XmlViewerPage } from '@/pages/xml-tools-pages'
 import { JoinTextPage, MakeOneLinePage, MarkdownPage, RemoveSpacesPage, SplitTextPage, TextDecorationPage } from '@/pages/text-tools-pages'
 
 export default function App() {
@@ -32,7 +36,14 @@ export default function App() {
           <Route path="/formatters/json-minify" element={<JsonMinifierPage />} />
           <Route path="/formatters/json-validator" element={<JsonValidatorPage />} />
           <Route path="/formatters/json-stringify" element={<JsonStringifyPage />} />
+          <Route path="/formatters/json-sorter" element={<JsonSorterPage />} />
+          <Route path="/formatters/json-compare" element={<JsonComparePage />} />
           <Route path="/formatters/xml" element={<XmlFormatterPage />} />
+          <Route path="/xml/minify" element={<XmlFormatterPage title="XML Minify" description="Compact XML and validate it before sharing." storageKey="xml-minifier" />} />
+          <Route path="/xml/viewer" element={<XmlViewerPage />} />
+          <Route path="/xml/validator" element={<XmlValidatorPage />} />
+          <Route path="/xml/wsdl-formatter" element={<XmlFormatterPage title="WSDL Formatter" description="Beautify and validate WSDL XML documents." storageKey="wsdl-formatter" />} />
+          <Route path="/xml/soap-formatter" element={<XmlFormatterPage title="SOAP Formatter" description="Beautify and validate SOAP XML messages." storageKey="soap-formatter" />} />
           <Route path="/formatters/sql-in" element={<SqlInClausePage />} />
           <Route path="/text-tools/remove-spaces" element={<RemoveSpacesPage />} />
           <Route path="/text-tools/make-one-line" element={<MakeOneLinePage />} />
@@ -51,6 +62,7 @@ export default function App() {
           <Route path="/converters/unix-timestamp" element={<UnixTimestampPage />} />
           <Route path="/converters/json-to-yaml" element={<JsonToYamlPage />} />
           <Route path="/converters/json-to-csv" element={<JsonToCsvPage />} />
+          <Route path="/converters/json-to-go" element={<JsonToGoPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/license" element={<LicensePage />} />
           {tools

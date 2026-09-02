@@ -48,7 +48,10 @@ export function AppShell() {
                 </Link>
               </SheetTitle>
             </SheetHeader>
-            <SidebarNav onNavigate={() => setMobileNavOpen(false)} />
+            <div className="flex flex-col gap-3">
+              <QuickActions sidebar />
+              <SidebarNav onNavigate={() => setMobileNavOpen(false)} />
+            </div>
           </SheetContent>
         </Sheet>
 
@@ -68,7 +71,8 @@ export function AppShell() {
       </header>
 
       <div className="flex min-h-0 flex-1 overflow-hidden">
-        <aside className="hidden w-60 shrink-0 flex-col overflow-y-auto border-r border-sidebar-border bg-sidebar p-4 lg:flex">
+        <aside className="hidden w-60 shrink-0 flex-col gap-3 overflow-y-auto border-r border-sidebar-border bg-sidebar p-4 lg:flex">
+          <QuickActions sidebar />
           <SidebarNav />
         </aside>
         <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto overflow-x-hidden p-4 sm:p-6">
@@ -77,7 +81,6 @@ export function AppShell() {
       </div>
 
       <Footer />
-      <QuickActions />
     </div>
   );
 }

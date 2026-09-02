@@ -37,7 +37,7 @@ function getTool(id: string): ToolDefinition | undefined {
   return tools.find((tool) => tool.id === id)
 }
 
-export function QuickActions() {
+export function QuickActions({ sidebar = false }: { sidebar?: boolean }) {
   const location = useLocation()
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
@@ -89,12 +89,17 @@ export function QuickActions() {
   }
 
   const clearRecent = () => setState((previous) => ({ ...previous, recent: [] }))
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen)
+    if (!nextOpen) setQuery('')
+  }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
-        <Button type="button" size="icon-lg" aria-label="Open quick actions" className="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] left-4 z-40 size-12 rounded-full shadow-[0_16px_28px_-14px_var(--primary)] sm:bottom-20 sm:left-6">
-          <MessageCircleMore className="size-5" />
+        <Button type="button" size={sidebar ? 'sm' : 'icon-lg'} variant={sidebar ? 'outline' : 'default'} aria-label="Search tools" className={sidebar ? 'w-full justify-start' : 'fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] left-4 z-40 size-12 rounded-full shadow-[0_16px_28px_-14px_var(--primary)] sm:bottom-20 sm:left-6'}>
+          {sidebar ? <Search /> : <MessageCircleMore className="size-5" />}
+          {sidebar && 'Search tools…'}
         </Button>
       </PopoverTrigger>
       <PopoverContent side="top" align="start" className="flex max-h-[calc(100dvh-6rem)] w-[calc(100vw-2rem)] max-w-80 flex-col overflow-hidden p-2 sm:w-80">

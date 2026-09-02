@@ -16,9 +16,19 @@ import { useSaveLocally } from "@/hooks/use-save-locally";
 import { cn } from "@/lib/utils";
 import type { FormatResult, IndentOption } from "@/types/format";
 
-export function XmlFormatterPage() {
+type XmlFormatterPageProps = {
+  title?: string
+  description?: string
+  storageKey?: string
+}
+
+export function XmlFormatterPage({
+  title = 'XML Formatter',
+  description = 'Paste XML, beautify or minify it, and catch malformed markup.',
+  storageKey = 'xml-formatter',
+}: XmlFormatterPageProps) {
   const { enabled: saveLocally } = useSaveLocally();
-  const [input, setInput] = usePersistedInput("xml-formatter", saveLocally);
+  const [input, setInput] = usePersistedInput(storageKey, saveLocally);
   const [indent, setIndent] = useState<IndentOption>("2");
   const [wrap, setWrap] = useState(false);
   const [result, setResult] = useState<FormatResult | null>(null);
@@ -60,8 +70,8 @@ export function XmlFormatterPage() {
   return (
     <div className="flex h-full min-h-0 flex-col gap-4">
       <ToolPageHeader
-        title="XML Formatter"
-        description="Paste XML, beautify or minify it, and catch malformed markup."
+        title={title}
+        description={description}
       />
 
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm">

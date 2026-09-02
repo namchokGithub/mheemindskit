@@ -48,6 +48,13 @@
   background: var(--editor);
 }
 
+.cm-go-keyword { color: #7c3aed; font-weight: 600; }
+.cm-go-type { color: #0f766e; }
+.cm-go-tag { color: #a16207; }
+.dark .cm-go-keyword { color: #c4b5fd; }
+.dark .cm-go-type { color: #5eead4; }
+.dark .cm-go-tag { color: #fcd34d; }
+
 .json-form-fields {
   display: grid;
   gap: 0.5rem;

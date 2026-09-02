@@ -5,10 +5,13 @@ import { Decoration } from "@codemirror/view";
 import { EditorView } from "@codemirror/view";
 import { vscodeDark, vscodeLight } from "@uiw/codemirror-theme-vscode";
 import CodeMirror from "@uiw/react-codemirror";
-import { useMemo } from "react";
+import { FileUp } from "lucide-react";
+import { useMemo, useRef } from "react";
+import { toast } from "sonner";
 
 import { useTheme } from "@/hooks/use-theme";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface CodeEditorProps {
   value: string;
@@ -17,7 +20,7 @@ interface CodeEditorProps {
   readOnly?: boolean;
   wrap: boolean;
   ariaLabel: string;
-  language?: "json" | "xml" | "markdown" | "text";
+  language?: "json" | "xml" | "markdown" | "go" | "text";
   errorLine?: number;
   bare?: boolean;
 }
@@ -29,6 +32,30 @@ const fontTheme = EditorView.theme({
 });
 
 const errorLineMark = Decoration.line({ class: "cm-error-line" });
+const goTokenPattern = /(`[^`]*`)|\b(type|struct|func|package|import|return|var|const|map|interface|any)\b|\b(string|bool|int|int64|float64|byte|rune)\b/g;
+const MAX_IMPORT_SIZE = 10 * 1024 * 1024;
+
+const importFileOptions = {
+  json: { accept: ".json,.geojson,.jsonl,.ndjson,.txt,application/json,text/plain", extensions: ["json", "geojson", "jsonl", "ndjson", "txt"] },
+  xml: { accept: ".xml,.wsdl,.soap,.xsd,.txt,application/xml,text/xml,text/plain", extensions: ["xml", "wsdl", "soap", "xsd", "txt"] },
+  markdown: { accept: ".md,.markdown,.txt,text/markdown,text/plain", extensions: ["md", "markdown", "txt"] },
+  go: { accept: ".go,.txt,text/plain", extensions: ["go", "txt"] },
+  text: { accept: ".txt,.csv,.log,.md,text/plain,text/csv", extensions: ["txt", "csv", "log", "md"] },
+};
+
+function goHighlightExtension(text: string) {
+  const decorations = [];
+  for (const match of text.matchAll(goTokenPattern)) {
+    const token = match[0];
+    const className = token.startsWith("`")
+      ? "cm-go-tag"
+      : /^(string|bool|int|int64|float64|byte|rune)$/.test(token)
+        ? "cm-go-type"
+        : "cm-go-keyword";
+    decorations.push(Decoration.mark({ class: className }).range(match.index!, match.index! + token.length));
+  }
+  return Decoration.set(decorations);
+}
 
 function lineStartOffset(text: string, lineNumber: number): number {
   const lines = text.split("\n");
@@ -58,6 +85,8 @@ export function CodeEditor({
   bare = false,
 }: CodeEditorProps) {
   const { mode } = useTheme();
+  const importInputRef = useRef<HTMLInputElement>(null);
+  const fileOptions = importFileOptions[language];
 
   const extensions = useMemo(() => {
     const languageExtension =
@@ -69,17 +98,37 @@ export function CodeEditor({
             ? json()
             : [];
     const base = [fontTheme, languageExtension];
-    const withWrap = wrap ? [...base, EditorView.lineWrapping] : base;
+    const withLanguageHighlighting = language === "go" ? [...base, EditorView.decorations.of(goHighlightExtension(value))] : base;
+    const withWrap = wrap ? [...withLanguageHighlighting, EditorView.lineWrapping] : withLanguageHighlighting;
     return errorLine
       ? [...withWrap, errorLineExtension(value, errorLine)]
       : withWrap;
   }, [language, wrap, errorLine, value]);
 
+  const importFile = async (file: File | undefined) => {
+    if (!file || !onChange) return;
+    if (file.size > MAX_IMPORT_SIZE) {
+      toast.error("Choose a text file smaller than 10 MB.");
+      return;
+    }
+    const extension = file.name.split(".").pop()?.toLowerCase();
+    if (!extension || !fileOptions.extensions.includes(extension)) {
+      toast.error(`This editor accepts ${fileOptions.extensions.map((item) => `.${item}`).join(", ")} files.`);
+      return;
+    }
+    try {
+      onChange(await file.text());
+      toast.success(`Imported ${file.name}`);
+    } catch {
+      toast.error("Unable to read this file.");
+    }
+  };
+
   return (
     <div
       aria-label={ariaLabel}
       className={cn(
-        "h-full min-h-65 w-full overflow-hidden",
+        "relative h-full min-h-65 w-full overflow-hidden",
         readOnly ? "bg-muted/30" : "bg-editor",
         bare
           ? "transition-shadow"
@@ -88,6 +137,29 @@ export function CodeEditor({
               "focus-within:shadow-[0_0_0_1px_rgba(139,92,246,0.5),0_0_0_4px_rgba(139,92,246,0.08)]",
             ),
       )}>
+      {!readOnly && onChange && (
+        <>
+          <input
+            ref={importInputRef}
+            type="file"
+            accept={fileOptions.accept}
+            className="hidden"
+            onChange={(event) => {
+              void importFile(event.target.files?.[0]);
+              event.target.value = "";
+            }}
+          />
+          <Button
+            type="button"
+            size="xs"
+            variant="outline"
+            className="absolute top-2 right-2 z-10 bg-background/90 shadow-sm"
+            onClick={() => importInputRef.current?.click()}>
+            <FileUp />
+            Import
+          </Button>
+        </>
+      )}
       <CodeMirror
         value={value}
         onChange={onChange}
