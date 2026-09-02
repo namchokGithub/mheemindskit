@@ -21,12 +21,14 @@ Vite, React, TypeScript (strict), Tailwind CSS v4, shadcn/ui (Radix base), lucid
 - **Client-side processing only**: JSON via native `JSON.parse`/`JSON.stringify`; XML via native `DOMParser`/`XMLSerializer` (with a hand-written recursive pretty-printer, since the browser doesn't pretty-print XML natively).
 - **Theming**: `src/hooks/use-theme.tsx` toggles a `dark` class on `<html>`, persisted to `localStorage`. An inline script in `index.html` applies the class before React mounts to avoid a flash of the wrong theme.
 
-## Current Scope (Phase 1 — complete)
+## Current Scope
 
 - JSON Formatter (`/formatters/json`)
 - JSON Minifier (`/formatters/json-minify`)
 - JSON Validator (`/formatters/json-validator`)
 - XML Formatter (`/formatters/xml`, includes format + minify + validate)
+- Text Tools, Encode / Decode, Generators, and Converters listed in the tool registry
+- JWT Decoder, QR Code, Barcode, JSON → YAML, and JSON → CSV run entirely client-side
 
 ## Decisions
 
@@ -36,11 +38,4 @@ Vite, React, TypeScript (strict), Tailwind CSS v4, shadcn/ui (Radix base), lucid
 - Deploys to Cloudflare Pages as a static site (`pnpm build` → `dist`); `public/_redirects` handles SPA routing fallback.
 - Accent color is a single violet (`--primary`/`--ring` in `src/index.css`); everything else is neutral gray, matching the "minimal visual noise" design direction.
 
-## Future (not yet implemented — do not build ahead of need)
-
-- Text Tools
-- Encode / Decode
-- Generators
-- Converters
-
-The tool registry and route structure are already generic enough to add these as new entries/pages without restructuring.
+The tool registry and route structure remain generic enough to add future entries/pages without restructuring.

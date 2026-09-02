@@ -28,15 +28,20 @@ MindsKit is a focused collection of tools for formatting data, transforming text
 - Base64 Encode / Decode
 - URL Encode / Decode
 - HTML Encode / Decode
+- JWT Decoder, with formatted header/payload inspection and expiry status (decoding only; no signature verification)
 
 ### Generators
 
 - UUID v4, generated in batches of 1, 5, 10, or a custom amount up to 200
 - Random String, with configurable count, length, character sets, uniqueness, prefix/suffix, and separators
+- QR Code generator, with size/error-correction options and PNG download
+- Barcode generator (Code 128, Code 39, EAN-13, EAN-8, and UPC-A), with SVG download
 
 ### Converters
 
-- Unix Timestamp ↔ ISO date/time
+- Unix Timestamp ↔ ISO date/time, with browser-local timezone by default and searchable timezone selection
+- JSON → YAML, with copy and YAML-file download
+- JSON → CSV for arrays of objects, with copy and CSV-file download
 
 ## Themes
 
@@ -58,6 +63,7 @@ All processing happens in the browser. Pasted text and generated values are not 
 - [React Router](https://reactrouter.com/)
 - [CodeMirror](https://codemirror.net/) for JSON, XML, and Markdown editing
 - [react-markdown](https://github.com/remarkjs/react-markdown) for Markdown previews
+- [qrcode](https://github.com/soldair/node-qrcode), [JsBarcode](https://github.com/lindell/JsBarcode), and [yaml](https://github.com/eemeli/yaml) for client-side generators and conversions
 
 ## Getting started
 
@@ -91,14 +97,6 @@ MindsKit is a static single-page application. Deploy it to a static host such as
 - Build command: `pnpm build`
 - Output directory: `dist`
 - SPA redirects: `public/_redirects`
-
-## Roadmap
-
-The following tools are listed in the app and still coming soon:
-
-- JWT Decoder
-- QR Code and Barcode generators
-- JSON → YAML and JSON → CSV converters
 
 ## License
 

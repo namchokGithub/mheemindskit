@@ -22,7 +22,7 @@ export function HtmlEncodeDecodePage() {
 }
 
 export function UnixTimestampPage() {
-  return <TextTransformPage title="Unix Timestamp" description="Convert between Unix timestamps and ISO date/time values." actionLabel="Convert" actionIcon={TimerReset} storageKey="unix-timestamp" inputPlaceholder="Enter a timestamp or date…" sample="1704067200" process={convertTimestamp} operations={[...quickOperations.timestamp]} />
+  return <TextTransformPage title="Unix Timestamp" description="Convert between Unix timestamps and ISO date/time values." actionLabel="Convert" actionIcon={TimerReset} storageKey="unix-timestamp" inputPlaceholder="Enter a timestamp or date…" sample="1704067200" samples={{ 'to-date': '1704067200', 'to-timestamp': '2024-01-01T00:00:00.000Z' }} process={convertTimestamp} operations={[...quickOperations.timestamp]} timeZone />
 }
 
 export function UuidPage() {

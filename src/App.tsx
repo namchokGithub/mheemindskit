@@ -11,6 +11,7 @@ import { JsonMinifierPage } from '@/pages/json-minifier-page'
 import { JsonValidatorPage } from '@/pages/json-validator-page'
 import { JwtDecoderPage } from '@/pages/jwt-decoder-page'
 import { BarcodePage, QrCodePage } from '@/pages/code-generators-pages'
+import { JsonToCsvPage, JsonToYamlPage } from '@/pages/json-converters-pages'
 import { LicensePage } from '@/pages/license-page'
 import { PrivacyPage } from '@/pages/privacy-page'
 import { Base64Page, HtmlEncodeDecodePage, RandomStringPage, UnixTimestampPage, UrlEncodeDecodePage, UuidPage } from '@/pages/quick-tools-pages'
@@ -44,6 +45,8 @@ export default function App() {
           <Route path="/generators/barcode" element={<BarcodePage />} />
           <Route path="/generators/random-string" element={<RandomStringPage />} />
           <Route path="/converters/unix-timestamp" element={<UnixTimestampPage />} />
+          <Route path="/converters/json-to-yaml" element={<JsonToYamlPage />} />
+          <Route path="/converters/json-to-csv" element={<JsonToCsvPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/license" element={<LicensePage />} />
           {tools

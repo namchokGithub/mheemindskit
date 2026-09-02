@@ -193,7 +193,6 @@ export const tools: ToolDefinition[] = [
     category: 'converters',
     path: '/converters/json-to-yaml',
     icon: FileCode,
-    comingSoon: true,
   },
   {
     id: 'json-to-csv',
@@ -202,7 +201,6 @@ export const tools: ToolDefinition[] = [
     category: 'converters',
     path: '/converters/json-to-csv',
     icon: Table2,
-    comingSoon: true,
   },
   {
     id: 'unix-timestamp',

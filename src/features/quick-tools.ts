@@ -44,8 +44,25 @@ export function convertHtml(input: string, operation: string): string {
   return element.innerHTML
 }
 
-export function convertTimestamp(input: string, operation: string): string {
+export function convertTimestamp(input: string, operation: string, _prefix?: string, _suffix?: string, timeZone = 'browser'): string {
   const date = operation === 'to-date' ? new Date(Number(input) * 1000) : new Date(input)
   if (Number.isNaN(date.getTime())) return 'Enter a valid timestamp or date.'
-  return operation === 'to-date' ? date.toISOString() : String(Math.floor(date.getTime() / 1000))
+  return operation === 'to-date' ? formatTimestampForTimeZone(date, timeZone === 'browser' ? undefined : timeZone) : String(Math.floor(date.getTime() / 1000))
+}
+
+function formatTimestampForTimeZone(date: Date, timeZone?: string): string {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hourCycle: 'h23',
+    timeZoneName: 'longOffset',
+  }).formatToParts(date)
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]))
+  const offset = values.timeZoneName === 'GMT' ? 'Z' : values.timeZoneName.replace('GMT', '')
+  return `${values.year}-${values.month}-${values.day}T${values.hour}:${values.minute}:${values.second}.${String(date.getMilliseconds()).padStart(3, '0')}${offset}`
 }
