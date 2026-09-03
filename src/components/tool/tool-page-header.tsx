@@ -29,7 +29,7 @@ export function ToolPageHeader({
         {title}
       </h1>
       <p className="text-sm text-muted-foreground">{description}</p>
-      <label className="flex w-fit items-center gap-1.5 text-xs text-muted-foreground">
+      <label className="flex w-full items-center gap-1.5 text-xs text-muted-foreground sm:w-fit">
         <Checkbox
           checked={enabled}
           onCheckedChange={(checked) => setEnabled(checked === true)}

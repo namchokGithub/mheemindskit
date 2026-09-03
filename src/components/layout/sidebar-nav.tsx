@@ -1,4 +1,4 @@
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight, ChevronsUpDown } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 
@@ -28,8 +28,23 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
     })
   }
 
+  const allCategoriesOpen = openCategories.size === categories.length
+
+  const toggleAllCategories = () => {
+    setOpenCategories(allCategoriesOpen ? new Set() : new Set(categories.map((category) => category.id)))
+  }
+
   return (
     <nav className="flex flex-col gap-1">
+      <button
+        type="button"
+        onClick={toggleAllCategories}
+        className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent/60 hover:text-foreground"
+        aria-label={allCategoriesOpen ? 'Collapse all menu groups' : 'Expand all menu groups'}
+      >
+        <ChevronsUpDown className="size-3.5" />
+        {allCategoriesOpen ? 'Collapse all' : 'Expand all'}
+      </button>
       {categories.map((category) => {
         const isOpen = openCategories.has(category.id)
         return (

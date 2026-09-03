@@ -23,6 +23,7 @@ import {
   ArrowDownUp,
   GitCompareArrows,
   TextQuote,
+  Languages,
   Shuffle,
   SplitSquareHorizontal,
   Heading,
@@ -325,6 +326,14 @@ export const tools: ToolDefinition[] = [
     category: 'converters',
     path: '/converters/number-base',
     icon: Binary,
+  },
+  {
+    id: 'numbers-to-letters',
+    name: 'Letters ↔ Numbers',
+    description: 'Convert alphabet letters, ASCII, and Roman numerals in either direction.',
+    category: 'converters',
+    path: '/converters/numbers-to-letters',
+    icon: Languages,
   },
   {
     id: 'color-converter',

@@ -130,7 +130,7 @@ export function JsonComparePage() {
   const differences = comparison?.ok ? comparison.differences : []
 
   return (
-    <div className="flex h-full min-h-0 flex-col gap-4">
+    <div className="flex min-h-0 flex-col gap-4 lg:h-full">
       <ToolPageHeader title="JSON Compare" description="Compare two JSON documents. Object key order is ignored; array order is compared." />
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm">
         <div className="flex flex-wrap items-center gap-2 border-b border-border bg-secondary/50 px-3 py-2">
@@ -140,9 +140,9 @@ export function JsonComparePage() {
           <Button type="button" variant="outline" size="sm" aria-pressed={wrap} onClick={() => setWrap((value) => !value)} className={cn(wrap && 'bg-accent text-accent-foreground')}><WrapText />Wrap</Button>
         </div>
 
-        <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-2">
-          <section className="flex min-h-72 min-w-0 flex-col border-b border-border lg:border-r"><div className="flex items-center justify-between gap-2 px-3 py-1.5"><span className="text-sm font-medium text-muted-foreground">JSON A</span><TextStats value={leftInput} /></div><CodeEditor bare value={leftInput} onChange={(value) => { setLeftInput(value); setComparison(null) }} placeholder="Paste the original JSON here…" wrap={wrap} ariaLabel="JSON A" errorLine={errorSide === 'left' ? comparisonError?.line : undefined} /></section>
-          <section className="flex min-h-72 min-w-0 flex-col border-b border-border"><div className="flex items-center justify-between gap-2 px-3 py-1.5"><span className="text-sm font-medium text-muted-foreground">JSON B</span><TextStats value={rightInput} /></div><CodeEditor bare value={rightInput} onChange={(value) => { setRightInput(value); setComparison(null) }} placeholder="Paste the JSON to compare here…" wrap={wrap} ariaLabel="JSON B" errorLine={errorSide === 'right' ? comparisonError?.line : undefined} /></section>
+        <div className="grid min-h-0 flex-1 grid-cols-1 divide-y divide-border lg:grid-cols-2 lg:divide-x lg:divide-y-0">
+          <section className="flex min-h-72 min-w-0 flex-col bg-editor/40 lg:min-h-0"><div className="flex items-center justify-between gap-2 px-3 py-1.5"><span className="text-sm font-medium text-muted-foreground">JSON A</span><TextStats value={leftInput} /></div><CodeEditor bare value={leftInput} onChange={(value) => { setLeftInput(value); setComparison(null) }} placeholder="Paste the original JSON here…" wrap={wrap} ariaLabel="JSON A" errorLine={errorSide === 'left' ? comparisonError?.line : undefined} /></section>
+          <section className="flex min-h-72 min-w-0 flex-col bg-muted/20 lg:min-h-0"><div className="flex items-center justify-between gap-2 px-3 py-1.5"><span className="text-sm font-medium text-muted-foreground">JSON B</span><TextStats value={rightInput} /></div><CodeEditor bare value={rightInput} onChange={(value) => { setRightInput(value); setComparison(null) }} placeholder="Paste the JSON to compare here…" wrap={wrap} ariaLabel="JSON B" errorLine={errorSide === 'right' ? comparisonError?.line : undefined} /></section>
         </div>
 
         <section className="min-h-52 shrink-0 border-t border-border">

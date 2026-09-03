@@ -4,6 +4,7 @@ import { useState, type ReactNode } from 'react'
 import { CodeEditor } from '@/components/tool/code-editor'
 import { CopyButton } from '@/components/tool/copy-button'
 import { ToolPageHeader } from '@/components/tool/tool-page-header'
+import { ToolStatus } from '@/components/tool/tool-status'
 import { TextStats } from '@/components/tool/text-stats'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
@@ -88,7 +89,7 @@ export function TextTransformPage(config: TextTransformPageConfig) {
   }
 
   return (
-    <div className="flex h-full min-h-0 flex-col gap-4">
+    <div className="flex min-h-0 flex-col gap-4 lg:h-full">
       <ToolPageHeader title={config.title} description={config.description} />
 
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm">
@@ -121,13 +122,13 @@ export function TextTransformPage(config: TextTransformPageConfig) {
           <Button type="button" variant="outline" size="sm" aria-pressed={wrap} onClick={() => setWrap((value) => !value)} className={cn(wrap && 'bg-accent text-accent-foreground')}><WrapText />Wrap</Button>
         </div>
 
-        <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-2">
-          <div className="flex min-h-0 min-w-0 flex-col border-b border-border lg:border-r lg:border-b-0">
+        <div className="grid min-h-0 flex-1 grid-cols-1 divide-y divide-border lg:grid-cols-2 lg:divide-x lg:divide-y-0">
+          <div className="flex min-h-65 min-w-0 flex-col bg-editor/40 lg:min-h-0">
             <div className="flex items-center justify-between gap-2 px-3 py-1.5"><span className="text-sm font-medium text-muted-foreground">Input</span><TextStats value={input} /></div>
             <CodeEditor bare value={input} onChange={handleInputChange} placeholder={config.inputPlaceholder} wrap={wrap} ariaLabel="Input" language={config.language ?? 'text'} />
           </div>
 
-          <div className="flex min-h-0 min-w-0 flex-col">
+          <div className="flex min-h-65 min-w-0 flex-col bg-muted/20 lg:min-h-0">
             <div className="flex items-center justify-between px-3 py-1.5"><span className="text-sm font-medium text-muted-foreground">Output</span><CopyButton value={hasRun ? output : ''} /></div>
             {config.outputPreview ? (
               <div className="h-full min-h-[260px] w-full overflow-auto bg-muted/30 p-4">
@@ -139,6 +140,7 @@ export function TextTransformPage(config: TextTransformPageConfig) {
           </div>
         </div>
       </div>
+      <ToolStatus state={hasRun ? 'valid' : 'idle'} validLabel={`${config.actionLabel} completed`} />
       {dialog}
     </div>
   )

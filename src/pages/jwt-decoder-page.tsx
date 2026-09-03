@@ -56,7 +56,7 @@ export function JwtDecoderPage() {
   const isExpired = decoded?.isExpired ?? false;
 
   return (
-    <div className="flex h-full min-h-0 flex-col gap-4">
+    <div className="flex min-h-0 flex-col gap-4 lg:h-full">
       <ToolPageHeader
         title="JWT Decoder"
         description="Decode a JSON Web Token to inspect its header and payload. Nothing leaves your browser."
@@ -72,10 +72,10 @@ export function JwtDecoderPage() {
         </Button>
       </div>
 
-      <ToolStatus state={error ? "invalid" : "idle"} message={error} />
+      <ToolStatus state={error ? "invalid" : decoded ? "valid" : "idle"} message={error} validLabel="JWT decoded successfully" />
 
       <div className="grid min-h-0 flex-1 gap-4 lg:grid-cols-2">
-        <section className="flex min-h-65 flex-col gap-2 lg:min-h-0">
+        <section className="flex min-h-72 flex-col gap-2 rounded-xl border border-border bg-editor/40 p-3 lg:min-h-0">
           <div className="flex items-center justify-between gap-2">
             <span className="text-sm font-medium text-muted-foreground">
               Encoded token
@@ -92,7 +92,7 @@ export function JwtDecoderPage() {
           />
         </section>
 
-        <section className="grid min-h-0 gap-4 lg:grid-rows-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+        <section className="grid min-h-0 gap-4 rounded-xl border border-border bg-muted/20 p-3 lg:grid-rows-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
           <DecodedSection
             title="Header"
             value={decoded?.header ?? ""}
@@ -156,7 +156,7 @@ function DecodedSection({
   placeholder: string;
 }) {
   return (
-    <div className="flex min-h-45 flex-col gap-2 lg:min-h-0">
+    <div className="flex min-h-52 flex-col gap-2 lg:min-h-0">
       <div className="flex items-center justify-between">
         <span className="text-sm font-medium text-muted-foreground">
           {title}

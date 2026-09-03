@@ -119,13 +119,13 @@ export function QrCodePage() {
             </Select>
           </label>
         </div>
-        <ToolStatus state={error ? "invalid" : "idle"} message={error} />
+        <ToolStatus state={error ? "invalid" : imageUrl ? "valid" : "idle"} message={error} validLabel="QR code generated successfully" />
         <div className="flex min-h-70 flex-1 items-center justify-center rounded-lg border border-dashed border-border bg-muted/30 p-6">
           {imageUrl ? (
             <img
               src={imageUrl}
               alt="Generated QR code"
-              className="max-h-72 max-w-full rounded bg-white p-2"
+          className="h-auto max-h-72 w-auto max-w-full rounded bg-white p-2 object-contain"
             />
           ) : (
             <span className="text-center text-sm text-muted-foreground">
@@ -265,7 +265,7 @@ export function BarcodePage() {
             />
           </label>
         </div>
-        <ToolStatus state={error ? "invalid" : "idle"} message={error} />
+        <ToolStatus state={error ? "invalid" : hasBarcode ? "valid" : "idle"} message={error} validLabel="Barcode generated successfully" />
         <div className="flex min-h-70 flex-1 items-center justify-center overflow-auto rounded-lg border border-dashed border-border bg-muted/30 p-6">
           <svg
             ref={barcodeRef}
@@ -310,7 +310,7 @@ function GeneratorLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-full min-h-0 flex-col gap-4">
+    <div className="flex min-h-0 flex-col gap-4 lg:h-full">
       <ToolPageHeader title={title} description={description} />
       <div className="flex shrink-0 flex-wrap gap-2">
         <Button type="button" onClick={onGenerate} disabled={disabled}>

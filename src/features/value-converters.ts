@@ -7,6 +7,94 @@ export function convertNumberBase(input: string, sourceBase: number, targetBase:
   return number.toString(targetBase).toUpperCase()
 }
 
+export type NumberLetterMapping = 'a1z26-uppercase' | 'a1z26-lowercase' | 'reverse-uppercase' | 'reverse-lowercase' | 'ascii' | 'roman'
+
+export const numberLetterMappings: Record<NumberLetterMapping, { label: string; description: string; example: string; range: string }> = {
+  'a1z26-uppercase': { label: 'A1Z26', description: 'Standard alphabet mapping', example: '1=A, 2=B, … 26=Z', range: '1–26' },
+  'a1z26-lowercase': { label: 'a1z26', description: 'Lowercase alphabet mapping', example: '1=a, 2=b, … 26=z', range: '1–26' },
+  'reverse-uppercase': { label: 'Reverse A1Z26', description: 'Reverse alphabet order', example: '1=Z, 2=Y, … 26=A', range: '1–26' },
+  'reverse-lowercase': { label: 'Reverse a1z26', description: 'Reverse lowercase order', example: '1=z, 2=y, … 26=a', range: '1–26' },
+  ascii: { label: 'ASCII', description: 'Printable ASCII characters', example: '65=A, 97=a, 48=0', range: '32–126' },
+  roman: { label: 'Roman numerals', description: 'Classic Roman numeral system', example: '1=I, 4=IV, 26=XXVI', range: '1–3999' },
+}
+
+const romanValues: Array<[number, string]> = [
+  [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'], [100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I'],
+]
+
+function toRoman(value: number) {
+  let remaining = value
+  let output = ''
+  for (const [amount, symbol] of romanValues) {
+    while (remaining >= amount) {
+      output += symbol
+      remaining -= amount
+    }
+  }
+  return output
+}
+
+export function convertNumbersToLetters(input: string, mapping: NumberLetterMapping): string {
+  if (!input.trim()) throw new Error('Enter one or more numbers to convert.')
+  if (!/\d/.test(input)) throw new Error('Enter at least one whole number.')
+
+  return input.replace(/\d+/g, (token) => {
+    const value = Number(token)
+    if (!Number.isSafeInteger(value)) throw new Error(`“${token}” is too large to convert safely.`)
+
+    if (mapping === 'ascii') {
+      if (value < 32 || value > 126) throw new Error(`ASCII values must be between 32 and 126; received ${value}.`)
+      return String.fromCharCode(value)
+    }
+
+    if (mapping === 'roman') {
+      if (value < 1 || value > 3999) throw new Error(`Roman numeral values must be between 1 and 3999; received ${value}.`)
+      return toRoman(value)
+    }
+
+    if (value < 1 || value > 26) throw new Error(`Alphabet mapping values must be between 1 and 26; received ${value}.`)
+    const alphabetPosition = mapping.startsWith('reverse') ? 27 - value : value
+    const letter = String.fromCharCode(64 + alphabetPosition)
+    return mapping.endsWith('lowercase') ? letter.toLowerCase() : letter
+  })
+}
+
+function fromRoman(token: string) {
+  const values: Record<string, number> = { I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000 }
+  const normalized = token.toUpperCase()
+  let total = 0
+  for (let index = 0; index < normalized.length; index += 1) {
+    const current = values[normalized[index]]
+    const next = values[normalized[index + 1]] ?? 0
+    total += current < next ? -current : current
+  }
+  if (total < 1 || total > 3999 || toRoman(total) !== normalized) throw new Error(`“${token}” is not a valid Roman numeral.`)
+  return total
+}
+
+export function convertLettersToNumbers(input: string, mapping: NumberLetterMapping): string {
+  if (!input.trim()) throw new Error('Enter letters or symbols to convert.')
+
+  if (mapping === 'ascii') {
+    return [...input].map((character) => {
+      const value = character.charCodeAt(0)
+      if (value < 32 || value > 126) throw new Error('ASCII conversion accepts printable characters only.')
+      return String(value)
+    }).join(' ')
+  }
+
+  if (mapping === 'roman') {
+    if (!/[mdclxvi]/i.test(input)) throw new Error('Enter at least one Roman numeral.')
+    return input.replace(/[mdclxvi]+/gi, (token) => String(fromRoman(token)))
+  }
+
+  if (!/[a-z]/i.test(input)) throw new Error('Enter at least one letter from A to Z.')
+  return input.replace(/[a-z]/gi, (letter) => {
+    const alphabetPosition = letter.toUpperCase().charCodeAt(0) - 64
+    return String(mapping.startsWith('reverse') ? 27 - alphabetPosition : alphabetPosition)
+  })
+}
+
 type Rgba = { red: number; green: number; blue: number; alpha: number }
 
 function validChannel(value: number) {

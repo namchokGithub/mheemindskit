@@ -56,7 +56,7 @@ export function JsonXmlConverterPage() {
   }
 
   return (
-    <div className="flex h-full min-h-0 flex-col gap-4">
+    <div className="flex min-h-0 flex-col gap-4 lg:h-full">
       <ToolPageHeader title="JSON ↔ XML" description="Convert JSON and XML locally in your browser." />
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm">
         <div className="flex shrink-0 flex-wrap items-center gap-2 border-b border-border bg-secondary/50 px-3 py-2">
@@ -75,6 +75,7 @@ export function JsonXmlConverterPage() {
           <section className="flex min-h-0 min-w-0 flex-col"><div className="flex items-center justify-between gap-2 px-3 py-1.5"><span className="text-sm font-medium text-muted-foreground">{outputFormat} output</span><CopyButton value={hasConverted ? output : ''} /></div><CodeEditor bare value={hasConverted ? output : ''} readOnly placeholder={`Converted ${outputFormat} will appear here.`} wrap ariaLabel={`${outputFormat} output`} language={isJsonToXml ? 'xml' : 'json'} /></section>
         </div>
       </div>
+      <ToolStatus state={error ? 'invalid' : hasConverted ? 'valid' : 'idle'} message={error} validLabel={`Converted to ${outputFormat} successfully`} />
       {dialog}
     </div>
   )

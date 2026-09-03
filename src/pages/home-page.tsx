@@ -18,7 +18,7 @@ export function HomePage() {
       </section>
 
       {categories.map((category) => (
-        <section key={category.id} className="space-y-3">
+        <section key={category.id} id={category.id} className="scroll-mt-6 space-y-3">
           <h2 className="text-sm font-semibold tracking-wide text-muted-foreground uppercase">
             {category.name}
           </h2>

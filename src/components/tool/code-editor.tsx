@@ -1,13 +1,14 @@
 import { json } from "@codemirror/lang-json";
 import { javascript } from "@codemirror/lang-javascript";
 import { markdown } from "@codemirror/lang-markdown";
+import { sql } from "@codemirror/lang-sql";
 import { xml } from "@codemirror/lang-xml";
 import { Decoration } from "@codemirror/view";
 import { EditorView } from "@codemirror/view";
 import { vscodeDark, vscodeLight } from "@uiw/codemirror-theme-vscode";
 import CodeMirror from "@uiw/react-codemirror";
-import { FileUp } from "lucide-react";
-import { useMemo, useRef } from "react";
+import { FileUp, Minus, Plus } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { useTheme } from "@/hooks/use-theme";
@@ -21,16 +22,21 @@ interface CodeEditorProps {
   readOnly?: boolean;
   wrap: boolean;
   ariaLabel: string;
-  language?: "json" | "xml" | "markdown" | "go" | "typescript" | "text";
+  language?: "json" | "xml" | "markdown" | "go" | "typescript" | "sql" | "text";
   errorLine?: number;
   bare?: boolean;
 }
 
-const fontTheme = EditorView.theme({
-  "&": { fontSize: "13px" },
-  ".cm-content": { fontFamily: "var(--font-mono)" },
-  ".cm-gutters": { fontFamily: "var(--font-mono)" },
-});
+const MIN_FONT_SIZE = 11;
+const MAX_FONT_SIZE = 20;
+
+function fontTheme(fontSize: number) {
+  return EditorView.theme({
+    "&": { fontSize: `${fontSize}px` },
+    ".cm-content": { fontFamily: "var(--font-mono)" },
+    ".cm-gutters": { fontFamily: "var(--font-mono)" },
+  });
+}
 
 const errorLineMark = Decoration.line({ class: "cm-error-line" });
 const goTokenPattern = /(`[^`]*`)|\b(type|struct|func|package|import|return|var|const|map|interface|any)\b|\b(string|bool|int|int64|float64|byte|rune)\b/g;
@@ -42,6 +48,7 @@ const importFileOptions = {
   markdown: { accept: ".md,.markdown,.txt,text/markdown,text/plain", extensions: ["md", "markdown", "txt"] },
   go: { accept: ".go,.txt,text/plain", extensions: ["go", "txt"] },
   typescript: { accept: ".ts,.tsx,.txt,text/plain", extensions: ["ts", "tsx", "txt"] },
+  sql: { accept: ".sql,.txt,text/plain,application/sql", extensions: ["sql", "txt"] },
   text: { accept: ".txt,.csv,.log,.md,text/plain,text/csv", extensions: ["txt", "csv", "log", "md"] },
 };
 
@@ -88,6 +95,7 @@ export function CodeEditor({
 }: CodeEditorProps) {
   const { mode } = useTheme();
   const importInputRef = useRef<HTMLInputElement>(null);
+  const [fontSize, setFontSize] = useState(13);
   const fileOptions = importFileOptions[language];
 
   const extensions = useMemo(() => {
@@ -100,14 +108,16 @@ export function CodeEditor({
             ? json()
             : language === "typescript"
               ? javascript({ typescript: true })
+              : language === "sql"
+                ? sql()
             : [];
-    const base = [fontTheme, languageExtension];
+    const base = [fontTheme(fontSize), languageExtension];
     const withLanguageHighlighting = language === "go" ? [...base, EditorView.decorations.of(goHighlightExtension(value))] : base;
     const withWrap = wrap ? [...withLanguageHighlighting, EditorView.lineWrapping] : withLanguageHighlighting;
     return errorLine
       ? [...withWrap, errorLineExtension(value, errorLine)]
       : withWrap;
-  }, [language, wrap, errorLine, value]);
+  }, [fontSize, language, wrap, errorLine, value]);
 
   const importFile = async (file: File | undefined) => {
     if (!file || !onChange) return;
@@ -132,7 +142,7 @@ export function CodeEditor({
     <div
       aria-label={ariaLabel}
       className={cn(
-        "relative h-full min-h-65 w-full overflow-hidden",
+        "flex h-full min-h-65 w-full flex-col overflow-hidden",
         readOnly ? "bg-muted/30" : "bg-editor",
         bare
           ? "transition-shadow"
@@ -141,47 +151,59 @@ export function CodeEditor({
               "focus-within:shadow-[0_0_0_1px_rgba(139,92,246,0.5),0_0_0_4px_rgba(139,92,246,0.08)]",
             ),
       )}>
-      {!readOnly && onChange && (
-        <>
-          <input
-            ref={importInputRef}
-            type="file"
-            accept={fileOptions.accept}
-            className="hidden"
-            onChange={(event) => {
-              void importFile(event.target.files?.[0]);
-              event.target.value = "";
-            }}
-          />
-          <Button
-            type="button"
-            size="xs"
-            variant="outline"
-            className="absolute top-2 right-2 z-10 bg-background/90 shadow-sm"
-            onClick={() => importInputRef.current?.click()}>
-            <FileUp />
-            Import
+      <div className="flex shrink-0 justify-end gap-1 border-b border-border bg-background/90 px-2 py-1.5">
+        <div className="flex overflow-hidden rounded-md border border-border bg-background/90 shadow-sm">
+          <Button type="button" size="xs" variant="ghost" className="rounded-none px-1.5" aria-label="Decrease editor font size" title="Decrease text size" onClick={() => setFontSize((size) => Math.max(MIN_FONT_SIZE, size - 1))} disabled={fontSize <= MIN_FONT_SIZE}>
+            <Minus />
           </Button>
-        </>
-      )}
-      <CodeMirror
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        readOnly={readOnly}
-        editable={!readOnly}
-        theme={mode === "dark" ? vscodeDark : vscodeLight}
-        extensions={extensions}
-        height="100%"
-        style={{ height: "100%" }}
-        basicSetup={{
-          lineNumbers: true,
-          foldGutter: true,
-          highlightActiveLine: !readOnly,
-          highlightActiveLineGutter: !readOnly,
-          autocompletion: false,
-        }}
-      />
+          <Button type="button" size="xs" variant="ghost" className="rounded-none border-l border-border px-1.5" aria-label="Increase editor font size" title="Increase text size" onClick={() => setFontSize((size) => Math.min(MAX_FONT_SIZE, size + 1))} disabled={fontSize >= MAX_FONT_SIZE}>
+            <Plus />
+          </Button>
+        </div>
+        {!readOnly && onChange && (
+          <>
+            <input
+              ref={importInputRef}
+              type="file"
+              accept={fileOptions.accept}
+              className="hidden"
+              onChange={(event) => {
+                void importFile(event.target.files?.[0]);
+                event.target.value = "";
+              }}
+            />
+            <Button
+              type="button"
+              size="xs"
+              variant="outline"
+              className="bg-background/90 shadow-sm"
+              onClick={() => importInputRef.current?.click()}>
+              <FileUp />
+              Import
+            </Button>
+          </>
+        )}
+      </div>
+      <div className="min-h-0 flex-1">
+        <CodeMirror
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          readOnly={readOnly}
+          editable={!readOnly}
+          theme={mode === "dark" ? vscodeDark : vscodeLight}
+          extensions={extensions}
+          height="100%"
+          style={{ height: "100%" }}
+          basicSetup={{
+            lineNumbers: true,
+            foldGutter: true,
+            highlightActiveLine: !readOnly,
+            highlightActiveLineGutter: !readOnly,
+            autocompletion: false,
+          }}
+        />
+      </div>
     </div>
   );
 }

@@ -57,7 +57,7 @@ function JsonConverterPage({ title, description, actionLabel, actionIcon, output
   }
 
   return (
-    <div className="flex h-full min-h-0 flex-col gap-4">
+    <div className="flex min-h-0 flex-col gap-4 lg:h-full">
       <ToolPageHeader title={title} description={description} />
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm">
         <div className="flex shrink-0 flex-wrap items-center gap-2 border-b border-border bg-secondary/50 px-3 py-2">
@@ -71,6 +71,7 @@ function JsonConverterPage({ title, description, actionLabel, actionIcon, output
           <section className="flex min-h-0 min-w-0 flex-col"><div className="flex items-center justify-between gap-2 px-3 py-1.5"><span className="text-sm font-medium text-muted-foreground">{outputLabel}</span><div className="flex shrink-0 items-center gap-2"><Button type="button" variant="outline" size="sm" onClick={() => download(output, `mindskit-output.${extension}`, extension === 'csv' ? 'text/csv;charset=utf-8' : 'text/yaml;charset=utf-8')} disabled={!hasConverted}><Download />Download</Button><CopyButton value={hasConverted ? output : ''} /></div></div><CodeEditor bare value={hasConverted ? output : ''} readOnly placeholder="Converted output will appear here." wrap ariaLabel={outputLabel} language="text" /></section>
         </div>
       </div>
+      <ToolStatus state={error ? 'invalid' : hasConverted ? 'valid' : 'idle'} message={error} validLabel={`${actionLabel} completed`} />
       {dialog}
     </div>
   )

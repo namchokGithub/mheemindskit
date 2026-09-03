@@ -9,16 +9,17 @@ import { tools } from '@/config/tools'
 import { cn } from '@/lib/utils'
 import type { ToolDefinition } from '@/types/tool'
 
-type QuickActionsState = {
+export type QuickActionsState = {
   favorites: string[]
   recent: string[]
   usage: Record<string, number>
 }
 
+export const QUICK_ACTIONS_UPDATED_EVENT = 'mindskit:quick-actions-updated'
 const STORAGE_KEY = 'mindskit:quick-actions'
 const EMPTY_STATE: QuickActionsState = { favorites: [], recent: [], usage: {} }
 
-function readState(): QuickActionsState {
+export function readQuickActionsState(): QuickActionsState {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (!stored) return EMPTY_STATE
@@ -37,11 +38,13 @@ function getTool(id: string): ToolDefinition | undefined {
   return tools.find((tool) => tool.id === id)
 }
 
-export function QuickActions({ sidebar = false }: { sidebar?: boolean }) {
+export function QuickActions({ variant = 'floating' }: { variant?: 'sidebar' | 'floating' | 'header' }) {
+  const sidebar = variant === 'sidebar'
+  const header = variant === 'header'
   const location = useLocation()
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
-  const [state, setState] = useState<QuickActionsState>(readState)
+  const [state, setState] = useState<QuickActionsState>(readQuickActionsState)
   const lastRecordedPath = useRef<string | null>(null)
 
   useEffect(() => {
@@ -59,6 +62,7 @@ export function QuickActions({ sidebar = false }: { sidebar?: boolean }) {
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+      window.dispatchEvent(new Event(QUICK_ACTIONS_UPDATED_EVENT))
     } catch {
       // localStorage unavailable — ignore
     }
@@ -97,12 +101,12 @@ export function QuickActions({ sidebar = false }: { sidebar?: boolean }) {
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
-        <Button type="button" size={sidebar ? 'sm' : 'icon-lg'} variant={sidebar ? 'outline' : 'default'} aria-label="Search tools" className={sidebar ? 'w-full justify-start' : 'fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] left-4 z-40 size-12 rounded-full shadow-[0_16px_28px_-14px_var(--primary)] sm:bottom-20 sm:left-6'}>
-          {sidebar ? <Search /> : <MessageCircleMore className="size-5" />}
+        <Button type="button" size={sidebar ? 'sm' : header ? 'icon' : 'icon-lg'} variant={sidebar ? 'outline' : header ? 'ghost' : 'default'} aria-label="Search tools" className={sidebar ? 'w-full justify-start' : header ? 'size-8' : 'fixed bottom-[calc(7rem+env(safe-area-inset-bottom))] left-4 z-50 size-12 rounded-full shadow-[0_16px_28px_-14px_var(--primary)] sm:bottom-20 sm:left-6'}>
+          {sidebar ? <Search /> : header ? <Search className="size-4" /> : <MessageCircleMore className="size-5" />}
           {sidebar && 'Search tools…'}
         </Button>
       </PopoverTrigger>
-      <PopoverContent side="top" align="start" className="flex max-h-[calc(100dvh-6rem)] w-[calc(100vw-2rem)] max-w-80 flex-col overflow-hidden p-2 sm:w-80">
+      <PopoverContent side={header ? 'bottom' : 'top'} align="start" className="flex max-h-[calc(100dvh-6rem)] w-[calc(100vw-2rem)] max-w-80 flex-col overflow-hidden p-2 sm:w-80">
         <div className="flex items-center justify-between px-1 py-1">
           <span className="text-sm font-semibold">Quick Actions</span>
           <Pin className="size-3.5 text-primary" />

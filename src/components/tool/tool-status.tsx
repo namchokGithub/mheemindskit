@@ -1,6 +1,4 @@
 import { AlertCircle, CheckCircle2 } from 'lucide-react'
-import { useEffect, useRef } from 'react'
-import { toast } from 'sonner'
 
 import { cn } from '@/lib/utils'
 
@@ -13,15 +11,6 @@ interface ToolStatusProps {
 }
 
 export function ToolStatus({ state, message, line, column, validLabel = 'Looks good' }: ToolStatusProps) {
-  const previousState = useRef(state)
-
-  useEffect(() => {
-    if (state === 'valid' && previousState.current !== 'valid') {
-      toast.success(validLabel)
-    }
-    previousState.current = state
-  }, [state, validLabel])
-
   if (state === 'idle') return null
 
   if (state === 'valid') {
