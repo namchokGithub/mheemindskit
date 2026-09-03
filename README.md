@@ -35,6 +35,7 @@ MindsKit is a focused collection of tools for formatting data, transforming text
 
 - UUID v4, generated in batches of 1, 5, 10, or a custom amount up to 200
 - Random String, with configurable count, length, character sets, uniqueness, prefix/suffix, and separators
+- Strong Password Generator with cryptographically secure Random, Memorable, and PIN modes; strength/entropy feedback; character exclusions; and no local password storage
 - QR Code generator, with size/error-correction options and PNG download
 - Barcode generator (Code 128, Code 39, EAN-13, EAN-8, and UPC-A), with SVG download
 
@@ -46,8 +47,10 @@ MindsKit is a focused collection of tools for formatting data, transforming text
 - JSON → Go Struct and JSON → TypeScript type generation
 - JSON ↔ XML conversion
 - Number Base Converter for binary, octal, decimal, and hexadecimal values
+- Letters ↔ Numbers for A1Z26, reverse alphabet, printable ASCII, and Roman numeral mappings
 - Color Converter for HEX, RGB, and HSL formats
 - Date Formatter for common date-time formats and time zones
+- Roman Numeral Date Converter for Gregorian `YYYY-MM-DD` / `DD/MM/YYYY` dates and `DD/MM/YYYY` Roman numeral dates
 
 ## Themes
 
@@ -58,7 +61,7 @@ Choose the system theme or one of six built-in themes. Light themes appear first
 
 ## Privacy
 
-All processing happens in the browser. Pasted text and generated values are not sent to a server or third-party API. Saving input locally is optional and off by default.
+All processing happens in the browser. Pasted text and generated values are not sent to a server or third-party API. Saving input locally is optional and off by default; generated passwords are never saved locally.
 
 ## Tech stack
 

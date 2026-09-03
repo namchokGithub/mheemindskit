@@ -16,6 +16,8 @@ import { JsonToTypeScriptPage } from '@/pages/json-to-typescript-page'
 import { JsonXmlConverterPage } from '@/pages/json-xml-converter-page'
 import { ColorConverterPage, DateFormatterPage, NumberBaseConverterPage } from '@/pages/value-converters-pages'
 import { NumbersToLettersPage } from '@/pages/numbers-to-letters-page'
+import { RomanNumeralDatePage } from '@/pages/roman-numeral-date-page'
+import { StrongPasswordGeneratorPage } from '@/pages/strong-password-generator-page'
 import { JsonValidatorPage } from '@/pages/json-validator-page'
 import { JwtDecoderPage } from '@/pages/jwt-decoder-page'
 import { BarcodePage, QrCodePage } from '@/pages/code-generators-pages'
@@ -63,6 +65,7 @@ export default function App() {
           <Route path="/generators/qr-code" element={<QrCodePage />} />
           <Route path="/generators/barcode" element={<BarcodePage />} />
           <Route path="/generators/random-string" element={<RandomStringPage />} />
+          <Route path="/generators/strong-password" element={<StrongPasswordGeneratorPage />} />
           <Route path="/converters/unix-timestamp" element={<UnixTimestampPage />} />
           <Route path="/converters/json-to-yaml" element={<JsonToYamlPage />} />
           <Route path="/converters/json-to-csv" element={<JsonToCsvPage />} />
@@ -73,6 +76,7 @@ export default function App() {
           <Route path="/converters/numbers-to-letters" element={<NumbersToLettersPage />} />
           <Route path="/converters/color" element={<ColorConverterPage />} />
           <Route path="/converters/date-formatter" element={<DateFormatterPage />} />
+          <Route path="/converters/roman-numeral-date" element={<RomanNumeralDatePage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/license" element={<LicensePage />} />
           {tools

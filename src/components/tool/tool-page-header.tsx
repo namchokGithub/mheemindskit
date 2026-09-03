@@ -8,9 +8,11 @@ import { useSaveLocally } from "@/hooks/use-save-locally";
 export function ToolPageHeader({
   title,
   description,
+  showRememberInput = true,
 }: {
   title: string;
   description: string;
+  showRememberInput?: boolean;
 }) {
   const { enabled, setEnabled } = useSaveLocally();
   const { pathname } = useLocation();
@@ -29,7 +31,7 @@ export function ToolPageHeader({
         {title}
       </h1>
       <p className="text-sm text-muted-foreground">{description}</p>
-      <label className="flex w-full items-center gap-1.5 text-xs text-muted-foreground sm:w-fit">
+      {showRememberInput && <label className="flex w-full items-center gap-1.5 text-xs text-muted-foreground sm:w-fit">
         <Checkbox
           checked={enabled}
           onCheckedChange={(checked) => setEnabled(checked === true)}
@@ -41,7 +43,7 @@ export function ToolPageHeader({
             Stored only in this browser
           </span>
         </span>
-      </label>
+      </label>}
     </div>
   );
 }

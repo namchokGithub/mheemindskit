@@ -95,6 +95,43 @@ export function convertLettersToNumbers(input: string, mapping: NumberLetterMapp
   })
 }
 
+type DateParts = { day: number; month: number; year: number }
+
+function assertValidDate({ day, month, year }: DateParts) {
+  if (!Number.isInteger(day) || !Number.isInteger(month) || !Number.isInteger(year) || year < 1 || year > 3999) throw new Error('Enter a year between 1 and 3999.')
+  const date = new Date(Date.UTC(year, month - 1, day))
+  if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) throw new Error('Enter a valid calendar date.')
+}
+
+function parseNumericDate(input: string): DateParts {
+  const value = input.trim()
+  const iso = value.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/)
+  const slash = value.match(/^(\d{1,2})\/(\d{1,2})\/(\d{1,4})$/)
+  if (!iso && !slash) throw new Error('Use YYYY-MM-DD or DD/MM/YYYY.')
+  const [, first, second, third] = iso ?? slash!
+  const date = iso ? { year: Number(first), month: Number(second), day: Number(third) } : { day: Number(first), month: Number(second), year: Number(third) }
+  assertValidDate(date)
+  return date
+}
+
+function formatNumericDate({ day, month, year }: DateParts) {
+  return `${String(day).padStart(2, '0')}/${String(month).padStart(2, '0')}/${String(year).padStart(4, '0')}`
+}
+
+export function convertDateToRoman(input: string) {
+  const { day, month, year } = parseNumericDate(input)
+  return `${toRoman(day)}/${toRoman(month)}/${toRoman(year)}`
+}
+
+export function convertRomanToDate(input: string) {
+  const parts = input.trim().split('/')
+  if (parts.length !== 3 || parts.some((part) => !/^[mdclxvi]+$/i.test(part.trim()))) throw new Error('Use Roman dates in DD/MM/YYYY form, for example III/IX/MMXXVI.')
+  const [day, month, year] = parts.map((part) => fromRoman(part.trim()))
+  const date = { day, month, year }
+  assertValidDate(date)
+  return formatNumericDate(date)
+}
+
 type Rgba = { red: number; green: number; blue: number; alpha: number }
 
 function validChannel(value: number) {

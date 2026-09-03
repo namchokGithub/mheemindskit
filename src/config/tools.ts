@@ -28,6 +28,7 @@ import {
   SplitSquareHorizontal,
   Heading,
   Table2,
+  ShieldCheck,
 } from 'lucide-react'
 
 import type { CategoryDefinition, ToolDefinition } from '@/types/tool'
@@ -269,6 +270,14 @@ export const tools: ToolDefinition[] = [
     path: '/generators/random-string',
     icon: Shuffle,
   },
+  {
+    id: 'strong-password-generator',
+    name: 'Strong Password Generator',
+    description: 'Generate strong random, memorable, or PIN passwords locally.',
+    category: 'generators',
+    path: '/generators/strong-password',
+    icon: ShieldCheck,
+  },
 
   // Converters
   {
@@ -349,6 +358,14 @@ export const tools: ToolDefinition[] = [
     description: 'Format dates and times in common date-time formats.',
     category: 'converters',
     path: '/converters/date-formatter',
+    icon: CalendarClock,
+  },
+  {
+    id: 'roman-numeral-date',
+    name: 'Roman Numeral Date',
+    description: 'Convert Gregorian dates to Roman numeral dates and back.',
+    category: 'converters',
+    path: '/converters/roman-numeral-date',
     icon: CalendarClock,
   },
 ]
