@@ -60,9 +60,14 @@
   gap: 0.5rem;
 }
 
+/* Keep input and output editors aligned when one panel has a Copy button. */
+main :is(section, div):has(> [aria-label]) > div:first-child {
+  min-height: 2.75rem;
+}
+
 @media (min-width: 1024px) {
   .tool-workspace-grid {
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     max-height: 560px;
   }
 

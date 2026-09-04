@@ -40,9 +40,10 @@ export function AppShell() {
 
   const favoriteTool = quickActions.favorites.map((id) => tools.find((tool) => tool.id === id)).find(Boolean);
   const isToolPage = tools.some((tool) => tool.path === pathname);
+  const isConstrainedPage = isToolPage || pathname === "/";
 
   return (
-    <div className="relative flex min-h-dvh flex-col overflow-x-hidden bg-background lg:h-dvh lg:overflow-hidden">
+    <div className="relative flex min-h-dvh flex-col overflow-x-hidden bg-background">
       <div
         aria-hidden="true"
         className="app-gradient-bg pointer-events-none fixed inset-0 -z-10"
@@ -120,14 +121,14 @@ export function AppShell() {
         </div>
       </header>
 
-      <div className="relative flex flex-1 overflow-visible lg:min-h-0 lg:overflow-hidden">
+      <div className="relative flex flex-1 overflow-visible">
         <aside
           className={sidebarVisible ? "absolute inset-y-0 left-0 z-30 hidden w-60 flex-col gap-3 overflow-y-auto border-r border-sidebar-border bg-sidebar p-4 shadow-xl shadow-black/10 lg:flex" : "hidden"}>
           <QuickActions variant="sidebar" />
           <SidebarNav />
         </aside>
-        <main className="flex min-w-0 flex-1 flex-col overflow-visible px-4 pt-[calc(3.5rem+1rem)] pb-4 sm:px-6 sm:pt-[calc(3.5rem+1.5rem)] sm:pb-6 lg:min-h-0 lg:overflow-y-auto lg:overflow-x-hidden lg:p-6">
-          <div className={isToolPage ? "flex min-h-0 w-full flex-1 flex-col lg:mx-auto lg:max-w-[1120px]" : "w-full"}>
+        <main className="flex min-w-0 flex-1 flex-col overflow-visible px-4 pt-[calc(3.5rem+1rem)] pb-4 sm:px-6 sm:pt-[calc(3.5rem+1.5rem)] sm:pb-6 lg:overflow-x-hidden lg:p-6">
+          <div className={isConstrainedPage ? "flex min-h-0 w-full flex-1 flex-col lg:mx-auto lg:max-w-[1120px]" : "w-full"}>
             <Outlet />
           </div>
         </main>

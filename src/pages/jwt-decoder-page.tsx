@@ -1,5 +1,5 @@
 import { KeyRound, ShieldAlert, ShieldCheck } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { CodeEditor } from "@/components/tool/code-editor";
 import { CopyButton } from "@/components/tool/copy-button";
@@ -8,9 +8,7 @@ import { ToolStatus } from "@/components/tool/tool-status";
 import { TextStats } from "@/components/tool/text-stats";
 import { Button } from "@/components/ui/button";
 import { decodeJwt, encodeJwt, type JwtHmacAlgorithm, verifyJwtSignature } from "@/features/jwt";
-import { usePersistedInput } from "@/hooks/use-persisted-input";
 import { useLargeInputConfirmation } from "@/hooks/use-large-input-confirmation";
-import { useSaveLocally } from "@/hooks/use-save-locally";
 
 const sampleToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ik1pbmRzS2l0IERlbW8iLCJpYXQiOjE3MDQwNjcyMDAsImV4cCI6MjUzNDAyMzAwMH0.signature";
@@ -23,6 +21,7 @@ export function JwtDecoderPage() {
       <ToolPageHeader
         title={mode === "decoder" ? "JWT Decoder" : "JWT Encoder"}
         description={mode === "decoder" ? "Decode a JSON Web Token to inspect its header and payload. Nothing leaves your browser." : "Create an HMAC-signed JSON Web Token locally in your browser."}
+        showRememberInput={false}
       />
       <div className="flex justify-center">
         <div className="inline-flex rounded-full bg-muted p-1 text-sm font-medium">
@@ -36,14 +35,21 @@ export function JwtDecoderPage() {
 }
 
 function JwtDecoder() {
-  const { enabled } = useSaveLocally();
-  const [input, setInput] = usePersistedInput("jwt-decoder", enabled);
+  const [input, setInput] = useState("");
   const [submittedToken, setSubmittedToken] = useState("");
   const [error, setError] = useState("");
   const [secret, setSecret] = useState("");
   const [secretIsBase64Url, setSecretIsBase64Url] = useState(false);
   const [signatureVerified, setSignatureVerified] = useState(false);
   const { confirm, dialog } = useLargeInputConfirmation();
+
+  useEffect(() => {
+    try {
+      localStorage.removeItem("mindskit:input:jwt-decoder");
+    } catch {
+      // localStorage unavailable — ignore
+    }
+  }, []);
 
   const decoded = useMemo(() => {
     if (!submittedToken) return null;
@@ -99,7 +105,7 @@ function JwtDecoder() {
 
       <ToolStatus state={error ? "invalid" : decoded ? "valid" : "idle"} message={error} validLabel="JWT decoded successfully" />
 
-      <div className="tool-workspace-grid grid min-h-0 flex-1 gap-4 lg:grid-cols-2">
+      <div className="tool-workspace-grid grid min-h-0 flex-1 gap-4 lg:min-h-[560px] lg:grid-cols-2">
         <section className="flex min-h-72 flex-col gap-2 rounded-xl border border-border bg-editor/40 p-3 lg:min-h-0">
           <div className="flex items-center justify-between gap-2">
             <span className="text-sm font-medium text-muted-foreground">
@@ -288,7 +294,7 @@ function JwtEncoder() {
 
       <ToolStatus state={error ? "invalid" : token ? "valid" : "idle"} message={error} validLabel="JWT generated successfully" />
 
-      <div className="tool-workspace-grid grid min-h-0 flex-1 gap-4 lg:grid-cols-2">
+      <div className="tool-workspace-grid grid min-h-0 flex-1 gap-4 lg:min-h-[560px] lg:grid-cols-2">
         <div className="grid min-h-0 gap-4 lg:grid-rows-[minmax(0,0.8fr)_minmax(0,1.2fr)_auto]">
           <EncoderEditor title="Header" label="Algorithm & Token Type" value={header} onChange={setHeader} placeholder="Enter JWT header JSON" />
           <EncoderEditor title="Payload" label="Data" value={payload} onChange={setPayload} placeholder="Enter JWT payload JSON" />
@@ -358,6 +364,7 @@ function DecodedSection({
         placeholder={placeholder}
         wrap
         ariaLabel={`Decoded JWT ${title.toLowerCase()}`}
+        compact
       />
     </div>
   );

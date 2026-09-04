@@ -26,6 +26,7 @@ interface CodeEditorProps {
   errorLine?: number;
   bare?: boolean;
   fitContent?: boolean;
+  compact?: boolean;
 }
 
 const MIN_FONT_SIZE = 11;
@@ -94,6 +95,7 @@ export function CodeEditor({
   errorLine,
   bare = false,
   fitContent = false,
+  compact = false,
 }: CodeEditorProps) {
   const { mode } = useTheme();
   const importInputRef = useRef<HTMLInputElement>(null);
@@ -146,6 +148,8 @@ export function CodeEditor({
       className={cn(
         fitContent
           ? "flex w-full flex-col overflow-hidden"
+          : compact
+            ? "flex h-full min-h-0 w-full flex-col overflow-hidden"
           : "flex h-full min-h-65 w-full flex-col overflow-hidden lg:max-h-[560px]",
         readOnly ? "bg-muted/30" : "bg-editor",
         bare

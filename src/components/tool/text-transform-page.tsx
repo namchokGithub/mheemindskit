@@ -92,7 +92,7 @@ export function TextTransformPage(config: TextTransformPageConfig) {
     <div className="flex min-h-0 flex-col gap-4 lg:h-full">
       <ToolPageHeader title={config.title} description={config.description} />
 
-      <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+      <div className="flex min-h-0 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm">
         <div className="flex flex-wrap items-center gap-2 border-b border-border bg-secondary/50 px-3 py-2">
           <Button type="button" size="sm" onClick={() => confirm(input, () => run())} disabled={!input}>
             <ActionIcon />
@@ -122,20 +122,20 @@ export function TextTransformPage(config: TextTransformPageConfig) {
           <Button type="button" variant="outline" size="sm" aria-pressed={wrap} onClick={() => setWrap((value) => !value)} className={cn(wrap && 'bg-accent text-accent-foreground')}><WrapText />Wrap</Button>
         </div>
 
-        <div className="tool-workspace-grid grid min-h-0 flex-1 grid-cols-1 divide-y divide-border lg:grid-cols-2 lg:divide-x lg:divide-y-0">
+        <div className="tool-workspace-grid grid min-h-0 grid-cols-1 divide-y divide-border lg:grid-cols-2 lg:divide-x lg:divide-y-0">
           <div className="flex min-h-65 min-w-0 flex-col bg-editor/40 lg:min-h-0">
             <div className="flex items-center justify-between gap-2 px-3 py-1.5"><span className="text-sm font-medium text-muted-foreground">Input</span><TextStats value={input} /></div>
-            <CodeEditor bare value={input} onChange={handleInputChange} placeholder={config.inputPlaceholder} wrap={wrap} ariaLabel="Input" language={config.language ?? 'text'} />
+            <CodeEditor bare value={input} onChange={handleInputChange} placeholder={config.inputPlaceholder} wrap={wrap} ariaLabel="Input" language={config.language ?? 'text'} fitContent />
           </div>
 
           <div className="flex min-h-65 min-w-0 flex-col bg-muted/20 lg:min-h-0">
             <div className="flex items-center justify-between px-3 py-1.5"><span className="text-sm font-medium text-muted-foreground">Output</span><CopyButton value={hasRun ? output : ''} /></div>
             {config.outputPreview ? (
-              <div className="h-full min-h-[260px] w-full overflow-auto bg-muted/30 p-4">
+              <div className="min-h-[12rem] max-h-[32rem] w-full overflow-auto bg-muted/30 p-4">
                 {hasRun ? config.outputPreview(output) : <span className="text-sm text-muted-foreground">Result will appear here.</span>}
               </div>
             ) : (
-              <CodeEditor bare value={hasRun ? output : ''} readOnly placeholder="Result will appear here." wrap={wrap} ariaLabel="Output" language={config.language ?? 'text'} />
+              <CodeEditor bare value={hasRun ? output : ''} readOnly placeholder="Result will appear here." wrap={wrap} ariaLabel="Output" language={config.language ?? 'text'} fitContent />
             )}
           </div>
         </div>
