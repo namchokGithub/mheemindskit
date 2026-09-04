@@ -1,6 +1,6 @@
 import { Menu, PanelLeftClose, PanelLeftOpen, Wrench } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 import mindskitLogo from "@/assets/mindskit.png";
 import { Footer } from "@/components/layout/footer";
@@ -18,8 +18,9 @@ import {
 } from "@/components/ui/sheet";
 
 export function AppShell() {
+  const { pathname } = useLocation();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [sidebarVisible, setSidebarVisible] = useState(true);
+  const [sidebarVisible, setSidebarVisible] = useState(false);
   const [quickActions, setQuickActions] = useState(readQuickActionsState);
 
   useEffect(() => {
@@ -38,6 +39,7 @@ export function AppShell() {
   }, [quickActions.usage]);
 
   const favoriteTool = quickActions.favorites.map((id) => tools.find((tool) => tool.id === id)).find(Boolean);
+  const isToolPage = tools.some((tool) => tool.path === pathname);
 
   return (
     <div className="relative flex min-h-dvh flex-col overflow-x-hidden bg-background lg:h-dvh lg:overflow-hidden">
@@ -45,7 +47,8 @@ export function AppShell() {
         aria-hidden="true"
         className="app-gradient-bg pointer-events-none fixed inset-0 -z-10"
       />
-      <header className="fixed inset-x-0 top-0 z-40 flex h-14 items-center gap-2 border-b border-border bg-background/80 px-4 backdrop-blur-md lg:sticky">
+      <header className="fixed inset-x-0 top-0 z-40 h-14 border-b border-border bg-background/80 px-4 backdrop-blur-md lg:sticky">
+        <div className="mx-auto flex h-full w-full max-w-[1120px] items-center gap-2">
         <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
           <SheetTrigger asChild>
             <Button
@@ -114,16 +117,19 @@ export function AppShell() {
           <div className="xl:hidden"><QuickActions variant="header" /></div>
           <ThemeSelector />
         </div>
+        </div>
       </header>
 
-      <div className="flex flex-1 overflow-visible lg:min-h-0 lg:overflow-hidden">
+      <div className="relative flex flex-1 overflow-visible lg:min-h-0 lg:overflow-hidden">
         <aside
-          className={sidebarVisible ? "hidden w-60 shrink-0 flex-col gap-3 overflow-y-auto border-r border-sidebar-border bg-sidebar p-4 lg:flex" : "hidden"}>
+          className={sidebarVisible ? "absolute inset-y-0 left-0 z-30 hidden w-60 flex-col gap-3 overflow-y-auto border-r border-sidebar-border bg-sidebar p-4 shadow-xl shadow-black/10 lg:flex" : "hidden"}>
           <QuickActions variant="sidebar" />
           <SidebarNav />
         </aside>
         <main className="flex min-w-0 flex-1 flex-col overflow-visible px-4 pt-[calc(3.5rem+1rem)] pb-4 sm:px-6 sm:pt-[calc(3.5rem+1.5rem)] sm:pb-6 lg:min-h-0 lg:overflow-y-auto lg:overflow-x-hidden lg:p-6">
-          <Outlet />
+          <div className={isToolPage ? "flex min-h-0 w-full flex-1 flex-col lg:mx-auto lg:max-w-[1120px]" : "w-full"}>
+            <Outlet />
+          </div>
         </main>
       </div>
 

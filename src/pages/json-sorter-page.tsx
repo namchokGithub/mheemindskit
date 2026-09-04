@@ -88,7 +88,7 @@ export function JsonSorterPage() {
           <Button type="button" variant="outline" size="sm" onClick={() => { setInput(''); resetResult() }} disabled={!input}><Eraser />Clear</Button>
           <Button type="button" variant="outline" size="sm" aria-pressed={wrap} onClick={() => setWrap((value) => !value)} className={cn(wrap && 'bg-accent text-accent-foreground')}><WrapText />Wrap</Button>
         </div>
-        <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-2">
+        <div className="tool-workspace-grid grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-2">
           <section className="flex min-h-0 min-w-0 flex-col border-b border-border lg:border-r lg:border-b-0"><div className="flex items-center justify-between gap-2 px-3 py-1.5"><span className="text-sm font-medium text-muted-foreground">JSON array input</span><TextStats value={input} /></div><CodeEditor bare value={input} onChange={(value) => { setInput(value); resetResult() }} placeholder="Paste an array of JSON objects here…" wrap={wrap} ariaLabel="JSON array input" errorLine={result && !result.ok ? result.line : undefined} /></section>
           <section className="flex min-h-0 min-w-0 flex-col"><div className="flex items-center justify-between gap-2 px-3 py-1.5"><span className="text-sm font-medium text-muted-foreground">Sorted JSON</span><CopyButton value={result?.ok ? result.output : ''} /></div><CodeEditor bare value={result?.ok ? result.output : ''} readOnly placeholder="Sorted JSON will appear here." wrap={wrap} ariaLabel="Sorted JSON" /></section>
         </div>

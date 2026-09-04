@@ -70,7 +70,7 @@ export function JsonXmlConverterPage() {
           <Button type="button" variant="outline" size="sm" onClick={() => { setInput(''); setOutput(''); setError(''); setHasConverted(false) }} disabled={!input && !output}><Eraser />Clear</Button>
         </div>
         {error && <div className="shrink-0 px-3 pt-3"><ToolStatus state="invalid" message={error} /></div>}
-        <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-2">
+        <div className="tool-workspace-grid grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-2">
           <section className="flex min-h-0 min-w-0 flex-col border-b border-border lg:border-r lg:border-b-0"><div className="flex items-center justify-between gap-2 px-3 py-1.5"><span className="text-sm font-medium text-muted-foreground">{inputFormat} input</span><TextStats value={input} /></div><CodeEditor bare value={input} onChange={(value) => { setInput(value); setError(''); setHasConverted(false) }} placeholder={`Paste ${inputFormat} here…`} wrap ariaLabel={`${inputFormat} input`} language={isJsonToXml ? 'json' : 'xml'} /></section>
           <section className="flex min-h-0 min-w-0 flex-col"><div className="flex items-center justify-between gap-2 px-3 py-1.5"><span className="text-sm font-medium text-muted-foreground">{outputFormat} output</span><CopyButton value={hasConverted ? output : ''} /></div><CodeEditor bare value={hasConverted ? output : ''} readOnly placeholder={`Converted ${outputFormat} will appear here.`} wrap ariaLabel={`${outputFormat} output`} language={isJsonToXml ? 'xml' : 'json'} /></section>
         </div>

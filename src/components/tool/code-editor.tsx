@@ -25,6 +25,7 @@ interface CodeEditorProps {
   language?: "json" | "xml" | "markdown" | "go" | "typescript" | "sql" | "text";
   errorLine?: number;
   bare?: boolean;
+  fitContent?: boolean;
 }
 
 const MIN_FONT_SIZE = 11;
@@ -92,6 +93,7 @@ export function CodeEditor({
   language = "json",
   errorLine,
   bare = false,
+  fitContent = false,
 }: CodeEditorProps) {
   const { mode } = useTheme();
   const importInputRef = useRef<HTMLInputElement>(null);
@@ -142,7 +144,9 @@ export function CodeEditor({
     <div
       aria-label={ariaLabel}
       className={cn(
-        "flex h-full min-h-65 w-full flex-col overflow-hidden",
+        fitContent
+          ? "flex w-full flex-col overflow-hidden"
+          : "flex h-full min-h-65 w-full flex-col overflow-hidden lg:max-h-[560px]",
         readOnly ? "bg-muted/30" : "bg-editor",
         bare
           ? "transition-shadow"
@@ -184,7 +188,7 @@ export function CodeEditor({
           </>
         )}
       </div>
-      <div className="min-h-0 flex-1">
+      <div className={fitContent ? "min-h-0" : "min-h-0 flex-1"}>
         <CodeMirror
           value={value}
           onChange={onChange}
@@ -193,8 +197,10 @@ export function CodeEditor({
           editable={!readOnly}
           theme={mode === "dark" ? vscodeDark : vscodeLight}
           extensions={extensions}
-          height="100%"
-          style={{ height: "100%" }}
+          height={fitContent ? undefined : "100%"}
+          minHeight={fitContent ? "12rem" : undefined}
+          maxHeight={fitContent ? "32rem" : undefined}
+          style={fitContent ? undefined : { height: "100%" }}
           basicSetup={{
             lineNumbers: true,
             foldGutter: true,

@@ -57,7 +57,7 @@ export function JsonStringifyPage() {
           <Button type="button" variant="outline" size="sm" aria-pressed={wrap} onClick={() => setWrap((value) => !value)} className={cn(wrap && 'bg-accent text-accent-foreground')}><WrapText />Wrap</Button>
         </div>
 
-        <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-2">
+        <div className="tool-workspace-grid grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-2">
           <section className="flex min-h-0 min-w-0 flex-col border-b border-border lg:border-r lg:border-b-0">
             <div className="flex items-center justify-between gap-2 px-3 py-1.5"><span className="text-sm font-medium text-muted-foreground">{inputIsJson ? 'JSON string input' : 'Text input'}</span><TextStats value={input} /></div>
             <CodeEditor bare value={input} onChange={(value) => { setInput(value); setResult(null) }} placeholder={inputIsJson ? 'Paste a JSON string, e.g. "Hello\\nworld"…' : 'Paste text here…'} wrap={wrap} ariaLabel="Input" language={inputIsJson ? 'json' : 'text'} errorLine={result && !result.ok ? result.line : undefined} />

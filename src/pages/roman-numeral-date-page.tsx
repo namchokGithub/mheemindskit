@@ -59,7 +59,7 @@ export function RomanNumeralDatePage() {
           <Button type="button" size="sm" variant="outline" onClick={useSample}><FileText />Sample</Button>
           <Button type="button" size="sm" variant="outline" onClick={() => { setInput(''); setOutput(''); setError('') }} disabled={!input && !output}><Eraser />Clear</Button>
         </div>
-        <div className="grid min-h-0 flex-1 grid-cols-1 divide-y divide-border lg:grid-cols-2 lg:divide-x lg:divide-y-0">
+        <div className="tool-workspace-grid grid min-h-0 flex-1 grid-cols-1 divide-y divide-border lg:grid-cols-2 lg:divide-x lg:divide-y-0">
           <section className="flex min-h-65 min-w-0 flex-col bg-editor/40 lg:min-h-0">
             <div className="flex items-center justify-between gap-2 px-3 py-1.5"><span className="text-sm font-medium text-muted-foreground">{isRomanOutput ? 'Gregorian date' : 'Roman numeral date'}</span><TextStats value={input} /></div>
             <CodeEditor bare value={input} onChange={(value) => { setInput(value); setOutput(''); setError('') }} placeholder={isRomanOutput ? 'YYYY-MM-DD or DD/MM/YYYY' : 'e.g. III/IX/MMXXVI'} wrap ariaLabel={isRomanOutput ? 'Gregorian date input' : 'Roman date input'} language="text" />

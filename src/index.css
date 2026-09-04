@@ -60,6 +60,17 @@
   gap: 0.5rem;
 }
 
+@media (min-width: 1024px) {
+  .tool-workspace-grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    max-height: 560px;
+  }
+
+  .formatter-workspace {
+    max-height: none;
+  }
+}
+
 .json-form-field {
   display: grid;
   grid-template-columns: minmax(7rem, 30%) minmax(0, 1fr);

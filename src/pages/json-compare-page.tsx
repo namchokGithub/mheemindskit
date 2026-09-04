@@ -140,7 +140,7 @@ export function JsonComparePage() {
           <Button type="button" variant="outline" size="sm" aria-pressed={wrap} onClick={() => setWrap((value) => !value)} className={cn(wrap && 'bg-accent text-accent-foreground')}><WrapText />Wrap</Button>
         </div>
 
-        <div className="grid min-h-0 flex-1 grid-cols-1 divide-y divide-border lg:grid-cols-2 lg:divide-x lg:divide-y-0">
+        <div className="tool-workspace-grid grid min-h-0 flex-1 grid-cols-1 divide-y divide-border lg:grid-cols-2 lg:divide-x lg:divide-y-0">
           <section className="flex min-h-72 min-w-0 flex-col bg-editor/40 lg:min-h-0"><div className="flex items-center justify-between gap-2 px-3 py-1.5"><span className="text-sm font-medium text-muted-foreground">JSON A</span><TextStats value={leftInput} /></div><CodeEditor bare value={leftInput} onChange={(value) => { setLeftInput(value); setComparison(null) }} placeholder="Paste the original JSON here…" wrap={wrap} ariaLabel="JSON A" errorLine={errorSide === 'left' ? comparisonError?.line : undefined} /></section>
           <section className="flex min-h-72 min-w-0 flex-col bg-muted/20 lg:min-h-0"><div className="flex items-center justify-between gap-2 px-3 py-1.5"><span className="text-sm font-medium text-muted-foreground">JSON B</span><TextStats value={rightInput} /></div><CodeEditor bare value={rightInput} onChange={(value) => { setRightInput(value); setComparison(null) }} placeholder="Paste the JSON to compare here…" wrap={wrap} ariaLabel="JSON B" errorLine={errorSide === 'right' ? comparisonError?.line : undefined} /></section>
         </div>

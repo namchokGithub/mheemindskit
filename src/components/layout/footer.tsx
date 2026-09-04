@@ -10,7 +10,7 @@ export function Footer() {
 
   return (
     <footer className="shrink-0 border-t border-border bg-background px-4 py-3 sm:px-6">
-      <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
+      <div className="mx-auto flex w-full max-w-[1120px] flex-col items-center gap-3 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
         <div>
           <p className="text-xs font-medium text-foreground">MindsKit</p>
           <p className="text-xs text-muted-foreground">

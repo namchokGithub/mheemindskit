@@ -72,7 +72,7 @@ export function FormatterPage(config: FormatterPageConfig) {
     <div className="flex min-h-0 flex-col gap-4 lg:h-full">
       <ToolPageHeader title={config.title} description={config.description} />
 
-      <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+      <div className="flex min-h-0 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm">
         <div className="flex flex-wrap items-center gap-2 border-b border-border bg-secondary/50 px-3 py-2">
           <Button
             type="button"
@@ -114,9 +114,9 @@ export function FormatterPage(config: FormatterPageConfig) {
           </Button>
         </div>
 
-        <div className="grid min-h-0 flex-1 grid-cols-1 divide-y divide-border lg:grid-cols-2 lg:divide-x lg:divide-y-0">
+        <div className="formatter-workspace tool-workspace-grid grid min-h-0 grid-cols-1 divide-y divide-border lg:grid-cols-2 lg:divide-x lg:divide-y-0">
           <div className="flex min-h-65 min-w-0 flex-col bg-editor/40 lg:min-h-0">
-            <div className="flex items-center justify-between gap-2 px-3 py-1.5">
+            <div className="flex min-h-11 items-center justify-between gap-2 px-3 py-1.5">
               <span className="text-sm font-medium text-muted-foreground">
                 Input
               </span>
@@ -130,11 +130,12 @@ export function FormatterPage(config: FormatterPageConfig) {
               wrap={wrap}
               ariaLabel="Input"
               errorLine={result && !result.ok ? result.line : undefined}
+              fitContent
             />
           </div>
 
           <div className="flex min-h-65 min-w-0 flex-col bg-muted/20 lg:min-h-0">
-            <div className="flex items-center justify-between gap-2 px-3 py-1.5">
+            <div className="flex min-h-11 items-center justify-between gap-2 px-3 py-1.5">
               <span className="text-sm font-medium text-muted-foreground">
                 Output
               </span>
@@ -168,6 +169,7 @@ export function FormatterPage(config: FormatterPageConfig) {
                 wrap={wrap}
                 ariaLabel="Output"
                 language={outputMode === "text" ? "text" : "json"}
+                fitContent
               />
             )}
           </div>

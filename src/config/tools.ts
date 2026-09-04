@@ -229,9 +229,9 @@ export const tools: ToolDefinition[] = [
     icon: Code2,
   },
   {
-    id: 'jwt-decoder',
-    name: 'JWT Decoder',
-    description: 'Decode a JSON Web Token to inspect its payload.',
+    id: 'jwt',
+    name: 'JWT Encoder / Decoder',
+    description: 'Decode, inspect, and create signed JSON Web Tokens.',
     category: 'encode-decode',
     path: '/encode-decode/jwt',
     icon: KeyRound,

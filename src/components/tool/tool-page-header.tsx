@@ -21,7 +21,7 @@ export function ToolPageHeader({
   const categoryName = categories.find((c) => c.id === category)?.name;
 
   return (
-    <div className="space-y-1.5">
+    <div className="max-w-[760px] space-y-1.5 lg:pt-3">
       {categoryName && (
         <p className="text-xs text-muted-foreground">
           {categoryName} / {title}
