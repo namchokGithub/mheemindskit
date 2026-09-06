@@ -34,7 +34,7 @@ import {
 import type { CategoryDefinition, ToolDefinition } from '@/types/tool'
 
 export const categories: CategoryDefinition[] = [
-  { id: 'formatters', name: 'Special Tools' },
+  { id: 'sql', name: 'SQL' },
   { id: 'json', name: 'JSON' },
   { id: 'xml', name: 'XML' },
   { id: 'text-tools', name: 'Text Tools' },
@@ -143,12 +143,60 @@ export const tools: ToolDefinition[] = [
     icon: FileCode2,
   },
 
-  // Formatters
+  // SQL
+  {
+    id: 'sql-formatter',
+    name: 'SQL Formatter',
+    description: 'Format PostgreSQL, MySQL, and SQL Server queries.',
+    category: 'sql',
+    path: '/sql/formatter',
+    icon: AlignLeft,
+  },
+  {
+    id: 'sql-minifier',
+    name: 'SQL Minifier',
+    description: 'Remove SQL comments and unnecessary whitespace safely.',
+    category: 'sql',
+    path: '/sql/minify',
+    icon: Shrink,
+  },
+  {
+    id: 'sql-parameters',
+    name: 'SQL Parameters Preview',
+    description: 'Preview SQL with JSON parameter values substituted locally.',
+    category: 'sql',
+    path: '/sql/parameters',
+    icon: Braces,
+  },
+  {
+    id: 'create-table-types',
+    name: 'CREATE TABLE → Types',
+    description: 'Generate TypeScript interfaces or Go structs from SQL DDL.',
+    category: 'sql',
+    path: '/sql/create-table-types',
+    icon: FileCode2,
+  },
+  {
+    id: 'sql-syntax-checker',
+    name: 'SQL Syntax Checker',
+    description: 'Check SQL parser syntax for a selected dialect.',
+    category: 'sql',
+    path: '/sql/syntax-checker',
+    icon: CheckCircle2,
+  },
+  {
+    id: 'sql-insert',
+    name: 'JSON / CSV → INSERT',
+    description: 'Generate batched SQL INSERT statements from JSON or CSV.',
+    category: 'sql',
+    path: '/sql/insert',
+    icon: Table2,
+  },
   {
     id: 'sql-in-clause',
-    name: 'UUID → SQL IN',
-    description: 'Turn UUIDs into a SQL WHERE … IN clause.',
-    category: 'formatters',
+    name: 'SQL IN Builder',
+    description: 'Build IN or NOT IN clauses from UUIDs, text, or numbers.',
+    category: 'sql',
     path: '/formatters/sql-in',
     icon: ListFilter,
   },

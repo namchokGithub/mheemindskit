@@ -22,6 +22,8 @@ import { JsonValidatorPage } from '@/pages/json-validator-page'
 import { JwtDecoderPage } from '@/pages/jwt-decoder-page'
 import { BarcodePage, QrCodePage } from '@/pages/code-generators-pages'
 import { JsonToCsvPage, JsonToYamlPage } from '@/pages/json-converters-pages'
+import { SqlFormatterPage, SqlInsertPage, SqlMinifierPage } from '@/pages/sql-tools-pages'
+import { CreateTableTypesPage, SqlParametersPage, SqlSyntaxCheckerPage } from '@/pages/sql-advanced-pages'
 import { SqlInClausePage } from '@/pages/sql-in-clause-page'
 import { LicensePage } from '@/pages/license-page'
 import { PrivacyPage } from '@/pages/privacy-page'
@@ -50,6 +52,12 @@ export default function App() {
           <Route path="/xml/validator" element={<XmlValidatorPage />} />
           <Route path="/xml/wsdl-formatter" element={<XmlFormatterPage title="WSDL Formatter" description="Beautify and validate WSDL XML documents." storageKey="wsdl-formatter" />} />
           <Route path="/xml/soap-formatter" element={<XmlFormatterPage title="SOAP Formatter" description="Beautify and validate SOAP XML messages." storageKey="soap-formatter" />} />
+          <Route path="/sql/formatter" element={<SqlFormatterPage />} />
+          <Route path="/sql/minify" element={<SqlMinifierPage />} />
+          <Route path="/sql/parameters" element={<SqlParametersPage />} />
+          <Route path="/sql/create-table-types" element={<CreateTableTypesPage />} />
+          <Route path="/sql/syntax-checker" element={<SqlSyntaxCheckerPage />} />
+          <Route path="/sql/insert" element={<SqlInsertPage />} />
           <Route path="/formatters/sql-in" element={<SqlInClausePage />} />
           <Route path="/text-tools/remove-spaces" element={<RemoveSpacesPage />} />
           <Route path="/text-tools/make-one-line" element={<MakeOneLinePage />} />

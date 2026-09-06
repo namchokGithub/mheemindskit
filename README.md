@@ -14,7 +14,19 @@ MindsKit is a focused collection of tools for formatting data, transforming text
 
 - JSON Formatter, Minifier, and Validator
 - XML Formatter, Minifier, and Validator
-- UUID → SQL IN, for turning UUID lists into `WHERE id IN (...)` clauses
+
+### SQL
+
+- SQL Formatter with PostgreSQL, MySQL, and SQL Server dialects, indentation, and keyword casing
+- SQL Minifier that removes comments and unnecessary whitespace while keeping quoted values and identifiers intact
+- SQL Parameters Preview for `?`, `$1`, and `:name` placeholders with JSON values; output is for debugging only
+- CREATE TABLE → Types for common scalar columns in TypeScript or Go
+- SQL Syntax Checker for parser-level checks against PostgreSQL, MySQL, or SQL Server
+- SQL IN Builder for UUIDs, text, or numbers, with input separators, duplicate removal, and `IN` / `NOT IN`; the existing `/formatters/sql-in` link remains valid
+- JSON / CSV → INSERT with schema/table naming, identifier and literal escaping, `NULL` handling, and batches of 1–1000 rows
+- Copy or download generated SQL as a `.sql` file; all processing stays in the browser and no queries are executed
+
+CSV requires a header and preserves values as text, including leading zeros. Empty fields can optionally become `NULL`. JSON requires a flat array of objects; missing fields become `NULL`, and large integers should be supplied as strings. The formatter does not support stored procedures or custom delimiters.
 
 ### Text tools
 
@@ -71,6 +83,7 @@ All processing happens in the browser. Pasted text and generated values are not 
 - [shadcn/ui](https://ui.shadcn.com/) and [Radix UI](https://www.radix-ui.com/)
 - [React Router](https://reactrouter.com/)
 - [CodeMirror](https://codemirror.net/) for JSON, XML, Markdown, and TypeScript editing
+- [sql-formatter](https://github.com/sql-formatter-org/sql-formatter) for dialect-aware SQL formatting
 - [react-markdown](https://github.com/remarkjs/react-markdown) for Markdown previews
 - [qrcode](https://github.com/soldair/node-qrcode), [JsBarcode](https://github.com/lindell/JsBarcode), and [yaml](https://github.com/eemeli/yaml) for client-side generators and conversions
 
@@ -97,6 +110,7 @@ The development server opens at [http://localhost:5173](http://localhost:5173).
 ```bash
 pnpm lint
 pnpm build
+pnpm test:sql # SQL regression tests; requires Node.js 22.18+ or 24+
 ```
 
 ### Deployment
