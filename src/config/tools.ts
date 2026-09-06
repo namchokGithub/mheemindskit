@@ -93,6 +93,14 @@ export const tools: ToolDefinition[] = [
     path: '/formatters/json-compare',
     icon: GitCompareArrows,
   },
+  {
+    id: 'json-data-generator',
+    name: 'JSON Data Generator',
+    description: 'Generate local JSON records from a configurable field schema.',
+    category: 'json',
+    path: '/json/generator',
+    icon: Shuffle,
+  },
   // XML
   {
     id: 'xml-formatter',

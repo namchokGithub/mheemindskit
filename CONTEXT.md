@@ -41,12 +41,12 @@ Last checked against source: 2026-09-06.
 
 ## Current Scope
 
-There are 44 registered tools in seven categories. Exact paths and metadata live in `src/config/tools.ts`; implemented route bindings live in `src/App.tsx`.
+There are 45 registered tools in seven categories. Exact paths and metadata live in `src/config/tools.ts`; implemented route bindings live in `src/App.tsx`.
 
 | Category | Tools |
 | --- | --- |
 | SQL (`sql`) | SQL Formatter, SQL Minifier, SQL Parameters Preview, CREATE TABLE → Types, SQL Syntax Checker, SQL IN Builder, JSON / CSV → INSERT |
-| JSON (`json`) | Formatter, Minifier, Validator, Stringify/Parse, Sorter, Compare |
+| JSON (`json`) | Formatter, Minifier, Validator, Stringify/Parse, Sorter, Compare, Data Generator |
 | XML (`xml`) | Formatter, Minify, Viewer, Validator, WSDL Formatter, SOAP Formatter |
 | Text Tools (`text-tools`) | Remove Spaces, Make One Line, Text Decoration, Markdown, Split Text, Join Text |
 | Encode / Decode (`encode-decode`) | Base64, URL, HTML, JWT Encoder / Decoder |
@@ -58,6 +58,7 @@ There are 44 registered tools in seven categories. Exact paths and metadata live
 - JWT supports header/payload inspection, expiry status, and optional HMAC signature verification, plus creation of signed tokens using HS256/HS384/HS512. Decoding alone does not verify authenticity. Implementation lives in `src/features/jwt.ts` and `src/pages/jwt-decoder-page.tsx`.
 - Strong Password Generator supports Random, Memorable, and PIN modes, with cryptographically secure randomness and strength/entropy feedback.
 - QR codes support PNG download; barcodes support SVG download. JSON → YAML/CSV supports output downloads. Markdown includes a rendered preview.
+- JSON Data Generator (`/json/generator`) builds flat JSON object arrays from a local field schema: UUID, running ID, fictional name/email, boolean, integer, decimal, date/time, text, or enum. It supports nullable and unique fields, 1–1000 records, indentation, copy/download, and a one-time `sessionStorage` transfer to SQL INSERT. Generated values use Web Crypto; no generated data is sent to a server.
 - SQL pages share `src/pages/sql-tools-pages.tsx`, `src/pages/sql-advanced-pages.tsx`, and processing in `src/features/sql.ts`. Formatter uses `/sql/formatter`; Minifier uses `/sql/minify`; Parameters Preview uses `/sql/parameters`; CREATE TABLE → Types uses `/sql/create-table-types`; Syntax Checker uses `/sql/syntax-checker`; INSERT uses `/sql/insert`; IN Builder retains `/formatters/sql-in` and the `sql-in-clause` tool ID/storage key. The old Special Tools category is replaced by SQL.
 - SQL tools support PostgreSQL, MySQL, and SQL Server. IN Builder accepts raw text/UUIDs or numeric literals with explicit line, CSV, or whitespace separators, deduplication, and IN/NOT IN. INSERT accepts flat JSON object arrays or CSV with unique headers; missing JSON fields become NULL, CSV stays text, and empty CSV fields optionally become NULL. Batch size is 1–1000. Unsupported nested values and unsafe JSON integers are rejected. SQL is generated locally, never executed.
 - SQL identifiers and values are escaped per dialect. PostgreSQL backslashes use E-strings; SQL Server uses Unicode N-strings; MySQL uses utf8mb4 literals and hexadecimal conversion for backslash-containing text to avoid SQL-mode ambiguity. Outputs can be copied or downloaded as `.sql` files.
@@ -90,11 +91,11 @@ pnpm dev       # Vite development server, opens the browser
 pnpm lint      # Oxlint
 pnpm build     # TypeScript project build followed by Vite production build
 pnpm preview   # Preview the production build
-pnpm test:sql  # SQL regression tests (Node.js 22.18+ or 24+)
+pnpm test:sql  # SQL and JSON generator regression tests (Node.js 22.18+ or 24+)
 ```
 
 - Use a Node.js version compatible with the installed Vite/package versions.
-- `tests/sql.test.ts` uses the Node test runner for SQL parsing, escaping, dialect formatting, numeric validation, and INSERT batching. Other tools do not yet have a dedicated automated suite. Lint/build and feature tests do not replace browser checks for tool behavior, storage, file import/download, clipboard, navigation, and responsive/theme behavior.
+- `tests/sql.test.ts` and `tests/json-data-generator.test.ts` use the Node test runner for SQL behavior plus generator schemas, constraints, and unique-value failures. Other tools do not yet have a dedicated automated suite. Lint/build and feature tests do not replace browser checks for tool behavior, storage, file import/download, clipboard, navigation, and responsive/theme behavior.
 
 ### Adding or Changing a Tool
 

@@ -1,5 +1,5 @@
 import { Braces, Download, Eraser, FileText, Shrink } from 'lucide-react'
-import { useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 
 import { CodeEditor } from '@/components/tool/code-editor'
 import { CopyButton } from '@/components/tool/copy-button'
@@ -50,6 +50,21 @@ export function SqlToolsPage({ tool }: { tool: SqlTool }) {
   const [busy, setBusy] = useState(false)
   const revision = useRef(0)
   const { confirm, dialog } = useLargeInputConfirmation()
+
+  useEffect(() => {
+    if (tool !== 'insert') return
+    try {
+      const transferredJson = sessionStorage.getItem('mindskit:transfer:json-insert')
+      if (!transferredJson) return
+      sessionStorage.removeItem('mindskit:transfer:json-insert')
+      queueMicrotask(() => {
+        setInput(transferredJson)
+        setSource('json')
+      })
+    } catch {
+      // sessionStorage may be unavailable; use the regular input instead.
+    }
+  }, [tool, setInput])
 
   const invalidate = () => { revision.current++; setOutput(''); setError(''); setBusy(false) }
   const update = <T,>(setter: (value: T) => void) => (value: T) => { invalidate(); setter(value) }

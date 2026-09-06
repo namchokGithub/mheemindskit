@@ -13,6 +13,7 @@ MindsKit is a focused collection of tools for formatting data, transforming text
 ### Formatters
 
 - JSON Formatter, Minifier, and Validator
+- JSON Data Generator for schema-based fictional records, with copy/download and transfer to SQL INSERT
 - XML Formatter, Minifier, and Validator
 
 ### SQL
@@ -110,7 +111,7 @@ The development server opens at [http://localhost:5173](http://localhost:5173).
 ```bash
 pnpm lint
 pnpm build
-pnpm test:sql # SQL regression tests; requires Node.js 22.18+ or 24+
+pnpm test:sql # SQL and JSON generator regression tests; requires Node.js 22.18+ or 24+
 ```
 
 ### Deployment

@@ -22,6 +22,7 @@ import { JsonValidatorPage } from '@/pages/json-validator-page'
 import { JwtDecoderPage } from '@/pages/jwt-decoder-page'
 import { BarcodePage, QrCodePage } from '@/pages/code-generators-pages'
 import { JsonToCsvPage, JsonToYamlPage } from '@/pages/json-converters-pages'
+import { JsonDataGeneratorPage } from '@/pages/json-data-generator-page'
 import { SqlFormatterPage, SqlInsertPage, SqlMinifierPage } from '@/pages/sql-tools-pages'
 import { CreateTableTypesPage, SqlParametersPage, SqlSyntaxCheckerPage } from '@/pages/sql-advanced-pages'
 import { SqlInClausePage } from '@/pages/sql-in-clause-page'
@@ -46,6 +47,7 @@ export default function App() {
           <Route path="/formatters/json-stringify" element={<JsonStringifyPage />} />
           <Route path="/formatters/json-sorter" element={<JsonSorterPage />} />
           <Route path="/formatters/json-compare" element={<JsonComparePage />} />
+          <Route path="/json/generator" element={<JsonDataGeneratorPage />} />
           <Route path="/formatters/xml" element={<XmlFormatterPage />} />
           <Route path="/xml/minify" element={<XmlFormatterPage title="XML Minify" description="Compact XML and validate it before sharing." storageKey="xml-minifier" />} />
           <Route path="/xml/viewer" element={<XmlViewerPage />} />
