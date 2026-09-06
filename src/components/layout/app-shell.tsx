@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 import mindskitLogo from "@/assets/mindskit.png";
+import appBackground from "@/assets/bg.png";
 import { Footer } from "@/components/layout/footer";
 import { SidebarNav } from "@/components/layout/sidebar-nav";
 import { QUICK_ACTIONS_UPDATED_EVENT, QuickActions, readQuickActionsState } from "@/components/layout/quick-actions";
@@ -43,10 +44,15 @@ export function AppShell() {
   const isConstrainedPage = isToolPage || pathname === "/";
 
   return (
-    <div className="relative flex min-h-dvh flex-col overflow-x-hidden bg-background">
+    <div className="relative isolate flex min-h-dvh flex-col overflow-x-hidden bg-background">
       <div
         aria-hidden="true"
         className="app-gradient-bg pointer-events-none fixed inset-0 -z-10"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-x-0 bottom-0 -z-10 h-[min(56vw,58rem)] bg-contain bg-bottom bg-no-repeat opacity-70"
+        style={{ backgroundImage: `url(${appBackground})` }}
       />
       <header className="fixed inset-x-0 top-0 z-40 h-14 border-b border-border bg-background/80 px-4 backdrop-blur-md lg:sticky">
         <div className="mx-auto flex h-full w-full max-w-[1120px] items-center gap-2">
