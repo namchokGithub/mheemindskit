@@ -24,7 +24,7 @@ Last checked against source: 2026-09-06.
 - **Entry point:** `src/main.tsx` wraps the app in `StrictMode`, `ThemeProvider`, `SaveLocallyProvider`, and `BrowserRouter`.
 - **Tool catalog:** `src/config/tools.ts` defines categories and tool metadata (id, name, description, category, path, icon, optional `comingSoon`); types live in `src/types/tool.ts`. Navigation, home, search, and category labels use this catalog.
 - **Routing:** `src/App.tsx` explicitly maps implemented paths to page components. Only `comingSoon` routes are generated from the catalog. Page titles/descriptions are also passed locally in several pages, so metadata is not fully centralized; keep these definitions consistent when changing tools.
-- **Layout:** `src/components/layout/app-shell.tsx` provides shared navigation, a collapsible desktop sidebar, mobile Sheet navigation, theme selection, Quick Actions, footer, and an `Outlet`. Quick Actions supports search, pinned tools, recent tools, and usage counts.
+- **Layout:** `src/components/layout/app-shell.tsx` provides shared navigation, a collapsible desktop sidebar, mobile Sheet navigation, theme selection, Quick Actions, footer, and an `Outlet`. Quick Actions supports search, pinned tools, recent tools, and usage counts. The app shell is an isolated stacking context so decorative background layers remain behind the interface instead of falling behind the page body.
 - **Pages:** `src/pages/*` compose controls, state, and feature functions. Some related tools share page files or configurable page components.
 - **Feature logic:** `src/features/formatters/*` handles JSON/XML formatting and validation. Other modules under `src/features/` cover text, SQL IN clauses, JWT, password generation, quick tools, JSON conversions/type generation, and value/date conversions. Keep reusable processing separate from UI where practical; some tool-specific logic currently remains in pages.
 - **Results:** Formatter functions use `FormatResult` / `ValidateResult` from `src/types/format.ts`, with error messages and optional line/column positions. Other feature modules have their own return types or throw errors handled by pages; there is no single result contract for all tools.
@@ -82,6 +82,7 @@ There are 45 registered tools in seven categories. Exact paths and metadata live
 - `src/hooks/use-theme.tsx` applies `data-theme` and the `dark` class to `<html>` and persists the preference. CSS tokens in `src/index.css` control theme colors; the palette is no longer a single violet accent.
 - `index.html` loads the external `public/theme-init.js` script before React mounts to reduce theme flash. Keep its theme IDs/defaults synchronized with `src/config/themes.ts` when changing themes.
 - CodeMirror and sonner use the resolved light/dark mode.
+- `src/assets/bg.png` is transparent decorative artwork rendered by `AppShell` as a fixed, bottom-aligned, non-repeating layer. It uses `bg-contain`, scales to at most `56vw` / `58rem` height, and is kept at 70% opacity so page content stays legible. Keep it behind content and avoid applying it as a full-viewport `cover` image.
 
 ## Development and Validation
 

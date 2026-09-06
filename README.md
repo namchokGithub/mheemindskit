@@ -72,6 +72,8 @@ Choose the system theme or one of six built-in themes. Light themes appear first
 - Pearl Light, Mint Frost, Amber Dawn
 - Midnight Violet, Aurora Blue, Cyber Rose
 
+The shared app shell layers the transparent [background artwork](src/assets/bg.png) at the bottom of the viewport behind the interface. It preserves the artwork's aspect ratio and adapts to every theme without affecting editor or card readability.
+
 ## Privacy
 
 All processing happens in the browser. Pasted text and generated values are not sent to a server or third-party API. Saving input locally is optional and off by default; generated passwords are never saved locally.
