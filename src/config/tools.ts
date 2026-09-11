@@ -9,6 +9,7 @@ import {
   Clock,
   Code2,
   Combine,
+  Crop,
   Eraser,
   FileCode,
   FileCode2,
@@ -29,6 +30,7 @@ import {
   Heading,
   Table2,
   ShieldCheck,
+  Wand2,
 } from 'lucide-react'
 
 import type { CategoryDefinition, ToolDefinition } from '@/types/tool'
@@ -41,6 +43,7 @@ export const categories: CategoryDefinition[] = [
   { id: 'encode-decode', name: 'Encode / Decode' },
   { id: 'generators', name: 'Generators' },
   { id: 'converters', name: 'Converters' },
+  { id: 'images', name: 'Images' },
 ]
 
 export const tools: ToolDefinition[] = [
@@ -423,6 +426,24 @@ export const tools: ToolDefinition[] = [
     category: 'converters',
     path: '/converters/roman-numeral-date',
     icon: CalendarClock,
+  },
+
+  // Images
+  {
+    id: 'image-crop',
+    name: 'Image Crop',
+    description: 'Crop PNG, JPG, and WebP images entirely in your browser.',
+    category: 'images',
+    path: '/images/crop',
+    icon: Crop,
+  },
+  {
+    id: 'remove-background',
+    name: 'Remove Background',
+    description: 'Remove image backgrounds locally using an in-browser AI model.',
+    category: 'images',
+    path: '/images/remove-background',
+    icon: Wand2,
   },
 ]
 

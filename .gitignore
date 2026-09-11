@@ -26,3 +26,6 @@ dist-ssr
 # Issue reports
 note.md
 docs/issues
+
+# Fetched at build time by scripts/fetch-bg-removal-assets.mjs — not committed (~180MB binary)
+public/models/bg-removal
