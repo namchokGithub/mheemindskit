@@ -23,6 +23,7 @@ import { JwtDecoderPage } from '@/pages/jwt-decoder-page'
 import { BarcodePage, QrCodePage } from '@/pages/code-generators-pages'
 import { JsonToCsvPage, JsonToYamlPage } from '@/pages/json-converters-pages'
 import { JsonDataGeneratorPage } from '@/pages/json-data-generator-page'
+import { ImageCropPage } from '@/pages/image-crop-page'
 import { SqlFormatterPage, SqlInsertPage, SqlMinifierPage } from '@/pages/sql-tools-pages'
 import { CreateTableTypesPage, SqlParametersPage, SqlSyntaxCheckerPage } from '@/pages/sql-advanced-pages'
 import { SqlInClausePage } from '@/pages/sql-in-clause-page'
@@ -87,6 +88,7 @@ export default function App() {
           <Route path="/converters/color" element={<ColorConverterPage />} />
           <Route path="/converters/date-formatter" element={<DateFormatterPage />} />
           <Route path="/converters/roman-numeral-date" element={<RomanNumeralDatePage />} />
+          <Route path="/images/crop" element={<ImageCropPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/license" element={<LicensePage />} />
           {tools
