@@ -30,6 +30,7 @@ import {
   Heading,
   Table2,
   ShieldCheck,
+  Wand2,
 } from 'lucide-react'
 
 import type { CategoryDefinition, ToolDefinition } from '@/types/tool'
@@ -435,6 +436,14 @@ export const tools: ToolDefinition[] = [
     category: 'images',
     path: '/images/crop',
     icon: Crop,
+  },
+  {
+    id: 'remove-background',
+    name: 'Remove Background',
+    description: 'Remove image backgrounds locally using an in-browser AI model.',
+    category: 'images',
+    path: '/images/remove-background',
+    icon: Wand2,
   },
 ]
 
